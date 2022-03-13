@@ -1,0 +1,113 @@
+.slick-prev,
+.slick-next {
+    position: absolute;
+    top: 0px;
+    z-index: 1;
+    top: 50%;
+    width: 35px;
+    height: 70px;
+    transform: translateY(-50%);
+    border: none;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.slick-prev {
+    left: -5px;
+    border-radius: 0px 4px 4px 0px;
+    box-shadow: 4px 0 4px rgba(0, 0, 0, 0.25);
+}
+
+.slick-next {
+    right: -5px;
+    border-radius: 4px 0px 0px 4px;
+    box-shadow: -4px 0 4px rgba(0, 0, 0, 0.25);
+}
+
+.slick-prev:hover,
+.slick-next:hover {
+    background-color: rgba(255, 255, 255, 0.85);
+}
+
+.slick-prev:hover::before {
+    border-top: 2px solid rgba(0, 0, 0, 0.85);
+    border-left: 2px solid rgba(0, 0, 0, 0.85);
+}
+
+.slick-next:hover::before {
+    border-top: 2px solid rgba(0, 0, 0, 0.85);
+    border-right: 2px solid rgba(0, 0, 0, 0.85);
+}
+
+.slick-prev::before,
+.slick-next::before {
+    content: '';
+    border-top: 2px solid rgba(0, 0, 0, 0.5);
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: calc(50% - 2px);
+}
+
+.slick-prev::before {
+    border-left: 2px solid rgba(0, 0, 0, 0.5);
+    left: 50%;
+    transform: rotate(-45deg) translateY(-50%);
+}
+
+.slick-next::before {
+    border-right: 2px solid rgba(0, 0, 0, 0.5);
+    right: 50%;
+    transform: rotate(45deg) translateY(-50%);
+}
+
+.product-promotion {
+    margin-top: 20px;
+    padding: 60px 5px 5px 5px;
+    background-color: var(--background-main-color);
+    width: 100%;
+}
+
+.product-promotion .prd-item {
+    margin: 0px 5px;
+}
+
+
+/* list-product */
+
+.txt__prd {
+    background-color: var(--background-main-color);
+    clip-path: polygon(0 0, 70% 0, 100% 100%, 0% 100%);
+    display: block;
+    padding: 5px 50px 5px 10px;
+    color: white;
+    margin-bottom: 5px;
+}
+
+.link-see-all__prd {
+    padding: 10px;
+    font-weight: 500;
+    color: var(--link-color);
+}
+
+.link-see-all__prd:hover {
+    color: var(--link-color-hover);
+}
+
+.borderrow-prd {
+    background-color: var(--background-main-color);
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    bottom: 0px;
+    left: 0px;
+}
+
+.container-productbox {
+    margin-top: 0px;
+    background-color: #fff;
+    width: 100%;
+}
+
+
+/* end-list-product */

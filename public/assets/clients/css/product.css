@@ -1,0 +1,195 @@
+.slick-prev,
+.slick-next {
+    position: absolute;
+    top: 0px;
+    z-index: 1;
+    top: 50%;
+    width: 35px;
+    height: 70px;
+    transform: translateY(-50%);
+    border: none;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.slick-prev {
+    left: 0px;
+    border-radius: 0px 4px 4px 0px;
+    box-shadow: 4px 0 4px rgba(0, 0, 0, 0.25);
+}
+
+.slick-next {
+    right: 0px;
+    border-radius: 4px 0px 0px 4px;
+    box-shadow: -4px 0 4px rgba(0, 0, 0, 0.25);
+}
+
+.slick-prev:hover,
+.slick-next:hover {
+    background-color: rgba(255, 255, 255, 0.85);
+}
+
+.slick-prev:hover::before {
+    border-top: 2px solid rgba(0, 0, 0, 0.85);
+    border-left: 2px solid rgba(0, 0, 0, 0.85);
+}
+
+.slick-next:hover::before {
+    border-top: 2px solid rgba(0, 0, 0, 0.85);
+    border-right: 2px solid rgba(0, 0, 0, 0.85);
+}
+
+.slick-prev::before,
+.slick-next::before {
+    content: '';
+    border-top: 2px solid rgba(0, 0, 0, 0.5);
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: calc(50% - 2px);
+}
+
+.slick-prev::before {
+    border-left: 2px solid rgba(0, 0, 0, 0.5);
+    left: 50%;
+    transform: rotate(-45deg) translateY(-50%);
+}
+
+.slick-next::before {
+    border-right: 2px solid rgba(0, 0, 0, 0.5);
+    right: 50%;
+    transform: rotate(45deg) translateY(-50%);
+}
+
+
+/* header */
+
+.category:hover .category-list {
+    display: block;
+}
+
+.category-list {
+    display: none;
+    margin-top: 3px;
+}
+
+.submenu {
+    height: 311px;
+}
+
+
+/* endheader */
+
+
+/* content */
+
+.container-prdbox {
+    display: flex;
+}
+
+.prd-info-left {
+    width: calc(100% - 550px);
+    padding-right: 15px;
+}
+
+.prd-info-right {
+    width: 550px;
+    padding-left: 10px;
+}
+
+.img-prd-item-box img {
+    height: 400px;
+    width: 100%;
+}
+
+.specifications-prd {
+    background-color: #f2f2f2;
+    margin-top: 20px;
+    padding: 15px 20px;
+    line-height: 30px;
+    font-size: 18px;
+    font-weight: 500;
+    border: 1px solid #d9d9d9;
+    border-radius: 5px;
+}
+
+.specifications-prd>span {
+    color: #666666;
+}
+
+.specifications-prd>button {
+    color: blue;
+    border: none;
+    font-size: 16px;
+    display: block;
+    padding: 0px;
+}
+
+.prd__price-new {
+    color: var(--background-main-color);
+    font-size: 32px;
+    font-weight: 600;
+    margin-right: 10px;
+}
+
+.prd__price-old {
+    color: #b3b3b3;
+    font-size: 20px;
+    font-weight: 400;
+    text-decoration: line-through;
+}
+
+.info-prd-promo-item {
+    background-color: #f2f2f2;
+    border: 1px solid #b3b3b3;
+    border-radius: 5px;
+    padding: 30px 20px 10px 20px;
+    font-size: 18px;
+    min-height: 200px;
+    margin-top: 50px;
+    position: relative;
+}
+
+.info-prd-promo-item::before {
+    content: 'Khuyễn mãi';
+    position: absolute;
+    top: -20px;
+    left: 20px;
+    padding: 5px 10px;
+    font-size: 18px;
+    font-weight: 600;
+    color: black;
+    border: 1px solid #b3b3b3;
+    border-radius: 4px;
+    background-color: #cccccc;
+}
+
+.prd__btn-box {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.prd-info-right .btn-buy,
+.prd-info-right .btn-addcart {
+    width: calc(50% - 5px);
+    background-color: var(--background-main-color);
+    color: white;
+    font-size: 20px;
+    font-weight: 500;
+    display: inline-block;
+    border-radius: 0.25rem;
+    text-align: center;
+    padding: 0.5rem;
+}
+
+.prd-info-right .btn-addcart {
+    background-color: blue;
+}
+
+.prd-info-right .btn-addcart>i {
+    color: white;
+    margin-right: 5px;
+}
+
+
+/* endcontent */

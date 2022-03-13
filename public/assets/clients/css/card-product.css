@@ -1,0 +1,138 @@
+.prd-item {
+    position: relative;
+}
+
+.prd-item:hover {
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.5);
+    z-index: 1;
+}
+
+.prd-item .card {
+    padding: 30px 15px 10px 15px;
+}
+
+.prd-item .card img {
+    transition: 0.5s;
+    height: 180px;
+}
+
+.prd-item:hover .card img {
+    transform: translateY(-10px);
+}
+
+.prd-item .card-body {
+    padding: 20px 0px 15px 0px;
+}
+
+.prd-item .card-body .card-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 10px;
+    height: 40px;
+}
+
+.prd-item .card-body .card-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-size: 12px;
+    padding: 5px;
+    margin-top: 5px;
+    height: 45px;
+}
+
+.prd-price {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.prd__price-new {
+    background-color: white;
+    border: 1px solid var(--background-main-color);
+    color: var(--background-main-color);
+    font-weight: 600;
+    padding: 2px 15px;
+    border-radius: 15px;
+    font-size: 14px;
+}
+
+.prd__price-old {
+    color: black;
+    text-decoration: line-through;
+    font-size: 12px;
+}
+
+.prd__btn-box {
+    width: 100%;
+    display: block;
+    padding: 15px;
+    position: absolute;
+    bottom: -60px;
+    left: 0px;
+    background-color: #f2f2f2;
+    border: 1px solid rgba(0, 0, 0, .125);
+    border-top: none;
+    border-radius: 0.25rem;
+    transition: 0.3s;
+    opacity: 0;
+}
+
+.prd-item:hover .prd__btn-box {
+    transform: translateY(-60px);
+    opacity: 1;
+}
+
+.prd-item .btn-buy {
+    width: calc(100% - 55px);
+    background-color: var(--background-main-color);
+    color: white;
+}
+
+.prd-item .btn-addcart {
+    width: 50px;
+    margin: 0px;
+    background-color: blue;
+}
+
+.prd-item .btn-addcart>i {
+    color: #fff;
+}
+
+
+/* see-alll-product */
+
+.btn-prd-promo__see-all {
+    background-color: #fff;
+    width: 350px;
+    color: #333;
+    display: block;
+    margin: 15px auto;
+    text-align: center;
+    padding: 8px;
+    font-weight: 600;
+    position: relative;
+    border-radius: 4px;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+.btn-prd-promo__see-all::after {
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-left: 5px solid #333;
+    content: '';
+    position: absolute;
+    top: 16px;
+    right: 125px;
+}
+
+.btn-prd-promo__see-all:hover {
+    color: var(--link-color);
+}
+
+.btn-prd-promo__see-all:hover::after {
+    border-left: 5px solid var(--link-color);
+}
