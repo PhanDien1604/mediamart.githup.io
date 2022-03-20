@@ -89,7 +89,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="{{route('admin.product.show')}}" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
                             <p>Sản phẩm kinh doanh</p>
                         </a>

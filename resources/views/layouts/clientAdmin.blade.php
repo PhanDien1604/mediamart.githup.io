@@ -47,7 +47,6 @@
     <script src="{{asset('assets/admin/AdminLTE/dist/js/adminlte.min.js')}}"></script>
     {{-- <script src="{{asset('assets/admin/AdminLTE/dist/js/demo.js')}}"></script> --}}
     {{-- <script src="{{asset('assets/admin/AdminLTE/dist/js/pages/dashboard.js')}}"></script> --}}
-
     <script>
         $.widget.bridge('uibutton', $.ui.button)
     </script>

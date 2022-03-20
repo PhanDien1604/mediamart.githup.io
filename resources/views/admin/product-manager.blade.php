@@ -65,7 +65,10 @@
                     <div class="card">
                       <div class="card-header">
                         {{-- <h3 class="card-title">DataTable with default features</h3> --}}
-                        <a href="#" class="btn btn-primary mb-2"><i class="fas fa-plus mr-1"></i>Create new</a>
+                        <a href="{{route('admin.product.add')}}" class="btn btn-primary mb-2"><i class="fas fa-plus mr-1"></i>Thêm mới</a>
+                        {{-- @if (session('msg'))
+                            <div class="alert alert-success">ok</div>
+                        @endif --}}
                       </div>
                       <!-- /.card-header -->
                       <div class="card-body">
@@ -85,30 +88,37 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>
-                                    <div class="img-prd">
-                                        <img src="{{asset('assets/clients/images/product/product-1.jpg')}}" alt="">
-                                    </div>
-                                </td>
-                                <td>MSHD</td>
-                                <td>Aser Nitro 5</td>
-                                <td>Laptop Gamming</td>
-                                <td>100</td>
-                                <td>XXXX</td>
-                                <td>
-                                    <input type="checkbox">
-                                </td>
-                                <td>
-                                    <div class="btn-box">
-                                        <a href="#" class="btn btn-secondary"><i class="fas fa-eye"></i></a>
-                                        <a href="#" class="btn btn-info"><i class="fas fa-pencil-alt"></i></a>
-                                        <a href="#" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
-                                    </div>
-                                </td>
-                            </tr>
-
+                                @if (!empty($productsList))
+                                    @foreach ($productsList as $key => $item)
+                                        <tr>
+                                            <td>{{$key+1}}</td>
+                                            <td>
+                                                <div class="img-prd">
+                                                    <img src="{{asset('assets/clients/images/product/product-1.jpg')}}" alt="">
+                                                </div>
+                                            </td>
+                                            <td>{{$item->id}}</td>
+                                            <td>{{$item->name}}</td>
+                                            <td>{{$item->group_prd}}</td>
+                                            <td>{{$item->amount}}</td>
+                                            <td>{{$item->price}}</td>
+                                            <td>
+                                                <input type="checkbox">
+                                            </td>
+                                            <td>
+                                                <div class="btn-box">
+                                                    <a href="#" class="btn btn-secondary"><i class="fas fa-eye"></i></a>
+                                                    <a href="#" class="btn btn-info"><i class="fas fa-pencil-alt"></i></a>
+                                                    <a href="#" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @else
+                                <tr>
+                                    <td colspan="9">Không có sản phẩm nào</td>
+                                </tr>
+                                @endif
                             </tbody>
                             <tfoot>
                             <tr>
