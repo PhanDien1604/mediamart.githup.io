@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th3 20, 2022 lúc 11:37 AM
+-- Thời gian đã tạo: Th3 27, 2022 lúc 12:11 PM
 -- Phiên bản máy phục vụ: 10.4.21-MariaDB
 -- Phiên bản PHP: 8.0.10
 
@@ -40,6 +40,26 @@ CREATE TABLE `failed_jobs` (
 -- --------------------------------------------------------
 
 --
+-- Cấu trúc bảng cho bảng `group_product`
+--
+
+CREATE TABLE `group_product` (
+  `id` int(11) NOT NULL,
+  `code` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `group_product`
+--
+
+INSERT INTO `group_product` (`id`, `code`, `name`) VALUES
+(8, 'NH1234', 'Dell'),
+(9, 'NH1235', 'Lenovo');
+
+-- --------------------------------------------------------
+
+--
 -- Cấu trúc bảng cho bảng `images_product`
 --
 
@@ -53,14 +73,9 @@ CREATE TABLE `images_product` (
 --
 
 INSERT INTO `images_product` (`id`, `fullname`) VALUES
-('MH3245', 'public/assets/images/MH3245-1.png|public/assets/images/MH3245-2.png'),
-(NULL, 'C:\\xampp\\htdocs\\ProjectShop\\MediaMart\\public-1.png|C:\\xampp\\htdocs\\ProjectShop\\MediaMart\\public-2.png'),
-(NULL, 'C:\\xampp\\htdocs\\ProjectShop\\MediaMart\\public\\/assets-1.png|C:\\xampp\\htdocs\\ProjectShop\\MediaMart\\public\\/assets-2.png|C:\\xampp\\htdocs\\ProjectShop\\MediaMart\\public\\/assets-3.png'),
-(NULL, 'C:\\xampp\\htdocs\\ProjectShop\\MediaMart\\public\\/assets/images-1.png|C:\\xampp\\htdocs\\ProjectShop\\MediaMart\\public\\/assets/images-2.png|C:\\xampp\\htdocs\\ProjectShop\\MediaMart\\public\\/assets/images-3.png'),
-('IM123', 'C:\\xampp\\htdocs\\ProjectShop\\MediaMart\\public\\assets\\imagesIM123-1.png|C:\\xampp\\htdocs\\ProjectShop\\MediaMart\\public\\assets\\imagesIM123-2.png'),
-(NULL, 'C:\\xampp\\htdocs\\ProjectShop\\MediaMart\\public\\assets\\images-1.png|C:\\xampp\\htdocs\\ProjectShop\\MediaMart\\public\\assets\\images-2.png|C:\\xampp\\htdocs\\ProjectShop\\MediaMart\\public\\assets\\images-3.png|C:\\xampp\\htdocs\\ProjectShop\\MediaMart\\public\\assets\\images-4.png|C:\\xampp\\htdocs\\ProjectShop\\MediaMart\\public\\assets\\images-5.png|C:\\xampp\\htdocs\\ProjectShop\\MediaMart\\public\\assets\\images-6.png|C:\\xampp\\htdocs\\ProjectShop\\MediaMart\\public\\assets\\images-7.png|C:\\xampp\\htdocs\\ProjectShop\\MediaMart\\public\\assets\\images-8.png|C:\\xampp\\htdocs\\ProjectShop\\MediaMart\\public\\assets\\images-9.png|C:\\xampp\\htdocs\\ProjectShop\\MediaMart\\public\\assets\\images-10.png'),
-('IM8974', 'C:\\xampp\\htdocs\\ProjectShop\\MediaMart\\public\\assets\\imagesIM8974-1.png|C:\\xampp\\htdocs\\ProjectShop\\MediaMart\\public\\assets\\imagesIM8974-2.png'),
-('MH7236', 'C:\\xampp\\htdocs\\ProjectShop\\MediaMart\\public\\assets\\imagesMH7236-1.png|C:\\xampp\\htdocs\\ProjectShop\\MediaMart\\public\\assets\\imagesMH7236-2.png|C:\\xampp\\htdocs\\ProjectShop\\MediaMart\\public\\assets\\imagesMH7236-3.png|C:\\xampp\\htdocs\\ProjectShop\\MediaMart\\public\\assets\\imagesMH7236-4.png|C:\\xampp\\htdocs\\ProjectShop\\MediaMart\\public\\assets\\imagesMH7236-5.png|C:\\xampp\\htdocs\\ProjectShop\\MediaMart\\public\\assets\\imagesMH7236-6.png|C:\\xampp\\htdocs\\ProjectShop\\MediaMart\\public\\assets\\imagesMH7236-7.png');
+('MH4567', 'C:\\xampp\\htdocs\\ProjectShop\\MediaMart\\public\\assets\\imagesMH4567-1.jpg|C:\\xampp\\htdocs\\ProjectShop\\MediaMart\\public\\assets\\imagesMH4567-2.png|C:\\xampp\\htdocs\\ProjectShop\\MediaMart\\public\\assets\\imagesMH4567-3.png'),
+('MH7236', 'C:\\xampp\\htdocs\\ProjectShop\\MediaMart\\public\\assets\\imagesMH7236-2.png|C:\\xampp\\htdocs\\ProjectShop\\MediaMart\\public\\assets\\imagesMH7236-3.png'),
+(NULL, 'images-1.png|images-2.png');
 
 -- --------------------------------------------------------
 
@@ -121,51 +136,38 @@ CREATE TABLE `personal_access_tokens` (
 --
 
 CREATE TABLE `products` (
-  `id` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `id` int(11) NOT NULL,
+  `code` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
   `name` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `infor` varchar(1000) COLLATE utf8_unicode_ci DEFAULT '',
+  `info` varchar(1000) COLLATE utf8_unicode_ci DEFAULT NULL,
   `group_prd` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `amount` int(11) DEFAULT NULL,
   `price` int(11) DEFAULT NULL,
-  `promo` varchar(1000) COLLATE utf8_unicode_ci DEFAULT '',
-  `supplier` varchar(1000) COLLATE utf8_unicode_ci DEFAULT '',
-  `introduction_article` varchar(1000) COLLATE utf8_unicode_ci DEFAULT ''
+  `promo` varchar(1000) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `introduction_article` varchar(1000) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `creat_at` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `status` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `products`
 --
 
-INSERT INTO `products` (`id`, `name`, `infor`, `group_prd`, `amount`, `price`, `promo`, `supplier`, `introduction_article`) VALUES
-('MH1234', 'Aser Nitro 5', 'Bộ nhớ 64GB...', '', 10, 25000000, 'Tặng bao lô...', '', ''),
-('MH3245', 'Lenovo Idipad 5', 'ạdkjahskdasd', '', 5, 20000000, 'sdasd', 'saaaa', 'Điền nội dung bài viết...'),
-('MH7236', 'Dell 7541', 'dfghdfgdf', '', 10, 15000000, 'ádasdasdsa', 'rtyertyedsff', 'sdasdads'),
-('MH7236', 'Dell 7541', 'dfghdfgdf', '', 10, 15000000, NULL, 'rtyertyedsff', 'sdasdads'),
-('MH7236', 'Dell 7541', 'dfghdfgdf', '', 10, 15000000, NULL, 'rtyertyedsff', NULL),
-('MH3245', 'Dell 7541', NULL, '', 10, 15000000, NULL, NULL, NULL),
-('MH3245', 'Dell 7541', NULL, '', 10, 15000000, NULL, NULL, NULL),
-('HK1654', 'Dell 7500', '', 'Aser', NULL, NULL, '', '', ''),
-('MH7236', 'Dell 7541', NULL, '', 5, 15000000, NULL, NULL, NULL),
-('MH7236', 'Dell 7541', NULL, 'Texas', 5, 15000000, NULL, NULL, NULL),
-('MH7236', 'Dell 7541', NULL, 'Texas', 5, 15000000, NULL, NULL, NULL),
-('MH7236', 'Lenovo Idipad 5', NULL, 'California', 10, 15000000, NULL, NULL, NULL),
-('MH7236', 'Lenovo Idipad 5', NULL, 'Alaska', 5, 20000000, NULL, NULL, NULL),
-('MH7236', 'Lenovo Idipad 5', NULL, 'Alaska', 5, 20000000, NULL, NULL, NULL),
-(NULL, NULL, NULL, '--Nhóm sản phẩm--', NULL, NULL, NULL, NULL, NULL),
-(NULL, NULL, NULL, '--Nhóm sản phẩm--', NULL, NULL, NULL, NULL, NULL),
-(NULL, NULL, NULL, '--Nhóm sản phẩm--', NULL, NULL, NULL, NULL, NULL),
-('MH3245', NULL, NULL, '--Nhóm sản phẩm--', NULL, NULL, NULL, NULL, NULL),
-('MH3245', NULL, NULL, '--Nhóm sản phẩm--', NULL, NULL, NULL, NULL, NULL),
-('MH3245', NULL, NULL, '--Nhóm sản phẩm--', NULL, NULL, NULL, NULL, NULL),
-('MH3245', NULL, NULL, '--Nhóm sản phẩm--', NULL, NULL, NULL, NULL, NULL),
-(NULL, NULL, NULL, '--Nhóm sản phẩm--', NULL, NULL, NULL, NULL, NULL),
-(NULL, NULL, NULL, '--Nhóm sản phẩm--', NULL, NULL, NULL, NULL, NULL),
-(NULL, NULL, NULL, '--Nhóm sản phẩm--', NULL, NULL, NULL, NULL, NULL),
-('IM123', NULL, NULL, '--Nhóm sản phẩm--', NULL, NULL, NULL, NULL, NULL),
-('IM123', NULL, NULL, '--Nhóm sản phẩm--', NULL, NULL, NULL, NULL, NULL),
-(NULL, NULL, NULL, '--Nhóm sản phẩm--', NULL, NULL, NULL, NULL, NULL),
-('IM8974', NULL, NULL, '--Nhóm sản phẩm--', NULL, NULL, NULL, NULL, NULL),
-('MH7236', NULL, NULL, '--Nhóm sản phẩm--', 10, NULL, NULL, NULL, NULL);
+INSERT INTO `products` (`id`, `code`, `name`, `info`, `group_prd`, `amount`, `price`, `promo`, `introduction_article`, `creat_at`, `status`) VALUES
+(6, 'MH1234', 'Lenovo Idipad 5', NULL, NULL, NULL, 20000000, NULL, NULL, NULL, 'on'),
+(7, 'MH1235', 'Aser Nitro 5', NULL, NULL, NULL, 15000000, NULL, NULL, NULL, 'on'),
+(8, 'Mh12346', 'Dell 7541', NULL, NULL, NULL, 15000000, NULL, NULL, '03/26/2022', 'on'),
+(9, 'MH12347', 'Dell 5510', NULL, NULL, NULL, 20000000, NULL, NULL, '03/26/2022', 'on'),
+(10, 'MH2345', 'Lenovo Idipad 5', NULL, NULL, NULL, 20000000, NULL, NULL, '03/27/2022', 'on'),
+(11, 'MH2346', 'Dell 7541', NULL, NULL, NULL, 20000000, NULL, NULL, '03/27/2022', 'on'),
+(12, 'MH2347', 'Lenovo Idipad 5', NULL, NULL, NULL, 20000000, NULL, NULL, '03/27/2022', 'on'),
+(13, 'MH2348', 'Lenovo Idipad 5', NULL, NULL, NULL, 15000000, NULL, NULL, '03/27/2022', 'on'),
+(14, 'MH3245', 'Lenovo Idipad 5', NULL, NULL, NULL, 15000000, NULL, NULL, '03/27/2022', 'on'),
+(15, 'MH3456', 'Lenovo Idipad 5', NULL, NULL, NULL, 20000000, NULL, NULL, '03/27/2022', 'on'),
+(16, 'MH3458', 'Lenovo Idipad 5', NULL, NULL, NULL, 20000000, NULL, NULL, '03/27/2022', 'on'),
+(17, 'MH3459', 'Lenovo Idipad 5', NULL, NULL, NULL, 20000000, NULL, NULL, '03/27/2022', 'on'),
+(18, 'MH4567', 'Lenovo Idipad 5', NULL, NULL, NULL, 15000000, NULL, NULL, '03/27/2022', 'on'),
+(19, 'MH7236', 'Lenovo Idipad 5', NULL, NULL, NULL, 20000000, NULL, NULL, '03/27/2022', 'on');
 
 -- --------------------------------------------------------
 
@@ -196,6 +198,12 @@ ALTER TABLE `failed_jobs`
   ADD UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`);
 
 --
+-- Chỉ mục cho bảng `group_product`
+--
+ALTER TABLE `group_product`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Chỉ mục cho bảng `migrations`
 --
 ALTER TABLE `migrations`
@@ -216,6 +224,12 @@ ALTER TABLE `personal_access_tokens`
   ADD KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`);
 
 --
+-- Chỉ mục cho bảng `products`
+--
+ALTER TABLE `products`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Chỉ mục cho bảng `users`
 --
 ALTER TABLE `users`
@@ -233,6 +247,12 @@ ALTER TABLE `failed_jobs`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT cho bảng `group_product`
+--
+ALTER TABLE `group_product`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
 -- AUTO_INCREMENT cho bảng `migrations`
 --
 ALTER TABLE `migrations`
@@ -243,6 +263,12 @@ ALTER TABLE `migrations`
 --
 ALTER TABLE `personal_access_tokens`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT cho bảng `products`
+--
+ALTER TABLE `products`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT cho bảng `users`
