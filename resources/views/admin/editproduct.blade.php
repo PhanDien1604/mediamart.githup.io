@@ -1,4 +1,4 @@
-@extends('layouts.clientAdmin')
+@extends('layouts.admin')
 @section('css')
 <link rel="stylesheet" href="{{asset('assets/admin/AdminLTE/plugins/summernote/summernote-bs4.min.css')}}">
 <link rel="stylesheet" href="{{asset('assets/admin/AdminLTE/plugins/select2/css/select2.min.css')}}">
@@ -82,7 +82,7 @@
             <div class="container-fluid">
               <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Thêm sản phẩm</h1>
+                    <h1>Cập nhật sản phẩm</h1>
                 </div>
                 <div class="col-sm-6">
                   <ol class="breadcrumb float-sm-right">
@@ -94,8 +94,16 @@
             </div><!-- /.container-fluid -->
         </section>
         <section class="content">
-            <form action="" method="POST" enctype="multipart/form-data">
+            <form action="{{route('admin.product.postEdit')}}" method="POST" enctype="multipart/form-data">
             @csrf
+            @if (session('msg'))
+                <div class="title-msg d-none">{{session('msg')}}</div>
+                <div class="icon-msg d-none">success</div>
+            @endif
+            @if ($errors->any())
+                <div class="title-msg d-none">Vui lòng kiểm tra lại giữ liệu</div>
+                <div class="icon-msg d-none">error</div>
+            @endif
             <div class="row">
                 <div class="col-md-6">
                     <div class="card card-danger">
@@ -123,9 +131,6 @@
                             </label>
                             <div id="list-images"></div>
                             {{-- EndFileInput --}}
-                            {{-- Dropzone --}}
-
-                            {{-- EndDropzone --}}
                         </div>
                         <!-- /.card-body -->
                     </div>
@@ -143,17 +148,11 @@
                         </div>
                     </div>
                         <div class="card-body">
-                            @if ($errors->any())
-                                <div class="alert alert-danger text-center">
-                                    Vui lòng kiểm tra lại dữ liệu
-                                </div>
-                            @endif
                             <div class="row">
-
                                 <div class="col-4">
                                     <div class="form-group">
                                         <label for="inputName">Mã sản phẩm</label>
-                                        <input type="text" id="inputName" class="form-control" name="product_code" value="{{old('product_code')}}" placeholder="Mã sản phẩm">
+                                        <input type="text" id="inputName" class="form-control" name="product_code" value="{{old('product_code') ?? $productDetail->code}}" placeholder="Mã sản phẩm">
                                         @error('product_code')
                                             <span class="text-danger">{{$message}}</span>
                                         @enderror
@@ -162,7 +161,7 @@
                                 <div class="col-8">
                                     <div class="form-group">
                                         <label for="inputName">Tên sản phẩm</label>
-                                        <input type="text" id="inputName" class="form-control" name="product_name" value="{{old('product_name')}}" placeholder="Tên sản phẩm">
+                                        <input type="text" id="inputName" class="form-control" name="product_name" value="{{old('product_name') ?? $productDetail->name}}" placeholder="Tên sản phẩm">
                                         @error('product_name')
                                             <span class="text-danger">{{$message}}</span>
                                         @enderror
@@ -171,7 +170,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="inputDescription">Tóm tắt sản phẩm</label>
-                                <textarea id="inputDescription" class="form-control" rows="4" name="product_infor" value="{{old('product_info')}}" placeholder="Nội dung tóm tắt"></textarea>
+                                <textarea id="inputDescription" class="form-control" rows="4" name="product_info" placeholder="Nội dung tóm tắt">{{old('product_info') ?? $productDetail->info}}</textarea>
                             </div>
                             <div class="row">
                                 <div class="col-5">
@@ -191,7 +190,7 @@
                                 <div class="col-3">
                                     <div class="form-group">
                                         <label for="inputName">Số lượng</label>
-                                        <input type="text" id="inputName" class="form-control" name="product_amount" value="{{old('product_amount')}}" placeholder="0">
+                                        <input type="text" id="inputName" class="form-control" disabled name="product_amount" value="{{old('product_amount') ?? $productDetail->amount}}">
                                         @error('product_amount')
                                             <span class="text-danger">{{$message}}</span>
                                         @enderror
@@ -200,23 +199,34 @@
                                 <div class="col-4">
                                     <div class="form-group">
                                         <label for="inputName">Giá</label>
-                                        <input type="text" id="inputName" class="form-control" name="product_price" value="{{old('product_price')}}" placeholder="VNĐ">
+                                        <input type="text" id="inputName" class="form-control" name="product_price" value="{{old('product_price') ?? $productDetail->price}}" placeholder="VNĐ">
                                         @error('product_price')
                                             <span class="text-danger">{{$message}}</span>
                                         @enderror
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="inputName">Thông tin khuyến mại</label>
-                                <input type="text" id="inputName" class="form-control" name="product_promo" value="{{old('product_promo')}}" placeholder="Điền thông tin ...">
-                            </div>
-                            <div class="form-group">
-                                <label for="inputName">Nhà cung cấp</label>
-                                <input type="text" id="inputName" class="form-control" name="product_supplier" value="{{old('product_subpplier')}}" placeholder="Điền thông tin ...">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="inputName">Thông tin khuyến mại</label>
+                                        <input type="text" id="inputName" class="form-control" disabled name="product_promo" value="{{old('product_promo') ?? $productDetail->promo}}">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>Ngày tạo:</label>
+                                        <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                                            <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate" name="creat_at" value="{{old('creat_at') ?? $productDetail->creat_at}}"/>
+                                            <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="check-view d-flex justify-content-end">
-                                <input type="checkbox" name="my-checkbox" checked data-bootstrap-switch data-off-color="danger" data-on-color="success">
+                                <input type="checkbox" name="checkbox_view" checked data-bootstrap-switch data-off-color="danger" data-on-color="success">
                             </div>
                         </div>
                         <!-- /.card-body -->
@@ -236,7 +246,7 @@
                       </div>
                       <!-- /.card-header -->
                       <div class="card-body">
-                        <textarea id="summernote" name="introduction_article">
+                        <textarea id="summernote" name="introduction_article"placeholder="Giới thiệu sản phẩm">{{old('introduction_article') ?? $productDetail->introduction_article}}
                         </textarea>
                       </div>
                     </div>
@@ -244,8 +254,8 @@
             </div>
             <div class="row">
               <div class="col-12">
-                <a href="{{route('admin.product.show')}}" class="btn btn-secondary">Cancel</a>
-                <input type="submit" value="Confirm" class="btn btn-success float-right">
+                <a href="{{route('admin.product.show')}}" class="btn btn-secondary">Hủy</a>
+                <input type="submit" value="Cập nhật" class="btn btn-success float-right">
               </div>
             </div>
             </form>
@@ -266,7 +276,13 @@
             theme: 'bootstrap4'
         })
         // Summernote
-        $('#summernote').summernote()
+        $('#summernote').summernote({
+            height: 100
+        })
+        // Date
+        $('#reservationdate').datetimepicker({
+            format: 'L'
+        });
     })
     $("input[data-bootstrap-switch]").each(function() {
         $(this).bootstrapSwitch('state', $(this).prop('checked'));

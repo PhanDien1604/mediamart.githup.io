@@ -15,6 +15,9 @@
     <link rel="stylesheet" href="{{asset('assets/admin/AdminLTE/dist/css/adminlte.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/admin/AdminLTE/plugins/overlayScrollbars/css/OverlayScrollbars.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/admin/AdminLTE/plugins/daterangepicker/daterangepicker.css')}}">
+    {{-- SweetAlert --}}
+    <link rel="stylesheet" href="{{asset('assets/admin/AdminLTE/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/admin/AdminLTE/plugins/toastr/toastr.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/admin/css/style.css')}}">
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
@@ -45,10 +48,31 @@
 
     <script src="{{asset('assets/admin/AdminLTE/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js')}}"></script>
     <script src="{{asset('assets/admin/AdminLTE/dist/js/adminlte.min.js')}}"></script>
+    <script src="{{asset('assets/admin/AdminLTE/plugins/sweetalert2/sweetalert2.min.js')}}"></script>
+    <script src="{{asset('assets/admin/AdminLTE/plugins/toastr/toastr.min.js')}}"></script>
     {{-- <script src="{{asset('assets/admin/AdminLTE/dist/js/demo.js')}}"></script> --}}
     {{-- <script src="{{asset('assets/admin/AdminLTE/dist/js/pages/dashboard.js')}}"></script> --}}
     <script>
         $.widget.bridge('uibutton', $.ui.button)
+        // SweetAlert
+        var Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+        });
+        $(window).on('load',function() {
+            setTimeout(() => {
+                var _title = $('.title-msg').text();
+                var _icon = $('.icon-msg').text();
+                if(_title){
+                    Toast.fire({
+                        icon: _icon,
+                        title: _title
+                    })
+                }
+            }, 500);
+        })
     </script>
     @yield('js')
 </body>

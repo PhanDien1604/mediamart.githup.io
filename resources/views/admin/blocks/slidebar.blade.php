@@ -36,11 +36,10 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
             <li class="nav-item menu-open">
-                <a href="#" class="nav-link active">
+                <a href="{{route('admin.home')}}" class="nav-link active">
                     <i class="nav-icon fas fa-home"></i>
                     <p>
                         Quản lý chung
-                        <i class="right fas fa-angle-left"></i>
                     </p>
                 </a>
             </li>
@@ -77,21 +76,15 @@
                 </a>
                 <ul class="nav nav-treeview">
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="{{route('admin.product.addGroup')}}" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
                             <p>Nhóm sản phẩm</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Sản phẩm mới<span class="right badge badge-danger">New</span></p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
                         <a href="{{route('admin.product.show')}}" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
-                            <p>Sản phẩm kinh doanh</p>
+                            <p>Danh sách sản phẩm</p>
                         </a>
                     </li>
                 </ul>
@@ -165,7 +158,7 @@
                 </ul>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{route('admin.promo.show')}}" class="nav-link">
                     <i class="nav-icon fas fa-store"></i>
                     <p>Khuyến mại</p>
                 </a>

@@ -24,22 +24,18 @@ class ProductRequest extends FormRequest
     public function rules()
     {
         return [
-            "product_code" => "required|min:6",
+            "product_code" => "required|min:6|unique:products,code",
             "product_name" => "required",
-            "product_amount" => "required|integer",
             "product_price" => "required|integer"
         ];
     }
     public function messages()
     {
         return [
-            "product_code.required" => ":attribute bắt buộc phải nhập",
-            "product_code.min" => ":attribute không được nhỏ hơn :min kí tự",
-            "product_name.required" => ":attribute bắt buộc phải nhập",
-            "product_amount.required" => ":attribute bắt buộc phải nhập",
-            "product_amount.integer" => ":attribute phải là số",
-            "product_price.required" => ":attribute bắt buộc phải nhập",
-            "product_price.integer" => ":attribute phải là số",
+            "required" => ":attribute bắt buộc phải nhập",
+            "min" => ":attribute không được nhỏ hơn :min kí tự",
+            "integer" => ":attribute phải là số",
+            "unique" => ":attribute đã tồn tại"
         ];
     }
     public function attributes()
@@ -47,7 +43,6 @@ class ProductRequest extends FormRequest
         return [
             "product_code" => "Mã sản phẩm",
             "product_name" => "Tên sản phẩm",
-            "product_amount" => "Số lượng sản phẩm",
             "product_price" => "Giá sản phẩm"
         ];
     }

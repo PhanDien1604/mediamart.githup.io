@@ -1,4 +1,4 @@
-@extends('layouts.clientAdmin')
+@extends('layouts.admin')
 @section('css')
 <link rel="stylesheet" href="{{asset('assets/admin/AdminLTE/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
 <link rel="stylesheet" href="{{asset('assets/admin/AdminLTE/plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
@@ -29,16 +29,18 @@
         padding: 0.2rem 0.5rem;
     }
     .table td .img-prd {
-        width: 30px;
-        height: 30px;
+        width: 50px;
+        height: 50px;
         overflow: hidden;
         display: block;
         margin: auto;
+        background: red;
     }
     .table td .img-prd>img {
-        width: 30px;
+        height: 50px;
     }
 
+}
 </style>
 @endsection
 @section('content')
@@ -66,9 +68,9 @@
                       <div class="card-header">
                         {{-- <h3 class="card-title">DataTable with default features</h3> --}}
                         <a href="{{route('admin.product.add')}}" class="btn btn-primary mb-2"><i class="fas fa-plus mr-1"></i>Thêm mới</a>
-                        {{-- @if (session('msg'))
-                            <div class="alert alert-success">ok</div>
-                        @endif --}}
+                        @if (session('msg'))
+                            <div class="box-msg d-none">{{session('msg')}}</div>
+                        @endif
                       </div>
                       <!-- /.card-header -->
                       <div class="card-body">
@@ -80,7 +82,6 @@
                                 <th>Ảnh</th>
                                 <th>Mã sản phẩm</th>
                                 <th>Tên sản phẩm</th>
-                                <th>Loại</th>
                                 <th>Số lượng</th>
                                 <th>Giá(VNĐ)</th>
                                 <th>Hiển thị</th>
@@ -97,19 +98,19 @@
                                                     <img src="{{asset('assets/clients/images/product/product-1.jpg')}}" alt="">
                                                 </div>
                                             </td>
-                                            <td>{{$item->id}}</td>
+                                            <td>{{$item->code}}</td>
                                             <td>{{$item->name}}</td>
-                                            <td>{{$item->group_prd}}</td>
                                             <td>{{$item->amount}}</td>
                                             <td>{{$item->price}}</td>
                                             <td>
-                                                <input type="checkbox">
+                                                <input type="checkbox" {{!empty($item->status) ? "checked": ""}}>
                                             </td>
+
                                             <td>
                                                 <div class="btn-box">
-                                                    <a href="#" class="btn btn-secondary"><i class="fas fa-eye"></i></a>
-                                                    <a href="#" class="btn btn-info"><i class="fas fa-pencil-alt"></i></a>
-                                                    <a href="#" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
+                                                    <a href="#" class="btn btn-light"><i class="fas fa-eye"></i></a>
+                                                    <a href="{{route('admin.product.edit', ['id' => $item->id])}}" class="btn btn-warning"><i class="fas fa-pencil-alt"></i></a>
+                                                    <a href="{{route('admin.product.delete', ['id' => $item->id])}}" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
                                                 </div>
                                             </td>
                                         </tr>
@@ -120,19 +121,6 @@
                                 </tr>
                                 @endif
                             </tbody>
-                            <tfoot>
-                            <tr>
-                                <th>STT</th>
-                                <th>Ảnh</th>
-                                <th>Mã sản phẩm</th>
-                                <th>Tên sản phẩm</th>
-                                <th>Loại</th>
-                                <th>Số lượng</th>
-                                <th>Giá(VNĐ)</th>
-                                <th>Hiển thị</th>
-                                <th>Chức năng</th>
-                            </tr>
-                            </tfoot>
                         </table>
                       </div>
                       <!-- /.card-body -->
@@ -142,7 +130,7 @@
                   <!-- /.col -->
                 </div>
                 <!-- /.row -->
-              </div>
+            </div>
         </section>
     </div>
 
@@ -160,6 +148,7 @@
 <script src="{{asset('assets/admin/AdminLTE/plugins/datatables-buttons/js/buttons.html5.min.js')}}"></script>
 <script src="{{asset('assets/admin/AdminLTE/plugins/datatables-buttons/js/buttons.print.min.js')}}"></script>
 <script src="{{asset('assets/admin/AdminLTE/plugins/datatables-buttons/js/buttons.colVis.min.js')}}"></script>
+
 <script>
     $(function () {
       $("#example1").DataTable({
@@ -173,10 +162,10 @@
         "responsive": true,
         "order":[[2,'asc']],
         "columnDefs": [
-            {"targets": [0,1,7,8], "orderable": false},
-            { "visible": true, "targets": 0 }
+            {"targets": [0,1,6,7], "orderable": false},
         ],
       }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
     });
+
   </script>
 @endsection

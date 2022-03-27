@@ -14,7 +14,4 @@ class AdminController extends Controller
     public function login() {
         return view('admin.login');
     }
-    public function customer_manager() {
-        return view('admin.customer-manager');
-    }
 }

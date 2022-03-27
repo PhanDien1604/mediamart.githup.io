@@ -1,4 +1,4 @@
-@extends('layouts.clientAdmin')
+@extends('layouts.admin')
 @section('css')
 <link rel="stylesheet" href="{{asset('assets/admin/AdminLTE/plugins/summernote/summernote-bs4.min.css')}}">
 <link rel="stylesheet" href="{{asset('assets/admin/AdminLTE/plugins/select2/css/select2.min.css')}}">
@@ -31,47 +31,40 @@
     input[type="file"] {
         display: none;
     }
-    .title-file-input-main {
+    .title-file-input {
         cursor: pointer;
         width: 100%;
     }
-    .title-file-input {
-        display: block;
-        background-color:  #b3b3b3;
-        text-align: center;
-        padding: 0.5rem;
-        cursor: pointer;
-    }
-    #list-images {
+    /*  */
+    .img-sub-prd {
         background-color: #f2f2f2;
-        padding: 0.1rem;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
         min-height: 80px;
     }
-    #list-images img {
-        height: 80px;
-    }
-    .img-item {
-        margin: 0.1rem;
-        width: 80px;
-        height: 80px;
-        overflow: hidden;
-        position: relative;
-    }
-    .close-img-item{
-        position: absolute;
-        top: 0px;
-        right: 0px;
-        display: block;
-        padding: 0px 0.3rem;
-        cursor: pointer;
+    .li_file_hide {
         opacity: 0;
-        transition: 0.2s;
+        visibility: visible;
+        width: 0 !important;
+        height: 0 !important;
+        overflow: hidden;
     }
-    .img-item:hover .close-img-item{
-        opacity: 1;
+    .box-view-img {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 0.5rem;
+    }
+    .box-view-img .img-wrap-box {
+        position: relative;
+        overflow: hidden;
+        height: 80px;
+        width: 80px;
+        background-position: 50% 50%;
+        background-size: cover;
+    }
+    .box-view-img .img-wrap-box img {
+        height: 80px;
+    }
+    li {
+        list-style: none;
     }
 </style>
 @endsection
@@ -94,10 +87,18 @@
             </div><!-- /.container-fluid -->
         </section>
         <section class="content">
-            <form action="" method="POST" enctype="multipart/form-data">
-            @csrf
+            @if (session('msg'))
+                <div class="title-msg d-none">{{session('msg')}}</div>
+                <div class="icon-msg d-none">success</div>
+            @endif
+            @if ($errors->any())
+                <div class="title-msg d-none">Vui lòng kiểm tra lại giữ liệu</div>
+                <div class="icon-msg d-none">error</div>
+            @endif
             <div class="row">
-                <div class="col-md-6">
+                <form action="{{route('admin.product.uploadImage')}}" method="POST" enctype="multipart/form-data" class="col-6">
+                    @csrf
+                {{-- <div class="col-md-6"> --}}
                     <div class="card card-danger">
                         <div class="card-header">
                             <h3 class="card-title">Hình minh họa cho sản phẩm</h3>
@@ -110,28 +111,35 @@
                         </div>
                         <div class="card-body">
                             <div class="img-main-prd">
-                                <input type="file" name="images[]" id="file-input-main" onchange="previewImgMain()" value="" accept=".jpg,.jpeg,.png,.gif">
-                                <label for="file-input-main" class="title-file-input-main">
+                                <input type="file" name="images[]" id="file-input-main" onchange="previewImgMain()" accept=".jpg,.jpeg,.png,.gif">
+                                <label for="file-input-main" class="title-file-input">
                                     <img src="{{asset('assets/clients/images/image-icon.jpg')}}" alt="" style="width: 100%">
                                 </label>
                                 <div class="close-img-main"><i class="fas fa-times"></i></div>
                             </div>
-                            {{-- FileInput --}}
-                            <input type="file" name="images[]" id="file-input" onchange="previewImages()" multiple accept=".jpg,.jpeg,.png,.gif">
-                            <label for="file-input" class="title-file-input">
-                                Select Images
-                            </label>
-                            <div id="list-images"></div>
+                            <div class="py-3 row">
+                                <div class="col-6">
+                                    <span class="insert-img btn-add-img btn btn-success btn-block"><i class="fas fa-plus mr-2"></i>Thêm hình ảnh</span>
+                                </div>
+                                <div class="col-6">
+                                    <button class="btn btn-primary btn-block"><i class="fas fa-upload mr-2"></i>Tải lên</button>
+                                </div>
+                            </div>
+                            <div class="img-sub-prd">
+                                <ul class="box-view-img">
+                                    {{-- List Image --}}
+                                </ul>
+                            </div>
                             {{-- EndFileInput --}}
-                            {{-- Dropzone --}}
-
-                            {{-- EndDropzone --}}
                         </div>
                         <!-- /.card-body -->
                     </div>
                     <!-- /.card -->
-                </div>
-                <div class="col-md-6">
+                {{-- </div> --}}
+                </form>
+                <form action="{{route('admin.product.postAdd')}}" method="POST" id="formMain" class="col-6">
+                    @csrf
+                {{-- <div class="col-md-6"> --}}
                     <div class="card card-success">
                         <div class="card-header">
                         <h3 class="card-title">Thông tin chính</h3>
@@ -143,11 +151,6 @@
                         </div>
                     </div>
                         <div class="card-body">
-                            @if ($errors->any())
-                                <div class="alert alert-danger text-center">
-                                    Vui lòng kiểm tra lại dữ liệu
-                                </div>
-                            @endif
                             <div class="row">
 
                                 <div class="col-4">
@@ -170,34 +173,11 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="inputDescription">Tóm tắt sản phẩm</label>
-                                <textarea id="inputDescription" class="form-control" rows="4" name="product_infor" value="{{old('product_info')}}" placeholder="Nội dung tóm tắt"></textarea>
+                                <label for="">Tóm tắt sản phẩm</label>
+                                <textarea id="" class="form-control" rows="4" name="product_info" placeholder="Nội dung tóm tắt">{{old('product_info')}}</textarea>
                             </div>
                             <div class="row">
-                                <div class="col-5">
-                                    <div class="form-group">
-                                        <label for="inputName">Nhóm sản phẩm</label>
-                                        <select class="form-control select2bs4" name="product_group" style="width: 100%;">
-                                            <option selected="selected">--Nhóm sản phẩm--</option>
-                                            <option value="Alaska">Alaska</option>
-                                            <option value="California">California</option>
-                                            <option value="Delaware">Delaware</option>
-                                            <option value="Tennessee">Tennessee</option>
-                                            <option value="Texas">Texas</option>
-                                            <option value="Washington">Washington</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-3">
-                                    <div class="form-group">
-                                        <label for="inputName">Số lượng</label>
-                                        <input type="text" id="inputName" class="form-control" name="product_amount" value="{{old('product_amount')}}" placeholder="0">
-                                        @error('product_amount')
-                                            <span class="text-danger">{{$message}}</span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-4">
+                                <div class="col-6">
                                     <div class="form-group">
                                         <label for="inputName">Giá</label>
                                         <input type="text" id="inputName" class="form-control" name="product_price" value="{{old('product_price')}}" placeholder="VNĐ">
@@ -206,49 +186,50 @@
                                         @enderror
                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="inputName">Thông tin khuyến mại</label>
-                                <input type="text" id="inputName" class="form-control" name="product_promo" value="{{old('product_promo')}}" placeholder="Điền thông tin ...">
-                            </div>
-                            <div class="form-group">
-                                <label for="inputName">Nhà cung cấp</label>
-                                <input type="text" id="inputName" class="form-control" name="product_supplier" value="{{old('product_subpplier')}}" placeholder="Điền thông tin ...">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>Ngày tạo:</label>
+                                        <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                                            <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate" name="creat_at" value="{{old('creat_at')}}"/>
+                                            <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="check-view d-flex justify-content-end">
-                                <input type="checkbox" name="my-checkbox" checked data-bootstrap-switch data-off-color="danger" data-on-color="success">
+                                <input type="checkbox" name="checkbox_view" checked data-bootstrap-switch data-off-color="danger" data-on-color="success">
                             </div>
                         </div>
                         <!-- /.card-body -->
                     </div>
+                </form>
                     <!-- /.card -->
-                </div>
-            </div>
-
-
-            <div class="row">
-                <div class="col-md-12">
+                {{-- </div> --}}
+                <form action="{{route('admin.product.postAdd')}}" method="POST" id="formMain" class="col-12">
+                    @csrf
+                <div class="col-12">
                     <div class="card card-outline card-info">
-                      <div class="card-header">
-                        <h3 class="card-title">
-                            Giới thiệu chi tiết về sản phẩm
-                        </h3>
+                        <div class="card-header">
+                          <h3 class="card-title">
+                              Giới thiệu chi tiết về sản phẩm
+                          </h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                          <textarea id="summernote" name="introduction_article" placeholder="aksjhkjh">
+                              {{old('introduction_article')}}
+                          </textarea>
+                        </div>
                       </div>
-                      <!-- /.card-header -->
-                      <div class="card-body">
-                        <textarea id="summernote" name="introduction_article">
-                        </textarea>
-                      </div>
-                    </div>
                 </div>
+                <div class="col-12">
+                    <a href="{{route('admin.product.show')}}" class="btn btn-secondary">Quay lại</a>
+                    <input type="submit" form="formMain" value="Thêm mới" class="btn btn-success float-right">
+                </div>
+                </form>
             </div>
-            <div class="row">
-              <div class="col-12">
-                <a href="{{route('admin.product.show')}}" class="btn btn-secondary">Cancel</a>
-                <input type="submit" value="Confirm" class="btn btn-success float-right">
-              </div>
-            </div>
-            </form>
         </section>
 
 @endsection
@@ -258,6 +239,7 @@
 <script src="{{asset('assets/admin/AdminLTE/plugins/summernote/summernote-bs4.min.js')}}"></script>
 <script src="{{asset('assets/admin/AdminLTE/plugins/select2/js/select2.full.min.js')}}"></script>
 <script src="{{asset('assets/admin/AdminLTE/plugins/bs-custom-file-input/bs-custom-file-input.min.js')}}"></script>
+
 <script>
     $(function () {
         //Initialize Select2 Elements
@@ -266,34 +248,19 @@
             theme: 'bootstrap4'
         })
         // Summernote
-        $('#summernote').summernote()
+        $('#summernote').summernote({
+            height: 100
+        })
+        // Date
+        $('#reservationdate').datetimepicker({
+            format: 'L'
+        });
     })
     $("input[data-bootstrap-switch]").each(function() {
         $(this).bootstrapSwitch('state', $(this).prop('checked'));
     })
     // FileInput
     bsCustomFileInput.init();
-    // previewImages
-    let fileInput = document.getElementById("file-input");
-    let listImages = document.getElementById("list-images");
-    function previewImages() {
-        for(i of fileInput.files) {
-            let reader = new FileReader();
-
-            reader.onload = function() {
-                let imgItem = document.createElement("div");
-                imgItem.classList.add("img-item");
-                var _html = '<img src='+ reader.result +'>'
-                    + '<span class="close-img-item"><i class="fas fa-times"></i></span>';
-                imgItem.innerHTML = _html;
-                listImages.appendChild(imgItem);
-                $('.close-img-item').click(function(){
-                    $(this).closest('.img-item').remove();
-                })
-            }
-            reader.readAsDataURL(i);
-        }
-    }
 
     let fileInputMain = document.getElementById("file-input-main");
     function previewImgMain() {
@@ -308,6 +275,65 @@
             })
         }
         reader.readAsDataURL(file);
+    }
+
+    $('.insert-img').click(function() {
+        if($('.img-sub-prd').hasClass('show-btn')===false) {
+            $('.img-sub-prd').addClass('show-btn')
+        }
+        var _lastimg = $('.box-view-img li').last().find('input[type="file"]').val();
+
+        console.log(_lastimg)
+        if(_lastimg != '') {
+            var d = new Date();
+            var _time = d.getTime();
+            var _html = '<li id="li_files_'+ _time +'" class="li_file_hide">';
+            _html += '<div class="img-wrap">';
+            _html += '<span class="close" onclick="DelImg(this)">x</span>';
+            _html += '<div class="img-wrap-box"></div>';
+            _html += '</div>';
+            _html += '<div class="'+ _time +'">';
+            _html += '<input type="file" class="hidden" name="images[]" onchange="uploadImg(this)" id="file_'+_time+'">';
+            _html +='</div>';
+            _html += '</li>';
+
+            $('.box-view-img').append(_html);
+            $('.box-view-img li').last().find('input[type="file"]').click();
+
+        }else {
+            if(_lastimg == '') {
+                $('.box-view-img li').last().find('input[type="file"]').click();
+            } else {
+                if($('.img-sub-prd').hasClass('show-btn')===true) {
+                    $('.img-sub-prd').removeClass('show-btn')
+                }
+            }
+        }
+    })
+
+    function uploadImg(e) {
+        var file_data = $(e).prop('files')[0]
+        var type = file_data.type
+        var fileToLoad = file_data
+
+        var fileReade = new FileReader();
+
+        fileReade.onload = function(fileLoadedEvent) {
+            var srcData = fileLoadedEvent.target.result;
+
+            var newImgae = document.createElement('img');
+            newImgae.src = srcData;
+            var _li = $(e).closest('li');
+            if(_li.hasClass('li_file_hide')) {
+                _li.removeClass('li_file_hide')
+            }
+            _li.find('.img-wrap-box').append(newImgae.outerHTML);
+        }
+        fileReade.readAsDataURL(fileToLoad);
+    }
+
+    function DelImg(e) {
+        $(e).closest('li').remove();
     }
 </script>
 @endsection
