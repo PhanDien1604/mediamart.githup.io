@@ -43,40 +43,17 @@
                     </p>
                 </a>
             </li>
-            {{-- <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="nav-icon fas fa-address-card"></i>
-                    <p>
-                        Danh sách Nhân viên
-                        <i class="right fas fa-angle-left"></i>
-                    </p>
-                </a>
-                <ul class="nav nav-treeview">
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Nhân viên mới <span class="right badge badge-danger">New</span></p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Danh sách Nhân viên</p>
-                        </a>
-                    </li>
-                </ul>
-            </li> --}}
             <li class="nav-item">
                 <a href="#" class="nav-link">
                     <i class="nav-icon fab fa-product-hunt"></i>
                     <p>
-                        Danh sách Sản phẩm
+                        Sản phẩm
                         <i class="right fas fa-angle-left"></i>
                     </p>
                 </a>
                 <ul class="nav nav-treeview">
                     <li class="nav-item">
-                        <a href="{{route('admin.product.addGroup')}}" class="nav-link">
+                        <a href="{{route('admin.product.group.addGroup')}}" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
                             <p>Nhóm sản phẩm</p>
                         </a>
@@ -93,7 +70,7 @@
                 <a href="#" class="nav-link">
                     <i class=" nav-icon fas fa-users"></i>
                     <p>
-                        Danh sách Khách hàng
+                        Khách hàng
                         <i class="right fas fa-angle-left"></i>
                     </p>
                 </a>
@@ -116,7 +93,7 @@
                 <a href="#" class="nav-link">
                     <i class="nav-icon fas fa-shopping-bag"></i>
                     <p>
-                        Danh sách Đơn hàng
+                        Đơn hàng
                         <i class="right fas fa-angle-left"></i>
                     </p>
                 </a>
@@ -125,7 +102,7 @@
                         <a href="#" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
                             <p>
-                                Đơn hàng mới
+                                Tạo đơn hàng
                                 <span class="badge badge-info right">6</span>
                                 <span class="right badge badge-danger">New</span>
                             </p>
@@ -134,25 +111,7 @@
                     <li class="nav-item">
                         <a href="#" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
-                            <p>Đơn hàng đang xử lý<span class="badge badge-info right">6</span></p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Đơn hàng đang giao<span class="badge badge-info right">6</span></p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Đã giao thành công<span class="badge badge-info right">6</span></p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Đơn hàng bị hủy<span class="badge badge-info right">6</span></p>
+                            <p>Danh sách đơn hàng<span class="badge badge-info right">6</span></p>
                         </a>
                     </li>
                 </ul>
@@ -191,28 +150,15 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{route('admin.website')}}" class="nav-link">
                     <i class="nav-icon fas fa-globe"></i>
                     <p>Website</p>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="#" class="nav-link">
-                    <i class="nav-icon fas fa-copy"></i>
-                    <p>
-                        Layout Options
-                        <i class="fas fa-angle-left right"></i>
-                        <span class="badge badge-info right">6</span>
-                    </p>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="pages/widgets.html" class="nav-link">
-                    <i class="nav-icon fas fa-th"></i>
-                    <p>
-                        Widgets
-                        <span class="right badge badge-danger">New</span>
-                    </p>
+                    <i class="nav-icon fas fa-cog"></i>
+                    <p>Cài đặt</p>
                 </a>
             </li>
         </ul>

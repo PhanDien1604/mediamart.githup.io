@@ -87,6 +87,195 @@
                                 </aside>
                             </div>
                         </li>
+                        <li class="menu-item">
+                            <div class="dropright">
+                                <span class="icon__menuitem">
+                                    <img src="{{asset('assets/clients/images/icon-phone.PNG')}}" alt="">
+                                </span>
+                                <a href="#">Tivi</a>,
+                                <a href="#">Loa</a>
+                            </div>
+                            <div id="submenu-1" class="submenu">
+                                <aside>
+                                    <p class="menuitem__title">
+                                        Tivi
+                                        <a href="#">Xem tất cả</a>
+                                    </p>
+                                    <a href="#">item 1</a>
+                                    <a href="#">item 2</a>
+                                    <a href="#">item 3</a>
+                                    <a href="#">item 4</a>
+                                </aside>
+                            </div>
+                        </li>
+                        <li class="menu-item">
+                            <div class="dropright">
+                                <span class="icon__menuitem">
+                                    <img src="{{asset('assets/clients/images/icon-phone.PNG')}}" alt="">
+                                </span>
+                                <a href="#">Tivi</a>,
+                                <a href="#">Loa</a>
+                            </div>
+                            <div id="submenu-1" class="submenu">
+                                <aside>
+                                    <p class="menuitem__title">
+                                        Tivi
+                                        <a href="#">Xem tất cả</a>
+                                    </p>
+                                    <a href="#">item 1</a>
+                                    <a href="#">item 2</a>
+                                    <a href="#">item 3</a>
+                                    <a href="#">item 4</a>
+                                </aside>
+                            </div>
+                        </li>
+                        <li class="menu-item">
+                            <div class="dropright">
+                                <span class="icon__menuitem">
+                                    <img src="{{asset('assets/clients/images/icon-phone.PNG')}}" alt="">
+                                </span>
+                                <a href="#">Tivi</a>,
+                                <a href="#">Loa</a>
+                            </div>
+                            <div id="submenu-1" class="submenu">
+                                <aside>
+                                    <p class="menuitem__title">
+                                        Tivi
+                                        <a href="#">Xem tất cả</a>
+                                    </p>
+                                    <a href="#">item 1</a>
+                                    <a href="#">item 2</a>
+                                    <a href="#">item 3</a>
+                                    <a href="#">item 4</a>
+                                </aside>
+                            </div>
+                        </li>
+                        <li class="menu-item">
+                            <div class="dropright">
+                                <span class="icon__menuitem">
+                                    <img src="{{asset('assets/clients/images/icon-phone.PNG')}}" alt="">
+                                </span>
+                                <a href="#">Tivi</a>,
+                                <a href="#">Loa</a>
+                            </div>
+                            <div id="submenu-1" class="submenu">
+                                <aside>
+                                    <p class="menuitem__title">
+                                        Tivi
+                                        <a href="#">Xem tất cả</a>
+                                    </p>
+                                    <a href="#">item 1</a>
+                                    <a href="#">item 2</a>
+                                    <a href="#">item 3</a>
+                                    <a href="#">item 4</a>
+                                </aside>
+                            </div>
+                        </li>
+                        <li class="menu-item">
+                            <div class="dropright">
+                                <span class="icon__menuitem">
+                                    <img src="{{asset('assets/clients/images/icon-phone.PNG')}}" alt="">
+                                </span>
+                                <a href="#">Tivi</a>,
+                                <a href="#">Loa</a>
+                            </div>
+                            <div id="submenu-1" class="submenu">
+                                <aside>
+                                    <p class="menuitem__title">
+                                        Tivi
+                                        <a href="#">Xem tất cả</a>
+                                    </p>
+                                    <a href="#">item 1</a>
+                                    <a href="#">item 2</a>
+                                    <a href="#">item 3</a>
+                                    <a href="#">item 4</a>
+                                </aside>
+                            </div>
+                        </li>
+                        <li class="menu-item">
+                            <div class="dropright">
+                                <span class="icon__menuitem">
+                                    <img src="{{asset('assets/clients/images/icon-phone.PNG')}}" alt="">
+                                </span>
+                                <a href="#">Tivi</a>,
+                                <a href="#">Loa</a>
+                            </div>
+                            <div id="submenu-1" class="submenu">
+                                <aside>
+                                    <p class="menuitem__title">
+                                        Tivi
+                                        <a href="#">Xem tất cả</a>
+                                    </p>
+                                    <a href="#">item 1</a>
+                                    <a href="#">item 2</a>
+                                    <a href="#">item 3</a>
+                                    <a href="#">item 4</a>
+                                </aside>
+                            </div>
+                        </li>
+                        <li class="menu-item">
+                            <div class="dropright">
+                                <span class="icon__menuitem">
+                                    <img src="{{asset('assets/clients/images/icon-phone.PNG')}}" alt="">
+                                </span>
+                                <a href="#">Tivi</a>,
+                                <a href="#">Loa</a>
+                            </div>
+                            <div id="submenu-1" class="submenu">
+                                <aside>
+                                    <p class="menuitem__title">
+                                        Tivi
+                                        <a href="#">Xem tất cả</a>
+                                    </p>
+                                    <a href="#">item 1</a>
+                                    <a href="#">item 2</a>
+                                    <a href="#">item 3</a>
+                                    <a href="#">item 4</a>
+                                </aside>
+                            </div>
+                        </li>
+                        <li class="menu-item">
+                            <div class="dropright">
+                                <span class="icon__menuitem">
+                                    <img src="{{asset('assets/clients/images/icon-phone.PNG')}}" alt="">
+                                </span>
+                                <a href="#">Tivi</a>,
+                                <a href="#">Loa</a>
+                            </div>
+                            <div id="submenu-1" class="submenu">
+                                <aside>
+                                    <p class="menuitem__title">
+                                        Tivi
+                                        <a href="#">Xem tất cả</a>
+                                    </p>
+                                    <a href="#">item 1</a>
+                                    <a href="#">item 2</a>
+                                    <a href="#">item 3</a>
+                                    <a href="#">item 4</a>
+                                </aside>
+                            </div>
+                        </li>
+                        <li class="menu-item">
+                            <div class="dropright">
+                                <span class="icon__menuitem">
+                                    <img src="{{asset('assets/clients/images/icon-phone.PNG')}}" alt="">
+                                </span>
+                                <a href="#">Tivi</a>,
+                                <a href="#">Loa</a>
+                            </div>
+                            <div id="submenu-1" class="submenu">
+                                <aside>
+                                    <p class="menuitem__title">
+                                        Tivi
+                                        <a href="#">Xem tất cả</a>
+                                    </p>
+                                    <a href="#">item 1</a>
+                                    <a href="#">item 2</a>
+                                    <a href="#">item 3</a>
+                                    <a href="#">item 4</a>
+                                </aside>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </div>

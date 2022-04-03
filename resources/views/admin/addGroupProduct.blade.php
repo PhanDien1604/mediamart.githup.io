@@ -58,7 +58,7 @@
                   <div class="col-12">
                     <div class="card">
                       <div class="card-header">
-                        <form action="" method="POST">
+                        <form action="{{route('admin.product.group.postAddGroup')}}" method="POST">
                             @csrf
                             @if (session('msg'))
                                 <div class="title-msg d-none">{{session('msg')}}</div>
@@ -103,15 +103,15 @@
                                 </thead>
                                 <tbody>
                                     @if (!empty($groupProductsList))
-                                        @foreach ($groupProductsList as $key => $item)
+                                        @foreach ($groupProductsList as $item)
                                             <tr>
-                                                <td>{{$key+1}}</td>
+                                                <td></td>
                                                 <td>{{$item->code}}</td>
                                                 <td>{{$item->name}}</td>
                                                 <td>
                                                     <div class="btn-box">
-                                                        <a href="#" class="btn btn-warning btn-edit"><i class="fas fa-pencil-alt"></i></a>
-                                                        <a href="{{route('admin.product.deleteGroup', ['id' => $item->id])}}" onclick="return confirm('Bạn có chắc muốn xóa không')" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
+                                                        <a href="{{route('admin.product.group.editGroup', ['id' => $item->id])}}" class="btn btn-warning"><i class="fas fa-pencil-alt"></i></a>
+                                                        <a href="{{route('admin.product.group.deleteGroup', ['id' => $item->id])}}" onclick="return confirm('Bạn có chắc muốn xóa không')" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -143,60 +143,95 @@
                                 <!-- /.card-header -->
                                 <div class="card-body p-0">
                                     <ul class="products-list product-list-in-card pl-2 pr-2">
+                                        @if (!empty($productsList[0]))
                                         <li class="item">
-                                            <div class="product-img">
-                                                <img src="{{asset('assets/clients/images/product/product-1.jpg')}}" alt="Product Image" class="img-size-50">
+                                            <div class="product-img mr-2">
+                                                @php
+                                                    $img = "<img src=".asset($productsList[0]->image)." alt='Product Image' class='img-size-50' style='width: 100%'>";
+                                                    // dd($img);
+                                                @endphp
+                                                {!!$img!!}
+                                                {{-- <img src="{{asset('assets/clients/images/product/product-1.jpg')}}" alt="Product Image" class="img-size-50"> --}}
                                             </div>
                                             <div class="product-info">
-                                                <a href="javascript:void(0)" class="product-title">Samsung TV
-                                                <span class="badge badge-warning float-right">2000000đ</span></a>
+                                                <a href="#" class="product-title">
+                                                    {{$productsList[0]->name}}
+                                                    <span class="badge badge-warning float-right">{{$productsList[0]->price}}đ</span>
+                                                </a>
                                                 <span class="product-description">
-                                                    Samsung 32" 1080p 60Hz LED Smart HDTV.
+                                                    {{$productsList[0]->introduction_article}}
                                                 </span>
                                             </div>
                                         </li>
+                                        @endif
+                                        @if (!empty($productsList[1]))
                                         <li class="item">
-                                            <div class="product-img">
-                                                <img src="{{asset('assets/clients/images/product/product-1.jpg')}}" alt="Product Image" class="img-size-50">
+                                            <div class="product-img mr-2">
+                                                @php
+                                                    $img = "<img src=".asset($productsList[1]->image)." alt='Product Image' class='img-size-50' style='width: 100%'>";
+                                                    // dd($img);
+                                                @endphp
+                                                {!!$img!!}
+                                                {{-- <img src="{{asset('assets/clients/images/product/product-1.jpg')}}" alt="Product Image" class="img-size-50"> --}}
                                             </div>
                                             <div class="product-info">
-                                                <a href="javascript:void(0)" class="product-title">Samsung TV
-                                                <span class="badge badge-info float-right">2000000đ</span></a>
+                                                <a href="#" class="product-title">
+                                                    {{$productsList[1]->name}}
+                                                    <span class="badge badge-info float-right">{{$productsList[1]->price}}đ</span>
+                                                </a>
                                                 <span class="product-description">
-                                                    Samsung 32" 1080p 60Hz LED Smart HDTV.
+                                                    {{$productsList[1]->introduction_article}}
                                                 </span>
                                             </div>
                                         </li>
+                                        @endif
+                                        @if (!empty($productsList[2]))
                                         <li class="item">
-                                            <div class="product-img">
-                                                <img src="{{asset('assets/clients/images/product/product-1.jpg')}}" alt="Product Image" class="img-size-50">
+                                            <div class="product-img mr-2">
+                                                @php
+                                                    $img = "<img src=".asset($productsList[2]->image)." alt='Product Image' class='img-size-50' style='width: 100%'>";
+                                                    // dd($img);
+                                                @endphp
+                                                {!!$img!!}
+                                                {{-- <img src="{{asset('assets/clients/images/product/product-1.jpg')}}" alt="Product Image" class="img-size-50"> --}}
                                             </div>
                                             <div class="product-info">
-                                                <a href="javascript:void(0)" class="product-title">Samsung TV
-                                                <span class="badge badge-danger float-right">2000000đ</span></a>
+                                                <a href="#" class="product-title">
+                                                    {{$productsList[2]->name}}
+                                                    <span class="badge badge-danger float-right">{{$productsList[2]->price}}đ</span>
+                                                </a>
                                                 <span class="product-description">
-                                                    Samsung 32" 1080p 60Hz LED Smart HDTV.
+                                                    {{$productsList[2]->introduction_article}}
                                                 </span>
                                             </div>
                                         </li>
+                                        @endif
+                                        @if (!empty($productsList[3]))
                                         <li class="item">
-                                            <div class="product-img">
-                                                <img src="{{asset('assets/clients/images/product/product-1.jpg')}}" alt="Product Image" class="img-size-50">
+                                            <div class="product-img mr-2">
+                                                @php
+                                                    $img = "<img src=".asset($productsList[3]->image)." alt='Product Image' class='img-size-50' style='width: 100%'>";
+                                                    // dd($img);
+                                                @endphp
+                                                {!!$img!!}
+                                                {{-- <img src="{{asset('assets/clients/images/product/product-1.jpg')}}" alt="Product Image" class="img-size-50"> --}}
                                             </div>
                                             <div class="product-info">
-                                                <a href="javascript:void(0)" class="product-title">Samsung TV
-                                                <span class="badge badge-success float-right">2000000đ</span></a>
+                                                <a href="#" class="product-title">
+                                                    {{$productsList[3]->name}}
+                                                    <span class="badge badge-success float-right">{{$productsList[3]->price}}đ</span>
+                                                </a>
                                                 <span class="product-description">
-                                                    Samsung 32" 1080p 60Hz LED Smart HDTV.
+                                                    {{$productsList[3]->introduction_article}}
                                                 </span>
                                             </div>
                                         </li>
-                                    <!-- /.item -->
+                                        @endif
                                   </ul>
                                 </div>
                                 <!-- /.card-body -->
                                 <div class="card-footer text-center">
-                                  <a href="javascript:void(0)" class="uppercase">Xem tất cả sản phẩm</a>
+                                  <a href="{{route('admin.product.show')}}" class="uppercase">Xem tất cả sản phẩm</a>
                                 </div>
                                 <!-- /.card-footer -->
                               </div>

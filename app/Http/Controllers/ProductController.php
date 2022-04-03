@@ -5,63 +5,62 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\admin\ProductRequest;
 use App\Models\Products;
+use App\Models\FileImages;
+use App\Models\Promotions;
 
 class ProductController extends Controller
 {
     private $products;
+    private $fileImage;
+    private $promotions;
     public function __construct() {
         $this->products = new Products();
+        $this->fileImage = new FileImages();
+        $this->promotions = new Promotions();
     }
     public function show() {
-        $productsList = $this->products->getAllProducts();
+        $productsList = $this->fileImage->getImageBelongProduct();
 
         return view('admin.categoryProduct',compact('productsList'));
     }
     public function add() {
-        $imagesList = $this->products->showImages();
+        $promoList = $this->promotions->getPromoSub('Sản phẩm');
 
-
-        $groupProductsList = $this->products->getAllGroupProduct();
-        // dd($groupProductsList);
-
-        return view('admin.addProduct',compact('groupProductsList'));
+        return view('admin.addProduct',compact('promoList'));
     }
     public function postAdd(ProductRequest $request) {
-        // dd($request->all());
-        // $images = [];
-        // if($request->hasfile('images')) {
-        //     foreach ($request->file('images') as $key => $file) {
-        //         $image_name = $request->product_code."-".$key+1;
-        //         $ext = strtolower($file->getClientOriginalExtension());
-        //         $image_fullname = $image_name.".".$ext;
-        //         $path = 'public\images';
-        //         $image_url = $path.$image_fullname;
-        //         $file->move($path,$image_fullname);
-        //         $images[] = $image_url;
-        //     }
-        // }
-        // dd($images);
-        // $dataImages = [
-        //     $request->product_code,
-        //     implode('|',$images),
-        // ];
-        // $this->products->addImage($dataImages);
+        $dataImages = [];
+        if($request->hasfile('images')) {
+            foreach ($request->file('images') as $key => $file) {
+                $image_name = time().rand(1,1000);
+                $ext = strtolower($file->getClientOriginalExtension());
+                $image_fullname = $image_name.".".$ext;
+                $path = 'images/';
+                $image_url = $path.$image_fullname;
+                $file->move($path,$image_fullname);
+                $dataImages[] = $image_url;
+            }
+        }
 
         $request->validated();
+
         $dataInsert = [
             $request->product_code,
             $request->product_name,
             $request->product_info,
             $request->product_price,
             $request->introduction_article,
+            $request->product_promo,
             $request->creat_at,
-            $request->checkbox_view
+            $request->product_status
         ];
-        // dd($dataInsert);
-        $this->products->addProduct($dataInsert);
-        return redirect()->route('admin.product.add')->with('msg','Thêm dữ liệu thành công')->with('bg-msg','success');
+
+        $product_id = $this->products->addProduct($dataInsert);
+        $this->fileImage->addImage($dataImages, $product_id);
+        // dd($product_id);
+        return redirect()->route('admin.product.show')->with('msg','Thêm dữ liệu thành công')->with('bg-msg','success');
     }
-    public function edit(Request $request, $id=0) {
+    public function edit(Request $request, $id) {
         if(!empty($id)) {
             $productDetail = $this->products->getDetail($id);
             // dd($productDetail);
@@ -74,9 +73,25 @@ class ProductController extends Controller
         }else {
             return redirect()->route('admin.home');
         }
-        return view("admin.editProduct", compact('productDetail'));
+        $images = $this->fileImage->editImages($id);
+        // dd($images);
+        $promoList = $this->promotions->getPromoSub('Sản phẩm');
+
+        return view("admin.editProduct", compact('productDetail', 'images','promoList'));
     }
     public function postEdit(Request $request) {
+        $dataImages = [];
+        if($request->hasfile('images')) {
+            foreach ($request->file('images') as $key => $file) {
+                $image_name = time().rand(1,1000);
+                $ext = strtolower($file->getClientOriginalExtension());
+                $image_fullname = $image_name.".".$ext;
+                $path = 'images/';
+                $image_url = $path.$image_fullname;
+                $file->move($path,$image_fullname);
+                $dataImages[] = $image_url;
+            }
+        }
         $id = session('id');
         if(empty($id)) {
             return back();
@@ -108,16 +123,20 @@ class ProductController extends Controller
             $request->product_info,
             $request->product_price,
             $request->introduction_article,
+            $request->product_promo,
             $request->creat_at,
-            $request->checkbox_view
+            $request->product_status
         ];
         $this->products->updateProduct($dataUpdate, $id);
+        $this->fileImage->addImage($dataImages, $id);
         return redirect()->route('admin.product.edit',['id'=>$id])->with('msg','Cập nhật dữ liệu thành công');
     }
     public function delete($id) {
         if(!empty($id)) {
             $productDetail = $this->products->getDetail($id);
+            $listImageDetail = $this->fileImage->getListDetail($id);
             if(!empty($productDetail[0])) {
+                $this->fileImage->deleteImageBelongProduct($id, $listImageDetail);
                 $this->products->deleteProduct($id);
             }else {
                 return redirect()->route('admin.product.show');
@@ -125,57 +144,22 @@ class ProductController extends Controller
         }else {
             return redirect()->route('admin.product.show');
         }
-
-        return redirect()->route('admin.product.show');
+        return back()->with('msg','Xóa dữ liệu thành công');
     }
 
-    public function addGroup() {
-        $groupProductsList = $this->products->getAllGroupProduct();
-
-        return view('admin.addGroupProduct',compact('groupProductsList'));
-    }
-    public function postAddGroup(Request $request) {
-
-        $rules = [
-            "group_product_code" => "required|min:6|unique:group_product,code",
-            "group_product_name" => "required"
-        ];
-
-        $messages = [
-            "required" => ":attribute bắt buộc phải nhập",
-            "min" => ":attribute không được nhỏ hơn :min kí tự",
-            "integer" => ":attribute phải là số",
-            "unique" => ":attribute đã tồn tại"
-        ];
-
-        $attributes = [
-            "group_product_code" => "Mã nhóm sản phẩm",
-            "group_product_name" => "Tên nhóm sản phẩm",
-        ];
-        $request->validate($rules,$messages,$attributes);
-
-        $dataInsert = [
-            $request->group_product_code,
-            $request->group_product_name,
-        ];
-        // dd($dataInsert);
-        $this->products->addGroupProduct($dataInsert);
-        return redirect()->route("admin.product.addGroup")->with('msg',"Thêm dữ liệu thành công");
-    }
-
-    public function deleteGroup($id) {
+    public function deleteImage($id) {
         if(!empty($id)) {
-            $groupProductDetail = $this->products->getDetailGroup($id);
-            if(!empty($groupProductDetail[0])) {
-
-                $this->products->deleteGroupProduct($id);
+            $imageDetail = $this->fileImage->getDetail($id);
+            if(!empty($imageDetail[0])) {
+                $this->fileImage->deleteImage($id);
             }else {
-                return redirect()->route('admin.product.addGroup');
+                // return redirect()->route('admin.product.edit');
             }
         }else {
-            return redirect()->route('admin.product.addGroup');
+            // return redirect()->route('admin.product.show');
         }
 
-        return redirect()->route('admin.product.addGroup')->with('msg','Xóa dữ liệu thành công');
+        // return redirect()->route('admin.product.show');
+        return back()->with('msg','Xóa ảnh thành công');
     }
 }

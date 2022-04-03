@@ -5,8 +5,10 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\GroupProductController;
 use App\Http\Controllers\PromoController;
-use App\Http\Controllers\ImagesController;
+use App\Http\Controllers\WebsiteController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -40,21 +42,63 @@ Route::prefix('admin')->name('admin.')->group(function(){
 
         Route::get('/edit/{id}',[ProductController::class,'edit'])->name('edit');
 
+        Route::get('edit/image/delete/{id}',[ProductController::class,'deleteImage'])->name('deleteImage');
+
         Route::post('/update',[ProductController::class,'postEdit'])->name('postEdit');
 
         Route::get('/delete/{id}',[ProductController::class,'delete'])->name('delete');
 
-        Route::get('/group',[ProductController::class,'addGroup'])->name('addGroup');
+        Route::prefix('group')->name('group.')->group(function(){
 
-        Route::post('/group',[ProductController::class,'postAddGroup'])->name('postAddGroup');
+            Route::get('/',[GroupProductController::class,'addGroup'])->name('addGroup');
 
-        Route::get('group/delete/{id}',[ProductController::class,'deleteGroup'])->name('deleteGroup');
+            Route::post('/add',[GroupProductController::class,'postAddGroup'])->name('postAddGroup');
 
-        Route::post('/upload',[ImagesController::class,'postUploadImage'])->name('uploadImage');
+            Route::get('/edit/{id}',[GroupProductController::class,'editGroup'])->name('editGroup');
+
+            Route::post('/update',[GroupProductController::class,'postEditGroup'])->name('postEditGroup');
+
+            Route::get('/delete/{id}',[GroupProductController::class,'deleteGroup'])->name('deleteGroup');
+
+            Route::get('/addProductBelongGroup/{id}',[GroupProductController::class,'productNoBelongGroup'])->name('groupNoBelongProduct');
+
+            Route::get('/addProductBelongGroup/{id}/{group_id}',[GroupProductController::class,'addProductBelongGroup'])->name('addGroupBelongProduct');
+
+            Route::get('/deleteProductBelongGroup/{id}/{group_id}',[GroupProductController::class,'deleteProductBelongGroup'])->name('deleteProductBelongGroup');
+
+        });
 
     });
     Route::prefix('promo')->name('promo.')->group(function(){
 
         Route::get('/',[PromoController::class,'index'])->name('show');
+
+        Route::get('show/{promo_sub}',[PromoController::class,'showSub'])->name('showSub');
+
+        Route::get('/add',[PromoController::class,'add'])->name('add');
+
+        Route::post('/add',[PromoController::class,'postAdd'])->name('postAdd');
+
+        Route::get('/edit/{id}',[PromoController::class,'editPromo'])->name('edit');
+
+        Route::post('/update',[PromoController::class,'updatePromo'])->name('update');
+
+        Route::get('/delete/{id}',[PromoController::class,'deletePromo'])->name('delete');
+
+        Route::get('/addProductBelongPromo/{id}',[PromoController::class,'productNoBelongPromo'])->name('productNoBelongPromo');
+
+        Route::get('/addProductBelongPromo/{id}/{promo_id}',[PromoController::class,'addProductBelongPromo'])->name('addProductBelongPromo');
+
+        Route::get('/deleteProductBelongPromo/{id}/{promo_id}',[PromoController::class,'deleteProductBelongPromo'])->name('deleteProductBelongPromo');
+
     });
+
+    Route::get('/website',[WebsiteController::class,'index'])->name('website');
+
+    Route::post('/website',[WebsiteController::class,'postAddCategory'])->name('postAddCategory');
+
+    Route::get('/website/image',[WebsiteController::class,'imageWeb'])->name('imageWeb');
+
+    Route::post('/website/image',[WebsiteController::class,'imageWeb'])->name('postImageWeb');
+
 });

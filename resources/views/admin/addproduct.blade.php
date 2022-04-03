@@ -18,20 +18,24 @@
     }
     .close-img-main {
         position: absolute;
-        top: 0px;
-        right: 0px;
-        display: block;
+        top: -0.6rem;
+        right: -0.6rem;
         padding: 0px 0.5rem;
         cursor: pointer;
         display: none;
         opacity: 0;
         transition: 0.2s;
         font-size: 20px;
+        color: white;
+        background: black;
+        border-radius: 50%;
+    }.close-img-main:hover {
+        color: white
     }
     input[type="file"] {
         display: none;
     }
-    .title-file-input {
+    .box-img-main {
         cursor: pointer;
         width: 100%;
     }
@@ -46,14 +50,15 @@
         width: 0 !important;
         height: 0 !important;
         overflow: hidden;
+        margin: 0rem -0.2rem;
     }
     .box-view-img {
         display: flex;
         flex-wrap: wrap;
         padding: 0.5rem;
+        justify-content: center;
     }
     .box-view-img .img-wrap-box {
-        position: relative;
         overflow: hidden;
         height: 80px;
         width: 80px;
@@ -63,8 +68,31 @@
     .box-view-img .img-wrap-box img {
         height: 80px;
     }
-    li {
+    .box-view-img>li {
         list-style: none;
+        padding: 0.2rem 0.2rem;
+    }
+    .img-wrap {
+        position: relative;
+    }
+    .img-wrap .close-img-sub {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        display: block;
+        text-align: center;
+        line-height: 20px;
+        opacity: 0;
+        font-size: 14px;
+        color: white;
+        background: black;
+        border-radius: 50%;
+    }
+    .img-wrap:hover .close-img-sub {
+        opacity: 1;
     }
 </style>
 @endsection
@@ -87,6 +115,8 @@
             </div><!-- /.container-fluid -->
         </section>
         <section class="content">
+            <form action="" method="POST" enctype="multipart/form-data">
+            @csrf
             @if (session('msg'))
                 <div class="title-msg d-none">{{session('msg')}}</div>
                 <div class="icon-msg d-none">success</div>
@@ -96,9 +126,7 @@
                 <div class="icon-msg d-none">error</div>
             @endif
             <div class="row">
-                <form action="{{route('admin.product.uploadImage')}}" method="POST" enctype="multipart/form-data" class="col-6">
-                    @csrf
-                {{-- <div class="col-md-6"> --}}
+                <div class="col-md-6">
                     <div class="card card-danger">
                         <div class="card-header">
                             <h3 class="card-title">Hình minh họa cho sản phẩm</h3>
@@ -111,11 +139,11 @@
                         </div>
                         <div class="card-body">
                             <div class="img-main-prd">
-                                <input type="file" name="images[]" id="file-input-main" onchange="previewImgMain()" accept=".jpg,.jpeg,.png,.gif">
+                                <input type="file" name="images[]" id="file-input-main" onchange="previewImgMain(this)" accept=".jpg,.jpeg,.png,.gif">
                                 <label for="file-input-main" class="title-file-input">
                                     <img src="{{asset('assets/clients/images/image-icon.jpg')}}" alt="" style="width: 100%">
                                 </label>
-                                <div class="close-img-main"><i class="fas fa-times"></i></div>
+                                <div class="close-img-main" onclick="DelImgMain(this)"><i class="fas fa-times"></i></div>
                             </div>
                             <div class="py-3 row">
                                 <div class="col-6">
@@ -134,12 +162,8 @@
                         </div>
                         <!-- /.card-body -->
                     </div>
-                    <!-- /.card -->
-                {{-- </div> --}}
-                </form>
-                <form action="{{route('admin.product.postAdd')}}" method="POST" id="formMain" class="col-6">
-                    @csrf
-                {{-- <div class="col-md-6"> --}}
+                </div>
+                <div class="col-md-6">
                     <div class="card card-success">
                         <div class="card-header">
                         <h3 class="card-title">Thông tin chính</h3>
@@ -198,17 +222,23 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label>Thông tin khuyến mại</label>
+                                <select class="form-control select2bs4" name="product_promo" style="width: 100%;">
+                                    <option value="0">--Thông tin khuyến mại--</option>
+                                    @if(!empty($promoList))
+                                        @foreach ($promoList as $promo)
+                                            <option {{old('product_promo') == $promo->id ? "selected": ""}} value="{{$promo->id}}">{{$promo->info}}</option>
+                                        @endforeach
+                                    @endif
+                                </select>
+                            </div>
                             <div class="check-view d-flex justify-content-end">
-                                <input type="checkbox" name="checkbox_view" checked data-bootstrap-switch data-off-color="danger" data-on-color="success">
+                                <input type="checkbox" name="product_status" checked data-bootstrap-switch data-off-color="danger" data-on-color="success">
                             </div>
                         </div>
-                        <!-- /.card-body -->
                     </div>
-                </form>
-                    <!-- /.card -->
-                {{-- </div> --}}
-                <form action="{{route('admin.product.postAdd')}}" method="POST" id="formMain" class="col-12">
-                    @csrf
+                </div>
                 <div class="col-12">
                     <div class="card card-outline card-info">
                         <div class="card-header">
@@ -226,10 +256,10 @@
                 </div>
                 <div class="col-12">
                     <a href="{{route('admin.product.show')}}" class="btn btn-secondary">Quay lại</a>
-                    <input type="submit" form="formMain" value="Thêm mới" class="btn btn-success float-right">
+                    <input type="submit" value="Thêm mới" class="btn btn-success float-right">
                 </div>
-                </form>
             </div>
+            </form>
         </section>
 
 @endsection
@@ -261,22 +291,29 @@
     })
     // FileInput
     bsCustomFileInput.init();
+    // ImageMain
+    function previewImgMain(e) {
+        var fileInputMain = document.getElementById("file-input-main").files
+            if(fileInputMain.length > 0) {
+            var file_data = $(e).prop('files')[0]
+            var type = file_data.type
+            var fileToLoad = file_data
 
-    let fileInputMain = document.getElementById("file-input-main");
-    function previewImgMain() {
-        let reader = new FileReader();
-        var file = fileInputMain.files[0];
-        console.log();
-        reader.onload = function() {
-            $(".img-main-prd img").attr('src',reader.result);
-            $(".close-img-main").css('display',"block");
-            $('.close-img-main').click(function(){
-                $(".img-main-prd img").attr('src',"{{asset('assets/clients/images/image-icon.jpg')}}");
-            })
+            var fileReade = new FileReader();
+            fileReade.onload = function(fileLoadedEvent) {
+                var srcData = fileLoadedEvent.target.result;
+                $(".img-main-prd img").attr('src',srcData);
+                $(".close-img-main").css('display',"block");
+            }
+            fileReade.readAsDataURL(fileToLoad);
         }
-        reader.readAsDataURL(file);
     }
-
+    function DelImgMain(e) {
+        $(".close-img-main").css('display',"none");
+        $(e).parent().find('img').attr('src',"{{asset('assets/clients/images/image-icon.jpg')}}");
+        $(e).val('')
+    }
+    // ListImage
     $('.insert-img').click(function() {
         if($('.img-sub-prd').hasClass('show-btn')===false) {
             $('.img-sub-prd').addClass('show-btn')
@@ -289,7 +326,7 @@
             var _time = d.getTime();
             var _html = '<li id="li_files_'+ _time +'" class="li_file_hide">';
             _html += '<div class="img-wrap">';
-            _html += '<span class="close" onclick="DelImg(this)">x</span>';
+            _html += '<span class="close-img-sub" onclick="DelImg(this)"><i class="fas fa-times"></i></span>';
             _html += '<div class="img-wrap-box"></div>';
             _html += '</div>';
             _html += '<div class="'+ _time +'">';

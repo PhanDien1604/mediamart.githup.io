@@ -96,3 +96,21 @@
 
 
 /* end-css-sweetAlert */
+
+
+/* couterRowTable */
+
+.table {
+    counter-reset: rowNumber;
+}
+
+table tr:not(:first-child) {
+    counter-increment: rowNumber;
+}
+
+table tr td:first-child::before {
+    content: counter(rowNumber);
+}
+
+
+/* end-couterRowTable */

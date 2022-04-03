@@ -48,7 +48,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                   <div class="col-sm-6">
-                    <h1>Nhóm sản phẩm</h1>
+                    <h1>Khuyến mại</h1>
                   </div>
                 </div>
               </div><!-- /.container-fluid -->
@@ -60,87 +60,63 @@
                     <div class="card">
                       <div class="card-header">
                         {{-- <h3 class="card-title">DataTable with default features</h3> --}}
+                        <a href="{{route('admin.promo.add')}}" class="btn btn-primary"><i class="fas fa-plus mr-1"></i>Thêm mới</a>
+                        <div class="float-right">
+                            <a href="{{route('admin.promo.showSub',['promo_sub'=>"product"])}}" class="btn btn-success">Sản phẩm</a>
+                            <a href="{{route('admin.promo.showSub',['promo_sub'=>"client"])}}" class="btn btn-warning">Khách hàng</a>
+                            <a href="{{route('admin.promo.showSub',['promo_sub'=>"order"])}}" class="btn btn-danger">Đơn hàng</a>
+                        </div>
+
                         {{-- @if (session('msg'))
                             <div class="alert alert-success">ok</div>
                         @endif --}}
                       </div>
                       <!-- /.card-header -->
-                      <div class="card-body row">
-                        <div class="col-8">
+                      <div class="card-body">
                             <table id="example1" class="table table-bordered table-hover">
                                 <thead>
                                     <tr>
                                         <th>STT</th>
                                         <th>Mã khuyến mại</th>
                                         <th>Thông tin khuyến mại</th>
+                                        <th>Áp dụng</th>
+                                        <th>Tổng tiền</th>
+                                        <th>Giảm giá</th>
                                         <th>Khoảng thời gian</th>
+                                        <th>Trạng thái</th>
                                         <th>Chức năng</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr data-widget="expandable-table" aria-expanded="false">
-                                        <td>1</td>
-                                        <td>Km123</td>
-                                        <td>
-                                            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                                            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-                                        </td>
-                                        <td>time</td>
-                                        <td>
-                                            <div class="btn-box">
-                                                <a href="#" class="btn btn-info"><i class="fas fa-pencil-alt"></i></a>
-                                                <a href="#" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                    @if (!empty($promoList))
+                                        @foreach ($promoList as $promo)
+                                            <tr>
+                                                <td></td>
+                                                <td>{{$promo->code}}</td>
+                                                <td>{{$promo->info}}</td>
+                                                <td>{{$promo->subject_apply}}</td>
+                                                <td>{{$promo->total_money}}</td>
+                                                <td>{{$promo->discount}}{{$promo->unit}}</td>
+                                                <td>{{$promo->date_range}}</td>
+                                                <td>
+                                                    <input type="checkbox" {{!empty($promo->status) ? "checked": ""}} disabled>
+                                                </td>
+                                                <td>
+                                                    <div class="btn-box">
+                                                        <a href="{{route('admin.promo.edit',['id'=>$promo->id])}}" class="btn btn-warning"><i class="fas fa-pencil-alt"></i></a>
+                                                        <a href="{{route('admin.promo.delete',['id'=>$promo->id])}}" onclick="return confirm('Bạn có chắc muốn xóa không ???')"
+                                                            class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                        @else
+                                            <tr>
+                                                <td colspan="8">Không có khuyến mại nào</td>
+                                            </tr>
+                                        @endif
                                 </tbody>
                             </table>
-                        </div>
-
-                        <div class="col-4">
-                            {{-- formPromo --}}
-                            <div class="card card-success">
-                                <div class="card-header">
-                                <h3 class="card-title">Thêm khuyến mại</h3>
-
-                                <div class="card-tools">
-                                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                        <i class="fas fa-minus"></i>
-                                    </button>
-                                </div>
-                            </div>
-                                <div class="card-body">
-                                    {{-- @if ($errors->any())
-                                        <div class="alert alert-danger text-center">
-                                            Vui lòng kiểm tra lại dữ liệu
-                                        </div>
-                                    @endif --}}
-                                    <div class="form-group">
-                                        <label for="inputName">Mã khuyến mại</label>
-                                        <input type="text" id="inputName" class="form-control" name="promo_code" value="{{old('promo_code')}}" placeholder="Mã khuyến mại">
-                                        {{-- @error('product_code')
-                                            <span class="text-danger">{{$message}}</span>
-                                        @enderror --}}
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="inputDescription">Thông tin khuyến mại</label>
-                                        <textarea id="inputDescription" class="form-control" rows="4" name="promo_info" value="{{old('promo_info')}}" placeholder="Thông tin khuyến mại"></textarea>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Khoảng thời gian</label>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text">
-                                                    <i class="far fa-calendar-alt"></i>
-                                                </span>
-                                            </div>
-                                            <input type="text" class="form-control float-right" id="reservation">
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- /.card-body -->
-                            </div>
-                        </div>
                     </div>
                   </div>
                 </div>
@@ -176,12 +152,18 @@
         "responsive": true,
         "order":[[1,'asc']],
         "columnDefs": [
-            {"targets": [0,4], "orderable": false},
+            {"targets": [0,7], "orderable": false},
             { "visible": true, "targets": 0 }
         ],
       }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
     });
     // DatePicker
     $('#reservation').daterangepicker()
+
+    //
+    $('.promo_unit').click(function() {
+        var _placeholder = $('.promo_unit').val();
+        $('.promo_discount').attr('placeholder',_placeholder)
+    })
   </script>
 @endsection

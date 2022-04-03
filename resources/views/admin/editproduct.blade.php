@@ -18,59 +18,80 @@
     }
     .close-img-main {
         position: absolute;
-        top: 0px;
-        right: 0px;
-        display: block;
+        top: -0.6rem;
+        right: -0.6rem;
         padding: 0px 0.5rem;
         cursor: pointer;
         display: none;
         opacity: 0;
         transition: 0.2s;
         font-size: 20px;
+        color: white;
+        background: black;
+        border-radius: 50%;
+    }.close-img-main:hover {
+        color: white
     }
     input[type="file"] {
         display: none;
     }
-    .title-file-input-main {
+    .box-img-main {
         cursor: pointer;
         width: 100%;
     }
-    .title-file-input {
-        display: block;
-        background-color:  #b3b3b3;
-        text-align: center;
-        padding: 0.5rem;
-        cursor: pointer;
-    }
-    #list-images {
+    /*  */
+    .img-sub-prd {
         background-color: #f2f2f2;
-        padding: 0.1rem;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
         min-height: 80px;
     }
-    #list-images img {
+    .li_file_hide {
+        opacity: 0;
+        visibility: visible;
+        width: 0 !important;
+        height: 0 !important;
+        overflow: hidden;
+        margin: 0rem -0.2rem;
+    }
+    .box-view-img {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 0.5rem;
+        justify-content: center;
+    }
+    .box-view-img .img-wrap-box {
+        overflow: hidden;
+        height: 80px;
+        width: 80px;
+        background-position: 50% 50%;
+        background-size: cover;
+    }
+    .box-view-img .img-wrap-box img {
         height: 80px;
     }
-    .img-item {
-        margin: 0.1rem;
-        width: 80px;
-        height: 80px;
-        overflow: hidden;
+    .box-view-img>li {
+        list-style: none;
+        padding: 0.2rem 0.2rem;
+    }
+    .img-wrap {
         position: relative;
     }
-    .close-img-item{
+    .img-wrap .close-img-sub {
         position: absolute;
-        top: 0px;
-        right: 0px;
-        display: block;
-        padding: 0px 0.3rem;
+        top: -5px;
+        right: -5px;
+        width: 20px;
+        height: 20px;
         cursor: pointer;
+        display: block;
+        text-align: center;
+        line-height: 20px;
         opacity: 0;
-        transition: 0.2s;
+        font-size: 14px;
+        color: white;
+        background: black;
+        border-radius: 50%;
     }
-    .img-item:hover .close-img-item{
+    .img-wrap:hover .close-img-sub {
         opacity: 1;
     }
 </style>
@@ -118,23 +139,56 @@
                         </div>
                         <div class="card-body">
                             <div class="img-main-prd">
-                                <input type="file" name="images[]" id="file-input-main" onchange="previewImgMain()" value="" accept=".jpg,.jpeg,.png,.gif">
-                                <label for="file-input-main" class="title-file-input-main">
-                                    <img src="{{asset('assets/clients/images/image-icon.jpg')}}" alt="" style="width: 100%">
-                                </label>
-                                <div class="close-img-main"><i class="fas fa-times"></i></div>
+                                <input type="file" name="images[]" id="file-input-main" onchange="previewImgMain(this)" accept=".jpg,.jpeg,.png,.gif">
+                                    @if (!empty($images))
+                                        @php
+                                            $img = "<img src=".asset($images[0]->fullname)." style='width: 100%'>";
+                                        @endphp
+                                        <label for="file-input-main" class="box-img-main">
+                                            {!!$img!!}
+                                        </label>
+                                        <a href="{{route('admin.product.deleteImage',['id' => $images[0]->id])}}" onclick="return confirm('Bạn có chắc muốn xóa ảnh chứ ???')" class="close-img-main" style="display:block"><i class="fas fa-times"></i></a>
+                                    @else
+                                        <label for="file-input-main" class="box-img-main">
+                                            <img src="{{asset('assets/clients/images/image-icon.jpg')}}" alt="" style="width: 100%">
+                                        </label>
+                                        <div class="close-img-main" onclick="DelImgMain(this)"><i class="fas fa-times"></i></div>
+                                     @endif
                             </div>
-                            {{-- FileInput --}}
-                            <input type="file" name="images[]" id="file-input" onchange="previewImages()" multiple accept=".jpg,.jpeg,.png,.gif">
-                            <label for="file-input" class="title-file-input">
-                                Select Images
-                            </label>
-                            <div id="list-images"></div>
+                            <div class="py-3 row">
+                                <div class="col-6">
+                                    <span class="insert-img btn-add-img btn btn-success btn-block"><i class="fas fa-plus mr-2"></i>Thêm hình ảnh</span>
+                                </div>
+                                <div class="col-6">
+                                    <button class="btn btn-primary btn-block"><i class="fas fa-upload mr-2"></i>Tải lên</button>
+                                </div>
+                            </div>
+                            <div class="img-sub-prd">
+                                <ul class="box-view-img">
+                                    {{-- List Image --}}
+                                    {{-- SelectImageDatabase --}}
+                                    @foreach ($images as $key => $image)
+                                    @if ($key > 0)
+                                        <li>
+                                            <div class="img-wrap">
+                                                <a href="{{route('admin.product.deleteImage',['id' => $image->id])}}" onclick="return confirm('Bạn có chắc muốn xóa ảnh chứ ???')" class="close-img-sub"><i class="fas fa-times"></i></a>
+                                                <div class="img-wrap-box">
+                                                    @php
+                                                        $img = "<img src=".asset($image->fullname).">";
+                                                    @endphp
+                                                    {!!$img!!}
+                                                </div>
+                                            </div>
+                                        </li>
+                                    @endif
+                                    @endforeach
+                                    {{-- EndSelectImageDatabase --}}
+                                </ul>
+                            </div>
                             {{-- EndFileInput --}}
                         </div>
                         <!-- /.card-body -->
                     </div>
-                    <!-- /.card -->
                 </div>
                 <div class="col-md-6">
                     <div class="card card-success">
@@ -149,6 +203,7 @@
                     </div>
                         <div class="card-body">
                             <div class="row">
+
                                 <div class="col-4">
                                     <div class="form-group">
                                         <label for="inputName">Mã sản phẩm</label>
@@ -169,48 +224,17 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="inputDescription">Tóm tắt sản phẩm</label>
-                                <textarea id="inputDescription" class="form-control" rows="4" name="product_info" placeholder="Nội dung tóm tắt">{{old('product_info') ?? $productDetail->info}}</textarea>
+                                <label for="">Tóm tắt sản phẩm</label>
+                                <textarea id="" class="form-control" rows="4" name="product_info" placeholder="Nội dung tóm tắt">{{old('product_info' ?? $productDetail->info)}}</textarea>
                             </div>
                             <div class="row">
-                                <div class="col-5">
-                                    <div class="form-group">
-                                        <label for="inputName">Nhóm sản phẩm</label>
-                                        <select class="form-control select2bs4" name="product_group" style="width: 100%;">
-                                            <option selected="selected">--Nhóm sản phẩm--</option>
-                                            <option value="Alaska">Alaska</option>
-                                            <option value="California">California</option>
-                                            <option value="Delaware">Delaware</option>
-                                            <option value="Tennessee">Tennessee</option>
-                                            <option value="Texas">Texas</option>
-                                            <option value="Washington">Washington</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-3">
-                                    <div class="form-group">
-                                        <label for="inputName">Số lượng</label>
-                                        <input type="text" id="inputName" class="form-control" disabled name="product_amount" value="{{old('product_amount') ?? $productDetail->amount}}">
-                                        @error('product_amount')
-                                            <span class="text-danger">{{$message}}</span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-4">
+                                <div class="col-6">
                                     <div class="form-group">
                                         <label for="inputName">Giá</label>
                                         <input type="text" id="inputName" class="form-control" name="product_price" value="{{old('product_price') ?? $productDetail->price}}" placeholder="VNĐ">
                                         @error('product_price')
                                             <span class="text-danger">{{$message}}</span>
                                         @enderror
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        <label for="inputName">Thông tin khuyến mại</label>
-                                        <input type="text" id="inputName" class="form-control" disabled name="product_promo" value="{{old('product_promo') ?? $productDetail->promo}}">
                                     </div>
                                 </div>
                                 <div class="col-6">
@@ -225,38 +249,42 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label>Thông tin khuyến mại</label>
+                                <select class="form-control select2bs4" name="product_promo" style="width: 100%;">
+                                    <option value="0">--Thông tin khuyến mại--</option>
+                                    @if(!empty($promoList))
+                                        @foreach ($promoList as $promo)
+                                            <option {{$promo->id == $productDetail->promo_id ? "selected" : ""}} value="{{$promo->id}}">{{$promo->info}}</option>
+                                        @endforeach
+                                    @endif
+                                </select>
+                            </div>
                             <div class="check-view d-flex justify-content-end">
-                                <input type="checkbox" name="checkbox_view" checked data-bootstrap-switch data-off-color="danger" data-on-color="success">
+                                <input type="checkbox" name="product_status" {{!empty($productDetail->status) ? "checked" : ""}} data-bootstrap-switch data-off-color="danger" data-on-color="success">
                             </div>
                         </div>
-                        <!-- /.card-body -->
                     </div>
-                    <!-- /.card -->
                 </div>
-            </div>
-
-
-            <div class="row">
-                <div class="col-md-12">
+                <div class="col-12">
                     <div class="card card-outline card-info">
-                      <div class="card-header">
-                        <h3 class="card-title">
-                            Giới thiệu chi tiết về sản phẩm
-                        </h3>
+                        <div class="card-header">
+                          <h3 class="card-title">
+                              Giới thiệu chi tiết về sản phẩm
+                          </h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                          <textarea id="summernote" name="introduction_article" placeholder="aksjhkjh">
+                              {{old('introduction_article')}}
+                          </textarea>
+                        </div>
                       </div>
-                      <!-- /.card-header -->
-                      <div class="card-body">
-                        <textarea id="summernote" name="introduction_article"placeholder="Giới thiệu sản phẩm">{{old('introduction_article') ?? $productDetail->introduction_article}}
-                        </textarea>
-                      </div>
-                    </div>
                 </div>
-            </div>
-            <div class="row">
-              <div class="col-12">
-                <a href="{{route('admin.product.show')}}" class="btn btn-secondary">Hủy</a>
-                <input type="submit" value="Cập nhật" class="btn btn-success float-right">
-              </div>
+                <div class="col-12">
+                    <a href="{{route('admin.product.show')}}" class="btn btn-secondary">Quay lại</a>
+                    <input type="submit" value="Cập nhật" class="btn btn-success float-right">
+                </div>
             </div>
             </form>
         </section>
@@ -268,6 +296,7 @@
 <script src="{{asset('assets/admin/AdminLTE/plugins/summernote/summernote-bs4.min.js')}}"></script>
 <script src="{{asset('assets/admin/AdminLTE/plugins/select2/js/select2.full.min.js')}}"></script>
 <script src="{{asset('assets/admin/AdminLTE/plugins/bs-custom-file-input/bs-custom-file-input.min.js')}}"></script>
+
 <script>
     $(function () {
         //Initialize Select2 Elements
@@ -289,41 +318,90 @@
     })
     // FileInput
     bsCustomFileInput.init();
-    // previewImages
-    let fileInput = document.getElementById("file-input");
-    let listImages = document.getElementById("list-images");
-    function previewImages() {
-        for(i of fileInput.files) {
-            let reader = new FileReader();
+    // imageMain
+    function previewImgMain(e) {
+        var fileInputMain = document.getElementById("file-input-main").files
+            if(fileInputMain.length > 0) {
+            var file_data = $(e).prop('files')[0]
+            var type = file_data.type
+            var fileToLoad = file_data
 
-            reader.onload = function() {
-                let imgItem = document.createElement("div");
-                imgItem.classList.add("img-item");
-                var _html = '<img src='+ reader.result +'>'
-                    + '<span class="close-img-item"><i class="fas fa-times"></i></span>';
-                imgItem.innerHTML = _html;
-                listImages.appendChild(imgItem);
-                $('.close-img-item').click(function(){
-                    $(this).closest('.img-item').remove();
-                })
+            var fileReade = new FileReader();
+            fileReade.onload = function(fileLoadedEvent) {
+                var srcData = fileLoadedEvent.target.result;
+                $(".img-main-prd img").attr('src',srcData);
+                $(".close-img-main").css('display',"block");
             }
-            reader.readAsDataURL(i);
+            fileReade.readAsDataURL(fileToLoad);
         }
     }
-
-    let fileInputMain = document.getElementById("file-input-main");
-    function previewImgMain() {
-        let reader = new FileReader();
-        var file = fileInputMain.files[0];
-        console.log();
-        reader.onload = function() {
-            $(".img-main-prd img").attr('src',reader.result);
-            $(".close-img-main").css('display',"block");
-            $('.close-img-main').click(function(){
-                $(".img-main-prd img").attr('src',"{{asset('assets/clients/images/image-icon.jpg')}}");
-            })
+    function DelImgMain(e) {
+        $(".close-img-main").css('display',"none");
+        $(e).parent().find('img').attr('src',"{{asset('assets/clients/images/image-icon.jpg')}}");
+        $(e).val('')
+    }
+    // $('.close-img-main').click(function(){
+    //     $(".close-img-main").css('display',"none");
+    //     $(".img-main-prd img").attr('src',"{{asset('assets/clients/images/image-icon.jpg')}}");
+    // })
+    // listImage
+    $('.insert-img').click(function() {
+        if($('.img-sub-prd').hasClass('show-btn')===false) {
+            $('.img-sub-prd').addClass('show-btn')
         }
-        reader.readAsDataURL(file);
+        var _lastimg = $('.box-view-img li').last().find('input[type="file"]').val();
+
+        console.log(_lastimg)
+        if(_lastimg != '') {
+            var d = new Date();
+            var _time = d.getTime();
+            var _html = '<li id="li_files_'+ _time +'" class="li_file_hide">';
+            _html += '<div class="img-wrap">';
+            _html += '<span class="close-img-sub" onclick="DelImg(this)"><i class="fas fa-times"></i></span>';
+            _html += '<div class="img-wrap-box"></div>';
+            _html += '</div>';
+            _html += '<div class="'+ _time +'">';
+            _html += '<input type="file" class="hidden" name="images[]" onchange="uploadImg(this)" id="file_'+_time+'">';
+            _html +='</div>';
+            _html += '</li>';
+
+            $('.box-view-img').append(_html);
+            $('.box-view-img li').last().find('input[type="file"]').click();
+
+        }else {
+            if(_lastimg == '') {
+                $('.box-view-img li').last().find('input[type="file"]').click();
+            } else {
+                if($('.img-sub-prd').hasClass('show-btn')===true) {
+                    $('.img-sub-prd').removeClass('show-btn')
+                }
+            }
+        }
+    })
+
+    function uploadImg(e) {
+        var file_data = $(e).prop('files')[0]
+        var type = file_data.type
+        var fileToLoad = file_data
+
+        var fileReade = new FileReader();
+
+        fileReade.onload = function(fileLoadedEvent) {
+            var srcData = fileLoadedEvent.target.result;
+
+            var newImgae = document.createElement('img');
+            newImgae.src = srcData;
+            var _li = $(e).closest('li');
+            if(_li.hasClass('li_file_hide')) {
+                _li.removeClass('li_file_hide')
+            }
+            _li.find('.img-wrap-box').append(newImgae.outerHTML);
+        }
+        fileReade.readAsDataURL(fileToLoad);
+    }
+
+    function DelImg(e) {
+        $(e).closest('li').remove();
     }
 </script>
 @endsection

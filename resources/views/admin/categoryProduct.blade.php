@@ -39,7 +39,17 @@
     .table td .img-prd>img {
         height: 50px;
     }
+    /* Đánh mục bảng */
+    .table {
+        counter-reset: rowNumber;
+    }
+    table tr:not(:first-child) {
+        counter-increment: rowNumber;
+    }
 
+    table tr td:first-child::before {
+        content: counter(rowNumber);
+    }
 }
 </style>
 @endsection
@@ -69,7 +79,8 @@
                         {{-- <h3 class="card-title">DataTable with default features</h3> --}}
                         <a href="{{route('admin.product.add')}}" class="btn btn-primary mb-2"><i class="fas fa-plus mr-1"></i>Thêm mới</a>
                         @if (session('msg'))
-                            <div class="box-msg d-none">{{session('msg')}}</div>
+                            <div class="title-msg d-none">{{session('msg')}}</div>
+                            <div class="icon-msg d-none">success</div>
                         @endif
                       </div>
                       <!-- /.card-header -->
@@ -84,18 +95,21 @@
                                 <th>Tên sản phẩm</th>
                                 <th>Số lượng</th>
                                 <th>Giá(VNĐ)</th>
-                                <th>Hiển thị</th>
+                                <th>Trạng thái</th>
                                 <th>Chức năng</th>
                             </tr>
                             </thead>
                             <tbody>
                                 @if (!empty($productsList))
-                                    @foreach ($productsList as $key => $item)
+                                    @foreach ($productsList as $item)
                                         <tr>
-                                            <td>{{$key+1}}</td>
+                                            <td></td>
                                             <td>
                                                 <div class="img-prd">
-                                                    <img src="{{asset('assets/clients/images/product/product-1.jpg')}}" alt="">
+                                                    @php
+                                                        $img = "<img src=".asset($item->image)." style='width: 100%'>";
+                                                    @endphp
+                                                    {!!$img!!}
                                                 </div>
                                             </td>
                                             <td>{{$item->code}}</td>
@@ -103,21 +117,21 @@
                                             <td>{{$item->amount}}</td>
                                             <td>{{$item->price}}</td>
                                             <td>
-                                                <input type="checkbox" {{!empty($item->status) ? "checked": ""}}>
+                                                <input type="checkbox" {{!empty($item->status) ? "checked": ""}} disabled>
                                             </td>
 
                                             <td>
                                                 <div class="btn-box">
                                                     <a href="#" class="btn btn-light"><i class="fas fa-eye"></i></a>
                                                     <a href="{{route('admin.product.edit', ['id' => $item->id])}}" class="btn btn-warning"><i class="fas fa-pencil-alt"></i></a>
-                                                    <a href="{{route('admin.product.delete', ['id' => $item->id])}}" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
+                                                    <a href="{{route('admin.product.delete', ['id' => $item->id])}}" onclick="return confirm('Bạn có chắc muốn xóa không')" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
                                                 </div>
                                             </td>
                                         </tr>
                                     @endforeach
                                 @else
                                 <tr>
-                                    <td colspan="9">Không có sản phẩm nào</td>
+                                    <td colspan="8">Không có sản phẩm nào</td>
                                 </tr>
                                 @endif
                             </tbody>
