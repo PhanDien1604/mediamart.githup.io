@@ -2,6 +2,8 @@
 @section('css')
 <link rel="stylesheet" href="{{asset('assets/admin/AdminLTE/plugins/summernote/summernote-bs4.min.css')}}">
 <link rel="stylesheet" href="{{asset('assets/admin/AdminLTE/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
+<link rel="stylesheet" href="{{asset('assets/admin/AdminLTE/plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
+<link rel="stylesheet" href="{{asset('assets/admin/AdminLTE/plugins/datatables-buttons/css/buttons.bootstrap4.min.css')}}">
 <link rel="stylesheet" href="{{asset('assets/admin/AdminLTE/plugins/select2/css/select2.min.css')}}">
 <link rel="stylesheet" href="{{asset('assets/admin/AdminLTE/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
 <link rel="stylesheet" href="{{asset('assets/admin/css/style.css')}}">
@@ -140,8 +142,6 @@
             </div><!-- /.container-fluid -->
         </section>
         <section class="content">
-            <form action="" method="POST" enctype="multipart/form-data">
-            @csrf
             @if (session('msg'))
                 <div class="title-msg d-none">{{session('msg')}}</div>
                 <div class="icon-msg d-none">success</div>
@@ -153,10 +153,12 @@
 
             <div class="card">
                 <div class="card-header">
-                    <a href="{{route('admin.imageWeb')}}" class="btn btn-warning float-right">Hình ảnh</a>
+                    <a href="{{route('admin.website.imageWeb')}}" class="btn btn-warning float-right">Hình ảnh</a>
                 </div>
                 <div class="card-body row">
                     <div class="col-md-7">
+                        <form action="{{route('admin.website.postCategoryPromo')}}" method="post">
+                        @csrf
                         <div class="card card-danger">
                             <div class="card-header">
                                 <h3 class="card-title">Khuyến mại</h3>
@@ -169,32 +171,42 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-4">
-                                        <select class="form-control select2bs4" name="" style="width: 100%;">
-                                            <option value="0">--Nhóm phụ--</option>
-                                            @for ($key = 1; $key <= 7; $key++)
-                                                <option value="{{$key}}">{{$key}}</option>
-                                            @endfor
+                                        <select class="form-control select2bs4" name="promo_web[]" style="width: 100%;">
+                                            <option value="0">--Khuyến mại--</option>
+                                                @if (!empty($promos))
+                                                    @foreach ($promos as $promo)
+                                                        <option {{$categoryPromo[0]->promo_id != 0 && $promo->id == $categoryPromo[0]->promo_id ? "selected" : ""}} value="{{$promo->id}}">{{$promo->code}}</option>
+                                                    @endforeach
+                                                @endif
                                         </select>
                                     </div>
                                     <div class="col-4">
-                                        <select class="form-control select2bs4" name="" style="width: 100%;">
-                                            <option value="0">--Nhóm phụ--</option>
-                                            @for ($key = 1; $key <= 7; $key++)
-                                                <option value="{{$key}}">{{$key}}</option>
-                                            @endfor
+                                        <select class="form-control select2bs4" name="promo_web[]" style="width: 100%;">
+                                            <option value="0">--Khuyến mại--</option>
+                                                @if (!empty($promos))
+                                                    @foreach ($promos as $promo)
+                                                        <option {{$categoryPromo[1]->promo_id != 0 && $promo->id == $categoryPromo[1]->promo_id ? "selected" : ""}} value="{{$promo->id}}">{{$promo->code}}</option>
+                                                    @endforeach
+                                                @endif
                                         </select>
                                     </div>
                                     <div class="col-4">
-                                        <select class="form-control select2bs4" name="" style="width: 100%;">
-                                            <option value="0">--Nhóm phụ--</option>
-                                            @for ($key = 1; $key <= 7; $key++)
-                                                <option value="{{$key}}">{{$key}}</option>
-                                            @endfor
+                                        <select class="form-control select2bs4" name="promo_web[]" style="width: 100%;">
+                                            <option value="0">--Khuyến mại--</option>
+                                                @if (!empty($promos))
+                                                    @foreach ($promos as $promo)
+                                                        <option {{$categoryPromo[2]->promo_id != 0 && $promo->id == $categoryPromo[2]->promo_id ? "selected" : ""}} value="{{$promo->id}}">{{$promo->code}}</option>
+                                                    @endforeach
+                                                @endif
                                         </select>
+                                    </div>
+                                    <div class="col-12 mt-3">
+                                        <button class="btn btn-danger float-right">Xác nhận</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        </form>
                         <table id="example1" class="table table-bordered table-hover">
                             <thead>
                                 <tr>
@@ -206,38 +218,48 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td></td>
-                                    <td>1</td>
-                                    <td>Nhóm chính</td>
-                                    <td>Nhóm phụ</td>
-                                    <td>
-                                        <div class="btn-box">
-                                            <a href="#" class="btn btn-warning"><i class="fas fa-pencil-alt"></i></a>
-                                            <a href="#" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
-                                        </div>
-                                    </td>
-                                </tr>
+                                @if (!empty($category[0]))
+                                    @foreach ($category as $item)
+                                    <tr>
+                                        <td></td>
+                                        <td>{{$item->row}}</td>
+                                        <td>{{($item->group_main_name)}}</td>
+                                        <td>{{($item->group_sub_name)}}</td>
+                                        <td>
+                                            <div class="btn-box">
+                                                <a href="{{route('admin.website.deleteCategory', ['id'=>$item->id])}}" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                @else
+                                    <tr>
+                                        <td colspan="5">Không có danh mục nào</td>
+                                    </tr>
+                                @endif
+
                             </tbody>
                         </table>
                     </div>
                     <div class="col-md-5">
+                        <form action="{{route('admin.website.postAddCategory')}}" method="POST">
+                        @csrf
                         <div class="card card-success">
                             <div class="card-header">
-                            <h3 class="card-title">Danh mục</h3>
+                                <h3 class="card-title">Danh mục</h3>
 
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                    <i class="fas fa-minus"></i>
-                                </button>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                </div>
                             </div>
-                        </div>
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-2">
                                         <div class="form-group">
                                             <label>Hàng</label>
-                                            <select class="custom-select" name="" style="width: 100%;">
+                                            <select class="custom-select" name="row_category" style="width: 100%;">
                                                 @for ($key = 1; $key <= 7; $key++)
                                                     <option value="{{$key}}">{{$key}}</option>
                                                 @endfor
@@ -247,31 +269,26 @@
                                     <div class="col-10">
                                         <div class="form-group">
                                             <label>Nhóm chính</label>
-                                            <select class="form-control select2bs4" name="product_promo" style="width: 100%;">
+                                            <select class="form-control select2bs4" name="category_main" style="width: 100%;">
                                                 <option value="0">--Nhóm chính--</option>
-                                                @for ($key = 1; $key <= 7; $key++)
-                                                    <option value="{{$key}}">{{$key}}</option>
-                                                @endfor
+                                                @if (!empty($groupProducts))
+                                                    @foreach ($groupProducts as $groupProduct)
+                                                        <option value="{{$groupProduct->id}}">{{$groupProduct->name}}</option>
+                                                    @endforeach
+                                                @endif
                                             </select>
+                                            @error('category_main')
+                                                <span class="text-danger">{{$message}}</span>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label><div class="btn-add-categorySub btn btn-primary"><i class="fas fa-plus mr-1"></i>Thêm</div></label>
                                     <div class="category-sub">
-                                        {{-- <div class="row py-2 add-categorySub">
-                                            <div class="col-10">
-                                                <select class="form-control select2bs4" name="" style="width: 100%;">
-                                                    <option value="0">--Nhóm phụ--</option>
-                                                    @for ($key = 1; $key <= 7; $key++)
-                                                        <option value="{{$key}}">{{$key}}</option>
-                                                    @endfor
-                                                </select>
-                                            </div>
-                                            <div class="col-2">
-                                                <a href="#" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
-                                            </div>
-                                        </div> --}}
+                                        {{-- CategorySub --}}
+
+                                        {{-- EndCategorySub --}}
                                     </div>
                                 </div>
                                 <div class="col-12">
@@ -279,11 +296,10 @@
                                 </div>
                             </div>
                         </div>
+                        </form>
                     </div>
                 </div>
             </div>
-
-            </form>
         </section>
 
 @endsection
@@ -318,11 +334,11 @@
     $(function () {
       $("#example1").DataTable({
         // "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
-        "paging": false,
-        "lengthChange": false,
-        "searching": false,
+        "paging": true,
+        "lengthChange": true,
+        "searching": true,
         "ordering": true,
-        "info": false,
+        "info": true,
         "autoWidth": false,
         "responsive": true,
         "order":[[1,'asc']],
@@ -417,14 +433,16 @@
     function DelImg(e) {
         $(e).closest('li').remove();
     }
-    //
+    // CategorySub
     var _html ='<div class="row py-2 add-categorySub">'
         _html +='<div class="col-10">'
-        _html +='<select class="form-control select2bs4" name="" style="width: 100%;">'
+        _html +='<select class="form-control select2bs4" name="category_sub[]" style="width: 100%;">'
         _html +='<option value="0">--Nhóm phụ--</option>'
-        _html +='@for ($key = 1; $key <= 7; $key++)'
-        _html +='<option value="{{$key}}">{{$key}}</option>'
-        _html +='@endfor'
+        _html +='@if (!empty($groupProducts))'
+        _html +=    '@foreach ($groupProducts as $groupProduct)'
+        _html +='       <option value="{{$groupProduct->id}}">{{$groupProduct->name}}</option>'
+        _html +='      @endforeach'
+        _html +='@endif'
         _html +='</select>'
         _html +='</div>'
         _html +='<div class="col-2">'
@@ -438,6 +456,6 @@
         })
 
     })
-
+    // EndCategorySub
 </script>
 @endsection

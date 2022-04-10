@@ -144,13 +144,13 @@
                 </ul>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{route('admin.warehouse.index')}}" class="nav-link">
                     <i class="nav-icon fas fa-warehouse"></i>
                     <p>Kho</p>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{route('admin.website')}}" class="nav-link">
+                <a href="{{route('admin.website.index')}}" class="nav-link">
                     <i class="nav-icon fas fa-globe"></i>
                     <p>Website</p>
                 </a>

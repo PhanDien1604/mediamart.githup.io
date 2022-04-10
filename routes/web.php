@@ -8,6 +8,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\GroupProductController;
 use App\Http\Controllers\PromoController;
 use App\Http\Controllers\WebsiteController;
+use App\Http\Controllers\WareHouseController;
 
 
 /*
@@ -93,12 +94,42 @@ Route::prefix('admin')->name('admin.')->group(function(){
 
     });
 
-    Route::get('/website',[WebsiteController::class,'index'])->name('website');
+    Route::prefix('website')->name('website.')->group(function(){
 
-    Route::post('/website',[WebsiteController::class,'postAddCategory'])->name('postAddCategory');
+        Route::get('/',[WebsiteController::class,'index'])->name('index');
 
-    Route::get('/website/image',[WebsiteController::class,'imageWeb'])->name('imageWeb');
+        Route::post('/category',[WebsiteController::class,'postAddCategory'])->name('postAddCategory');
 
-    Route::post('/website/image',[WebsiteController::class,'imageWeb'])->name('postImageWeb');
+        Route::post('/category/promo',[WebsiteController::class,'postCategoryPromo'])->name('postCategoryPromo');
 
+        Route::get('/delete/{id}',[WebsiteController::class,'deleteCategory'])->name('deleteCategory');
+
+        Route::get('/image',[WebsiteController::class,'imageWeb'])->name('imageWeb');
+
+        Route::post('/image',[WebsiteController::class,'postImageWeb'])->name('postImageWeb');
+
+        Route::get('/image/delete/{id}',[WebsiteController::class,'deleteImageWeb'])->name('deleteImageWeb');
+    });
+
+    Route::prefix('warehouse')->name('warehouse.')->group(function(){
+
+        Route::get('/',[WareHouseController::class,'index'])->name('index');
+
+        Route::post('/',[WareHouseController::class,'postAddWareHouse'])->name('postAddWareHouse');
+
+        Route::get('/edit/{id}',[WareHouseController::class,'editWareHouse'])->name('editWareHouse');
+
+        Route::post('/edit/{id}',[WareHouseController::class,'postEditWareHouse'])->name('postEditWareHouse');
+
+        Route::get('/delete/{id}',[WareHouseController::class,'deleteWareHouse'])->name('deleteWareHouse');
+
+        Route::get('/addProductBelongWarehouse/{id}',[WareHouseController::class,'productNoBelongWarehouse'])->name('productNoBelongWarehouse');
+
+        Route::post('/addProductBelongWarehouse/{id}/{product_id}',[WareHouseController::class,'addProductBelongWarehouse'])->name('addProductBelongWarehouse');
+
+        Route::post('/addAmountProductWarehouse/{id}/{product_id}',[WareHouseController::class,'postAddAmountProductWarehouse'])->name('addAmountProductWarehouse');
+
+        Route::get('/deleteProductBelongWarehouse/{id}/{product_id}',[WareHouseController::class,'deleteProductBelongWarehouse'])->name('deleteProductBelongWarehouse');
+
+    });
 });

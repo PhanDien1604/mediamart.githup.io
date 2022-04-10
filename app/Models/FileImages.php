@@ -23,7 +23,8 @@ class FileImages extends Model
             ]);
         }
     }
-    public function editImages($product_id) {
+
+    public function getEditImages($product_id) {
         $images = DB::select('SELECT images_product.id ,images_product.fullname FROM image_product_rel, images_product, products
         WHERE products.id = image_product_rel.product_id AND image_product_rel.product_id = ? AND images_product.id = image_product_rel.image_id',[$product_id]);
         return $images;

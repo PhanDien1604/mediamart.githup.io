@@ -69,7 +69,7 @@
         width: 0 !important;
         height: 0 !important;
         overflow: hidden;
-        margin: 0rem -0.2rem;
+        margin: -0.2rem -0.2rem;
     }
     .box-view-img {
         display: flex;
@@ -168,19 +168,49 @@
                         <div class="card-body">
                             {{-- banner-top --}}
                             <div class="col-12">
-                                <span class="btn-add-img btn btn-outline-secondary" onclick="AddImg('.img-banner-top')">Banner top</span>
+                                <span class="btn-add-img btn btn-outline-secondary" onclick="AddImg('.img-banner-top','banner_top')">Banner top</span>
                             </div>
                             <div class="img-banner-top">
                                 <ul class="box-view-img">
+                                    @if (!empty($bannerTop))
+                                        @foreach ($bannerTop as $image)
+                                        <li>
+                                            <div class="img-wrap">
+                                                <a href="{{route('admin.website.deleteImageWeb',['id' => $image->id])}}" onclick="return confirm('Bạn có chắc muốn xóa ảnh chứ ???')" class="close-img-sub"><i class="fas fa-times"></i></a>
+                                                <div class="img-wrap-box">
+                                                    @php
+                                                        $img = "<img src=".asset($image->path).">";
+                                                    @endphp
+                                                    {!!$img!!}
+                                                </div>
+                                            </div>
+                                        </li>
+                                        @endforeach
+                                    @endif
                                     {{-- List Image --}}
                                 </ul>
                             </div>
                             {{-- banner-body --}}
                             <div class="col-12 mt-3">
-                                <span class="btn-add-img btn btn-outline-secondary" onclick="AddImg('.img-banner-body')">Banner body</span>
+                                <span class="btn-add-img btn btn-outline-secondary" onclick="AddImg('.img-banner-body','banner_body')">Banner body</span>
                             </div>
                             <div class="img-banner-body">
                                 <ul class="box-view-img">
+                                    @if (!empty($bannerBody))
+                                        @foreach ($bannerBody as $image)
+                                        <li>
+                                            <div class="img-wrap">
+                                                <a href="{{route('admin.website.deleteImageWeb',['id' => $image->id])}}" onclick="return confirm('Bạn có chắc muốn xóa ảnh chứ ???')" class="close-img-sub"><i class="fas fa-times"></i></a>
+                                                <div class="img-wrap-box">
+                                                    @php
+                                                        $img = "<img src=".asset($image->path).">";
+                                                    @endphp
+                                                    {!!$img!!}
+                                                </div>
+                                            </div>
+                                        </li>
+                                        @endforeach
+                                    @endif
                                     {{-- List Image --}}
                                 </ul>
                             </div>
@@ -190,25 +220,58 @@
                             </div>
                             <div class="row">
                                 <div class="img-banner-sub col-4">
-                                    <input type="file" name="images[]" id="bannerSub_1" class="" onchange="prevImg('#bannerSub_1')" accept=".jpg,.jpeg,.png,.gif">
-                                    <label for="bannerSub_1" class="title-file-input">
-                                        <img src="{{asset('assets/clients/images/image-icon.jpg')}}" alt="" style="width: 100%">
-                                    </label>
-                                    <div class="close-img-main" onclick="DelImgMain('#bannerSub_1')"><i class="fas fa-times"></i></div>
+                                    <input type="file" name="banner_sub[]" id="bannerSub_1" class="" onchange="prevImg('#bannerSub_1')" accept=".jpg,.jpeg,.png,.gif">
+                                    @if (!empty($bannerSub[0]))
+                                        @php
+                                            $img = "<img src=".asset($bannerSub[0]->path)." style='width: 100%'>";
+                                        @endphp
+                                        <label for="bannerSub_1" class="title-file-input">
+                                            {!!$img!!}
+                                        </label>
+                                        <a href="{{route('admin.website.deleteImageWeb',['id' => $bannerSub[0]->id])}}" onclick="return confirm('Bạn có chắc muốn xóa ảnh chứ ???')"
+                                            class="close-img-main" style="display:block"><i class="fas fa-times"></i></a>
+                                    @else
+                                        <label for="bannerSub_1" class="title-file-input">
+                                            <img src="{{asset('assets/clients/images/image-icon.jpg')}}" alt="" style="width: 100%">
+                                        </label>
+                                    <div class="close-img-main" onclick="DelImg('#bannerSub_1')"><i class="fas fa-times"></i></div>
+                                    @endif
                                 </div>
                                 <div class="img-banner-sub col-4">
-                                    <input type="file" name="images[]" id="bannerSub_2" class="" onchange="prevImg('#bannerSub_2')" accept=".jpg,.jpeg,.png,.gif">
-                                    <label for="bannerSub_2" class="title-file-input">
-                                        <img src="{{asset('assets/clients/images/image-icon.jpg')}}" alt="" style="width: 100%">
-                                    </label>
-                                    <div class="close-img-main" onclick="DelImgMain('#bannerSub_2')"><i class="fas fa-times"></i></div>
+                                    <input type="file" name="banner_sub[]" id="bannerSub_2" class="" onchange="prevImg('#bannerSub_2')" accept=".jpg,.jpeg,.png,.gif">
+                                    @if (!empty($bannerSub[1]))
+                                        @php
+                                            $img = "<img src=".asset($bannerSub[1]->path)." style='width: 100%'>";
+                                        @endphp
+                                        <label for="bannerSub_2" class="title-file-input">
+                                            {!!$img!!}
+                                        </label>
+                                        <a href="{{route('admin.website.deleteImageWeb',['id' => $bannerSub[1]->id])}}" onclick="return confirm('Bạn có chắc muốn xóa ảnh chứ ???')"
+                                            class="close-img-main" style="display:block"><i class="fas fa-times"></i></a>
+                                    @else
+                                        <label for="bannerSub_2" class="title-file-input">
+                                            <img src="{{asset('assets/clients/images/image-icon.jpg')}}" alt="" style="width: 100%">
+                                        </label>
+                                    <div class="close-img-main" onclick="DelImg('#bannerSub_2')"><i class="fas fa-times"></i></div>
+                                    @endif
                                 </div>
                                 <div class="img-banner-sub col-4">
-                                    <input type="file" name="images[]" id="bannerSub_3" class="" onchange="prevImg('#bannerSub_3')" accept=".jpg,.jpeg,.png,.gif">
-                                    <label for="bannerSub_3" class="title-file-input">
-                                        <img src="{{asset('assets/clients/images/image-icon.jpg')}}" alt="" style="width: 100%">
-                                    </label>
-                                    <div class="close-img-main" onclick="DelImgMain('#bannerSub_3')"><i class="fas fa-times"></i></div>
+                                    <input type="file" name="banner_sub[]" id="bannerSub_2" class="" onchange="prevImg('#bannerSub_2')" accept=".jpg,.jpeg,.png,.gif">
+                                    @if (!empty($bannerSub[2]))
+                                        @php
+                                            $img = "<img src=".asset($bannerSub[2]->path)." style='width: 100%'>";
+                                        @endphp
+                                        <label for="bannerSub_2" class="title-file-input">
+                                            {!!$img!!}
+                                        </label>
+                                        <a href="{{route('admin.website.deleteImageWeb',['id' => $bannerSub[2]->id])}}" onclick="return confirm('Bạn có chắc muốn xóa ảnh chứ ???')"
+                                            class="close-img-main" style="display:block"><i class="fas fa-times"></i></a>
+                                    @else
+                                        <label for="bannerSub_2" class="title-file-input">
+                                            <img src="{{asset('assets/clients/images/image-icon.jpg')}}" alt="" style="width: 100%">
+                                        </label>
+                                    <div class="close-img-main" onclick="DelImg('#bannerSub_2')"><i class="fas fa-times"></i></div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -229,27 +292,49 @@
                         <div class="card-body">
                             <div class="border border-secondary text-center py-1 rounded mb-2">Banner Promotion</div>
                             <div class="img-banner-promo">
-                                <input type="file" name="images[]" id="banner_promo" class="" onchange="prevImg('#banner_promo')" accept=".jpg,.jpeg,.png,.gif">
-                                <label for="banner_promo" class="title-file-input">
-                                    <img src="{{asset('assets/clients/images/image-icon.jpg')}}" alt="" style="width: 100%">
-                                </label>
-                                <div class="close-img-main" onclick="DelImgMain('#banner_promo')"><i class="fas fa-times"></i></div>
+                                <input type="file" name="banner_promo[]" id="banner_promo" class="" onchange="prevImg('#banner_promo')" accept=".jpg,.jpeg,.png,.gif">
+                                @if (!empty($bannerPromo))
+                                    @php
+                                        $img = "<img src=".asset($bannerPromo[0]->path)." style='width: 100%'>";
+                                    @endphp
+                                    <label for="banner_promo" class="title-file-input">
+                                        {!!$img!!}
+                                    </label>
+                                    <a href="{{route('admin.website.deleteImageWeb',['id' => $bannerPromo[0]->id])}}" onclick="return confirm('Bạn có chắc muốn xóa ảnh chứ ???')"
+                                        class="close-img-main" style="display:block"><i class="fas fa-times"></i></a>
+                                @else
+                                    <label for="banner_promo" class="title-file-input">
+                                        <img src="{{asset('assets/clients/images/image-icon.jpg')}}" alt="" style="width: 100%">
+                                    </label>
+                                    <div class="close-img-main" onclick="DelImg('#banner_promo')"><i class="fas fa-times"></i></div>
+                                @endif
                             </div>
                             <div class="border border-secondary text-center py-1 rounded mb-2">Backgroud Promotion</div>
                             <div class="img-backgroud-promo">
-                                <input type="file" name="images[]" id="bg_promo" class="" onchange="prevImg('#bg_promo')" accept=".jpg,.jpeg,.png,.gif">
-                                <label for="bg_promo" class="title-file-input">
-                                    <img src="{{asset('assets/clients/images/image-icon.jpg')}}" alt="" style="width: 100%">
-                                </label>
-                                <div class="close-img-main" onclick="DelImgMain('#bg_promo')"><i class="fas fa-times"></i></div>
+                                <input type="file" name="backgroud_promo[]" id="bg_promo" class="" onchange="prevImg('#bg_promo')" accept=".jpg,.jpeg,.png,.gif">
+                                @if (!empty($backgroudPromo[0]))
+                                    @php
+                                        $img = "<img src=".asset($backgroudPromo[0]->path)." style='width: 100%'>";
+                                    @endphp
+                                    <label for="bg_promo" class="title-file-input">
+                                        {!!$img!!}
+                                    </label>
+                                    <a href="{{route('admin.website.deleteImageWeb',['id' => $backgroudPromo[0]->id])}}" onclick="return confirm('Bạn có chắc muốn xóa ảnh chứ ???')"
+                                        class="close-img-main" style="display:block"><i class="fas fa-times"></i></a>
+                                @else
+                                    <label for="bg_promo" class="title-file-input">
+                                        <img src="{{asset('assets/clients/images/image-icon.jpg')}}" alt="" style="width: 100%">
+                                    </label>
+                                    <div class="close-img-main" onclick="DelImg('#bg_promo')"><i class="fas fa-times"></i></div>
+                                @endif
                             </div>
                         </div>
                         <!-- /.card-body -->
                     </div>
                 </div>
                 <div class="col-12">
-                    <a href="{{route('admin.website')}}" class="btn btn-secondary">Quay lại</a>
-                    <input type="submit" value="Xác nhận" class="btn btn-success float-right">
+                    <a href="{{route('admin.website.index')}}" class="btn btn-secondary">Quay lại</a>
+                    <button class="btn btn-success float-right">Xác nhận</button>
                 </div>
             </div>
             </form>
@@ -303,13 +388,14 @@
             fileReade.readAsDataURL(fileToLoad);
         }
     }
-    function DelImgMain(e) {
+    function DelImg(e) {
         $(e).parent().find(".close-img-main").css('display',"none");
         $(e).parent().find('img').attr('src',"{{asset('assets/clients/images/image-icon.jpg')}}");
         $(e).val('')
     }
     // ListImage
-    function AddImg(e) {
+    function AddImg(e,key) {
+        console.log(key);
         if($(e).hasClass('show-btn')===false) {
             $(e).addClass('show-btn')
         }
@@ -320,11 +406,11 @@
             var _time = d.getTime();
             var _html = '<li id="li_files_'+ _time +'" class="li_file_hide">';
             _html += '<div class="img-wrap">';
-            _html += '<span class="close-img-sub" onclick="DelImg(this)"><i class="fas fa-times"></i></span>';
+            _html += '<span class="close-img-sub" onclick="DelImgSub(this)"><i class="fas fa-times"></i></span>';
             _html += '<div class="img-wrap-box"></div>';
             _html += '</div>';
             _html += '<div class="'+ _time +'">';
-            _html += '<input type="file" class="hidden" name="images[]" onchange="uploadImg(this)" id="file_'+_time+'">';
+            _html += '<input type="file" class="hidden" name="'+key+'[]" onchange="uploadImg(this)" id="file_'+_time+'" accept=".jpg,.jpeg,.png,.gif">';
             _html +='</div>';
             _html += '</li>';
 
@@ -363,7 +449,7 @@
         fileReade.readAsDataURL(fileToLoad);
     }
 
-    function DelImg(e) {
+    function DelImgSub(e) {
         $(e).closest('li').remove();
     }
 </script>

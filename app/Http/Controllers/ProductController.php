@@ -35,7 +35,7 @@ class ProductController extends Controller
                 $image_name = time().rand(1,1000);
                 $ext = strtolower($file->getClientOriginalExtension());
                 $image_fullname = $image_name.".".$ext;
-                $path = 'images/';
+                $path = 'images/products';
                 $image_url = $path.$image_fullname;
                 $file->move($path,$image_fullname);
                 $dataImages[] = $image_url;
@@ -73,7 +73,7 @@ class ProductController extends Controller
         }else {
             return redirect()->route('admin.home');
         }
-        $images = $this->fileImage->editImages($id);
+        $images = $this->fileImage->getEditImages($id);
         // dd($images);
         $promoList = $this->promotions->getPromoSub('Sản phẩm');
 
@@ -86,7 +86,7 @@ class ProductController extends Controller
                 $image_name = time().rand(1,1000);
                 $ext = strtolower($file->getClientOriginalExtension());
                 $image_fullname = $image_name.".".$ext;
-                $path = 'images/';
+                $path = 'images/products';
                 $image_url = $path.$image_fullname;
                 $file->move($path,$image_fullname);
                 $dataImages[] = $image_url;
@@ -153,13 +153,12 @@ class ProductController extends Controller
             if(!empty($imageDetail[0])) {
                 $this->fileImage->deleteImage($id);
             }else {
-                // return redirect()->route('admin.product.edit');
+                return back();
             }
         }else {
-            // return redirect()->route('admin.product.show');
+            return back();
         }
 
-        // return redirect()->route('admin.product.show');
         return back()->with('msg','Xóa ảnh thành công');
     }
 }

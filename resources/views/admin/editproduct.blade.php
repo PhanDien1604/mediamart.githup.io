@@ -147,7 +147,8 @@
                                         <label for="file-input-main" class="box-img-main">
                                             {!!$img!!}
                                         </label>
-                                        <a href="{{route('admin.product.deleteImage',['id' => $images[0]->id])}}" onclick="return confirm('Bạn có chắc muốn xóa ảnh chứ ???')" class="close-img-main" style="display:block"><i class="fas fa-times"></i></a>
+                                        <a href="{{route('admin.product.deleteImage',['id' => $images[0]->id])}}" onclick="return confirm('Bạn có chắc muốn xóa ảnh chứ ???')"
+                                            class="close-img-main" style="display:block"><i class="fas fa-times"></i></a>
                                     @else
                                         <label for="file-input-main" class="box-img-main">
                                             <img src="{{asset('assets/clients/images/image-icon.jpg')}}" alt="" style="width: 100%">

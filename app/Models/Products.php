@@ -75,4 +75,29 @@ class Products extends Model
             ->groupBy('products.id')
             ->get();
     }
+
+    public function getProductBelongtWarehouse($id) {
+        return DB::table('products')
+            ->select('products.*','warehouse_product_rel.warehouse_id', 'warehouse_product_rel.product_amount')
+            ->join('warehouse_product_rel','products.id','=','warehouse_product_rel.product_id')
+            ->where('warehouse_product_rel.warehouse_id',$id)
+            ->get();
+    }
+
+    public function getProductNoBelongtWarehouse($warehouse_id) {
+        return DB::table('products')
+            ->select('products.*','image_product_rel.product_id','image_product_rel.image_id','images_product.fullname as image',
+            'warehouse_product_rel.warehouse_id')
+            ->leftjoin('warehouse_product_rel','products.id','=','warehouse_product_rel.product_id')
+            ->whereNotIn(
+                'products.id',
+                DB::table('warehouse_product_rel')
+                ->select('warehouse_product_rel.product_id')
+                ->where('warehouse_product_rel.warehouse_id',$warehouse_id)
+            )
+            ->leftjoin('image_product_rel','products.id','=','image_product_rel.product_id')
+            ->leftjoin('images_product','images_product.id','=','image_product_rel.image_id')
+            ->groupBy('products.id')
+            ->get();
+    }
 }
