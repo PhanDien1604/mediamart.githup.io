@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th4 03, 2022 lúc 02:31 PM
+-- Thời gian đã tạo: Th4 10, 2022 lúc 10:52 AM
 -- Phiên bản máy phục vụ: 10.4.21-MariaDB
 -- Phiên bản PHP: 8.0.10
 
@@ -20,6 +20,53 @@ SET time_zone = "+00:00";
 --
 -- Cơ sở dữ liệu: `mediamart`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `category_promo_web`
+--
+
+CREATE TABLE `category_promo_web` (
+  `id` int(11) NOT NULL,
+  `promo_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `category_promo_web`
+--
+
+INSERT INTO `category_promo_web` (`id`, `promo_id`) VALUES
+(1, 19),
+(2, 20),
+(3, 12);
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `category_web`
+--
+
+CREATE TABLE `category_web` (
+  `id` int(11) NOT NULL,
+  `row` int(11) DEFAULT NULL,
+  `group_main_id` int(11) DEFAULT NULL,
+  `group_main_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `group_sub_id` int(11) DEFAULT NULL,
+  `group_sub_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `category_web`
+--
+
+INSERT INTO `category_web` (`id`, `row`, `group_main_id`, `group_main_name`, `group_sub_id`, `group_sub_name`) VALUES
+(11, 1, 11, 'Lenovo', 17, 'Thinkpad'),
+(15, 1, 11, 'Lenovo', 12, 'Dell'),
+(16, 1, 11, 'Lenovo', 17, 'Thinkpad'),
+(17, 1, 17, 'Thinkpad', 11, 'Lenovo'),
+(18, 1, 17, 'Thinkpad', 12, 'Dell'),
+(19, 1, 17, 'Thinkpad', 17, 'Thinkpad');
 
 -- --------------------------------------------------------
 
@@ -90,7 +137,9 @@ CREATE TABLE `group_product_rel` (
 INSERT INTO `group_product_rel` (`id`, `group_id`, `product_id`) VALUES
 (53, 11, 9),
 (56, 17, 9),
-(62, 12, 6);
+(63, 12, 9),
+(64, 12, 10),
+(65, 12, 12);
 
 -- --------------------------------------------------------
 
@@ -274,6 +323,35 @@ INSERT INTO `promo_product_rel` (`id`, `promo_id`, `product_id`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Cấu trúc bảng cho bảng `setting`
+--
+
+CREATE TABLE `setting` (
+  `id` int(11) NOT NULL,
+  `key` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `path` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `setting`
+--
+
+INSERT INTO `setting` (`id`, `key`, `path`) VALUES
+(1, 'banner_top', 'images/website/1649263757379.png'),
+(2, 'banner_top', 'images/website/1649263757805.gif'),
+(3, 'banner_top', 'images/website/164926375749.png'),
+(4, 'banner_body', 'images/website/164926375844.png'),
+(5, 'banner_body', 'images/website/1649263758889.png'),
+(7, 'banner_body', 'images/website/1649263758683.png'),
+(9, 'banner_promo', 'images/website/1649263758913.png'),
+(10, 'banner_sub', 'images/website/1649263904653.png'),
+(11, 'banner_sub', 'images/website/164926390473.png'),
+(12, 'banner_sub', 'images/website/1649263904771.png'),
+(14, 'banner_body', 'images/website/1649265676591.png');
+
+-- --------------------------------------------------------
+
+--
 -- Cấu trúc bảng cho bảng `users`
 --
 
@@ -288,9 +366,68 @@ CREATE TABLE `users` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `warehouse`
+--
+
+CREATE TABLE `warehouse` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `address` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `warehouse`
+--
+
+INSERT INTO `warehouse` (`id`, `name`, `address`) VALUES
+(2, 'Cơ sở 3', 'SN 7B ngo 6'),
+(3, 'Cơ sở 2', 'SN5');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `warehouse_product_rel`
+--
+
+CREATE TABLE `warehouse_product_rel` (
+  `id` int(11) NOT NULL,
+  `warehouse_id` int(11) DEFAULT NULL,
+  `product_id` int(11) DEFAULT NULL,
+  `product_amount` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `warehouse_product_rel`
+--
+
+INSERT INTO `warehouse_product_rel` (`id`, `warehouse_id`, `product_id`, `product_amount`) VALUES
+(10, 2, 9, NULL),
+(11, 2, 10, NULL),
+(16, 2, 12, NULL),
+(17, 3, 9, 10),
+(18, 3, 11, 3),
+(19, 3, 10, 5),
+(20, 3, 12, 18),
+(21, 2, 13, 10);
+
 --
 -- Chỉ mục cho các bảng đã đổ
 --
+
+--
+-- Chỉ mục cho bảng `category_promo_web`
+--
+ALTER TABLE `category_promo_web`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Chỉ mục cho bảng `category_web`
+--
+ALTER TABLE `category_web`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Chỉ mục cho bảng `demo`
@@ -370,6 +507,12 @@ ALTER TABLE `promo_product_rel`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Chỉ mục cho bảng `setting`
+--
+ALTER TABLE `setting`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Chỉ mục cho bảng `users`
 --
 ALTER TABLE `users`
@@ -377,8 +520,32 @@ ALTER TABLE `users`
   ADD UNIQUE KEY `users_email_unique` (`email`);
 
 --
+-- Chỉ mục cho bảng `warehouse`
+--
+ALTER TABLE `warehouse`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Chỉ mục cho bảng `warehouse_product_rel`
+--
+ALTER TABLE `warehouse_product_rel`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT cho các bảng đã đổ
 --
+
+--
+-- AUTO_INCREMENT cho bảng `category_promo_web`
+--
+ALTER TABLE `category_promo_web`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT cho bảng `category_web`
+--
+ALTER TABLE `category_web`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT cho bảng `demo`
@@ -402,7 +569,7 @@ ALTER TABLE `group_product`
 -- AUTO_INCREMENT cho bảng `group_product_rel`
 --
 ALTER TABLE `group_product_rel`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
 
 --
 -- AUTO_INCREMENT cho bảng `images_product`
@@ -447,10 +614,28 @@ ALTER TABLE `promo_product_rel`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
+-- AUTO_INCREMENT cho bảng `setting`
+--
+ALTER TABLE `setting`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
 -- AUTO_INCREMENT cho bảng `users`
 --
 ALTER TABLE `users`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT cho bảng `warehouse`
+--
+ALTER TABLE `warehouse`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT cho bảng `warehouse_product_rel`
+--
+ALTER TABLE `warehouse_product_rel`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
