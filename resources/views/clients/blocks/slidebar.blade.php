@@ -5,20 +5,23 @@
         <div class="homebanner-container">
             <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-indicators">
-                  <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                    @foreach ($bannerBody as $key => $item)
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{$key}}" class="active" aria-current="true" aria-label="Slide 1"></button>
+                    @endforeach
+                  {{-- <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{}}" class="active" aria-current="true" aria-label="Slide 1"></button>
                   <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                  <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                  <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button> --}}
                 </div>
                 <div class="carousel-inner">
-                  <div class="carousel-item active">
-                    <img src="{{asset('assets/clients/images/banner/banner-1.png')}}" class="d-block w-100" alt="...">
-                  </div>
-                  <div class="carousel-item">
-                    <img src="{{asset('assets/clients/images/banner/banner-2.png')}}" class="d-block w-100" alt="...">
-                  </div>
-                  <div class="carousel-item">
-                    <img src="{{asset('assets/clients/images/banner/banner-3.png')}}" class="d-block w-100" alt="...">
-                  </div>
+                    @foreach ($bannerBody as $item)
+                        <div class="carousel-item">
+                            @php
+                                $img = '<img src="'.asset($item->path).'" class="d-block w-100">';
+                            @endphp
+                            {!!$img!!}
+                        {{-- <img src="{{asset('assets/clients/images/banner/banner-header-1.png')}}" class="d-block w-100" alt="..."> --}}
+                        </div>
+                    @endforeach
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
                   <span class="carousel-control-prev-icon" aria-hidden="true"></span>

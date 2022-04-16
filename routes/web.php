@@ -100,9 +100,15 @@ Route::prefix('admin')->name('admin.')->group(function(){
 
         Route::post('/category',[WebsiteController::class,'postAddCategory'])->name('postAddCategory');
 
+        Route::post('/category/logo',[WebsiteController::class,'postAddLogoCategory'])->name('postAddLogoCategory');
+
+        Route::post('/category/sub',[WebsiteController::class,'postAddCategorySub'])->name('postAddCategorySub');
+
         Route::post('/category/promo',[WebsiteController::class,'postCategoryPromo'])->name('postCategoryPromo');
 
         Route::get('/delete/{id}',[WebsiteController::class,'deleteCategory'])->name('deleteCategory');
+
+        Route::get('/delete/logoCategory/{id}',[WebsiteController::class,'deleteLogoCategory'])->name('deleteLogoCategory');
 
         Route::get('/image',[WebsiteController::class,'imageWeb'])->name('imageWeb');
 

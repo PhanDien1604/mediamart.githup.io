@@ -70,11 +70,11 @@
                             @endif
                             <div class="row">
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-primary mb-2"><i class="fas fa-plus mr-1"></i>Cập nhật</button>
+                                    <button type="submit" class="btn btn-primary mb-2">Cập nhật</button>
                                 </div>
                                 <div class="col-2">
                                     <div class="form-group">
-                                        <input type="text" id="inputName" class="form-control" name="group_product_code" value="{{old('group_product_code') ?? $groupDetail->code}}" placeholder="Nhóm sản phẩm">
+                                        <input type="text" id="inputName" class="form-control" name="group_product_code" value="{{old('group_product_code') ?? $groupDetail->code}}" placeholder="Mã sản phẩm">
                                         @error('group_product_code')
                                             <span class="text-danger">{{$message}}</span>
                                         @enderror

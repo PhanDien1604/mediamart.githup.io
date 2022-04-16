@@ -61,7 +61,7 @@ class Products extends Model
 
     public function getProductNoBelongtGroup($group_id) {
         return DB::table('products')
-            ->select('products.*','image_product_rel.product_id','image_product_rel.image_id','images_product.fullname as image',
+            ->select('products.*','image_product_rel.product_id','image_product_rel.image_id','images_product.path as image',
             'group_product_rel.group_id')
             ->leftjoin('group_product_rel','products.id','=','group_product_rel.product_id')
             ->whereNotIn(
@@ -86,7 +86,7 @@ class Products extends Model
 
     public function getProductNoBelongtWarehouse($warehouse_id) {
         return DB::table('products')
-            ->select('products.*','image_product_rel.product_id','image_product_rel.image_id','images_product.fullname as image',
+            ->select('products.*','image_product_rel.product_id','image_product_rel.image_id','images_product.path as image',
             'warehouse_product_rel.warehouse_id')
             ->leftjoin('warehouse_product_rel','products.id','=','warehouse_product_rel.product_id')
             ->whereNotIn(

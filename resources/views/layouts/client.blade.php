@@ -29,5 +29,10 @@
     <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
     <script src="{{asset('assets/clients/js/bootstrap.min.js')}}"></script>
     <script src="{{asset('assets/clients/js/custom.js')}}"></script>
+    <script>
+        $('.carousel-inner .carousel-item:first-child').addClass('active')
+        $('.carousel-indicators button:first-child').addClass('active')
+        $('.carousel-indicators button:first-child').attr('aria-current','true')
+    </script>
 </body>
 </html>

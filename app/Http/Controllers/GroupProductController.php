@@ -25,13 +25,12 @@ class GroupProductController extends Controller
     public function postAddGroup(Request $request) {
 
         $rules = [
-            "group_product_code" => "required|min:6|unique:group_product,code",
+            "group_product_code" => "required|unique:group_product,code",
             "group_product_name" => "required"
         ];
 
         $messages = [
             "required" => ":attribute bắt buộc phải nhập",
-            "min" => ":attribute không được nhỏ hơn :min kí tự",
             "integer" => ":attribute phải là số",
             "unique" => ":attribute đã tồn tại"
         ];
@@ -72,13 +71,12 @@ class GroupProductController extends Controller
             return back();
         }
         $rules = [
-            "group_product_code" => "required|min:6|unique:group_product,code,".$id,
+            "group_product_code" => "required|unique:group_product,code,".$id,
             "group_product_name" => "required"
         ];
 
         $messages = [
             "required" => ":attribute bắt buộc phải nhập",
-            "min" => ":attribute không được nhỏ hơn :min kí tự",
             "integer" => ":attribute phải là số",
             "unique" => ":attribute đã tồn tại"
         ];

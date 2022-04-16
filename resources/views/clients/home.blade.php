@@ -11,8 +11,14 @@
 @section('content')
     <div class="content">
         <section>
-            <a href="" class="subbanner">
-                <img src="{{asset('assets/clients/images/banner/subbanner.png')}}" alt="">
+            <a href="#" class="subbanner">
+                @if(!empty($bannerPromo))
+                    @php
+                        $img = '<img src="'.asset($bannerPromo[0]->path).'" class="d-block w-100">';
+                    @endphp
+                    {!!$img!!}
+                @endif
+                {{-- <img src="{{asset('assets/clients/images/banner/subbanner.png')}}" alt=""> --}}
             </a>
             <div class="product-promotion">
                 <div class="list-product-slick">

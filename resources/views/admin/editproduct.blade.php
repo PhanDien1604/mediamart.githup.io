@@ -139,15 +139,15 @@
                         </div>
                         <div class="card-body">
                             <div class="img-main-prd">
-                                <input type="file" name="images[]" id="file-input-main" onchange="previewImgMain(this)" accept=".jpg,.jpeg,.png,.gif">
-                                    @if (!empty($images))
+                                <input type="file" name="img_prd_main" id="file-input-main" onchange="previewImgMain(this)" accept=".jpg,.jpeg,.png,.gif">
+                                    @if (!empty($imgPrdMain[0]))
                                         @php
-                                            $img = "<img src=".asset($images[0]->fullname)." style='width: 100%'>";
+                                            $img = "<img src=".asset($imgPrdMain[0]->path)." style='width: 100%'>";
                                         @endphp
                                         <label for="file-input-main" class="box-img-main">
                                             {!!$img!!}
                                         </label>
-                                        <a href="{{route('admin.product.deleteImage',['id' => $images[0]->id])}}" onclick="return confirm('Bạn có chắc muốn xóa ảnh chứ ???')"
+                                        <a href="{{route('admin.product.deleteImage',['id' => $imgPrdMain[0]->id])}}" onclick="return confirm('Bạn có chắc muốn xóa ảnh chứ ???')"
                                             class="close-img-main" style="display:block"><i class="fas fa-times"></i></a>
                                     @else
                                         <label for="file-input-main" class="box-img-main">
@@ -157,31 +157,26 @@
                                      @endif
                             </div>
                             <div class="py-3 row">
-                                <div class="col-6">
-                                    <span class="insert-img btn-add-img btn btn-success btn-block"><i class="fas fa-plus mr-2"></i>Thêm hình ảnh</span>
-                                </div>
-                                <div class="col-6">
-                                    <button class="btn btn-primary btn-block"><i class="fas fa-upload mr-2"></i>Tải lên</button>
+                                <div class="col-12">
+                                    <span class="insert-img btn-add-img btn btn-primary btn-block"><i class="fas fa-plus mr-2"></i>Thêm hình ảnh</span>
                                 </div>
                             </div>
                             <div class="img-sub-prd">
                                 <ul class="box-view-img">
                                     {{-- List Image --}}
                                     {{-- SelectImageDatabase --}}
-                                    @foreach ($images as $key => $image)
-                                    @if ($key > 0)
+                                    @foreach ($imgPrdSub as $key => $image)
                                         <li>
                                             <div class="img-wrap">
                                                 <a href="{{route('admin.product.deleteImage',['id' => $image->id])}}" onclick="return confirm('Bạn có chắc muốn xóa ảnh chứ ???')" class="close-img-sub"><i class="fas fa-times"></i></a>
                                                 <div class="img-wrap-box">
                                                     @php
-                                                        $img = "<img src=".asset($image->fullname).">";
+                                                        $img = "<img src=".asset($image->path).">";
                                                     @endphp
                                                     {!!$img!!}
                                                 </div>
                                             </div>
                                         </li>
-                                    @endif
                                     @endforeach
                                     {{-- EndSelectImageDatabase --}}
                                 </ul>
@@ -341,10 +336,6 @@
         $(e).parent().find('img').attr('src',"{{asset('assets/clients/images/image-icon.jpg')}}");
         $(e).val('')
     }
-    // $('.close-img-main').click(function(){
-    //     $(".close-img-main").css('display',"none");
-    //     $(".img-main-prd img").attr('src',"{{asset('assets/clients/images/image-icon.jpg')}}");
-    // })
     // listImage
     $('.insert-img').click(function() {
         if($('.img-sub-prd').hasClass('show-btn')===false) {
@@ -362,7 +353,7 @@
             _html += '<div class="img-wrap-box"></div>';
             _html += '</div>';
             _html += '<div class="'+ _time +'">';
-            _html += '<input type="file" class="hidden" name="images[]" onchange="uploadImg(this)" id="file_'+_time+'">';
+            _html += '<input type="file" class="hidden" name="img_prd_sub[]" onchange="uploadImg(this)" id="file_'+_time+'">';
             _html +='</div>';
             _html += '</li>';
 

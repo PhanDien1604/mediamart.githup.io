@@ -239,7 +239,7 @@ header {
     border-bottom: 1px solid #ebebeb;
 }
 
-.main-menu li span {
+.main-menu li .icon__menuitem {
     text-align: center;
     width: 25px;
 }
@@ -249,7 +249,7 @@ header {
     color: black;
 }
 
-.main-menu li span,
+.main-menu li .icon__menuitem,
 .main-menu a,
 .main-menu .submenu__name {
     display: inline-block;
@@ -267,6 +267,10 @@ header {
 
 .main-menu .dropright a {
     text-transform: capitalize;
+}
+
+.main-menu .dropright .comma:last-child {
+    display: none;
 }
 
 .main-menu .dropright a:hover,
@@ -289,12 +293,7 @@ header {
 
 .main-menu li .dropright .icon__menuitem img {
     width: 22px;
-    height: 26px;
-}
-
-.main-menu li span {
-    text-align: center;
-    width: 25px;
+    /* height: 26px; */
 }
 
 .main-menu a,
@@ -315,16 +314,17 @@ header {
     top: 0;
     z-index: 5;
     box-shadow: 0 4px 4px rgb(0 0 0 / 25%);
-    ;
+    max-width: calc(235px*4);
 }
 
 .menu-item:hover .submenu {
-    display: block;
+    display: flex;
 }
 
 .submenu aside {
     margin-right: 20px;
     width: 215px;
+    flex-wrap: nowrap;
 }
 
 .submenu aside>a:hover,

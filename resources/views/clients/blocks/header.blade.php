@@ -2,15 +2,14 @@
     <div class="banner-top-header">
         <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
             <div class="carousel-inner">
-              <div class="carousel-item active">
-                <img src="{{asset('assets/clients/images/banner/banner-header-1.png')}}" class="d-block w-100" alt="...">
-              </div>
-              <div class="carousel-item">
-                <img src="{{asset('assets/clients/images/banner/banner-header-2.gif')}}" class="d-block w-100" alt="...">
-              </div>
-              <div class="carousel-item">
-                <img src="{{asset('assets/clients/images/banner/banner-header-3.png')}}" class="d-block w-100" alt="...">
-              </div>
+                @foreach ($bannerTop as $item)
+                <div class="carousel-item">
+                    @php
+                        $img = '<img src="'.asset($item->path).'" class="d-block w-100">';
+                    @endphp
+                    {!!$img!!}
+                </div>
+                @endforeach
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
               <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -66,216 +65,38 @@
                 </p>
                 <div class="category-list">
                     <ul class="main-menu">
+                        @foreach ($category as $item)
                         <li class="menu-item">
                             <div class="dropright">
                                 <span class="icon__menuitem">
-                                    <img src="{{asset('assets/clients/images/icon-phone.PNG')}}" alt="">
+                                    @php
+                                        $img = "<img src=".asset($item[0][0]->path).">";
+                                    @endphp
+                                    {!!$img!!}
+                                    {{-- <img src="{{asset('assets/clients/images/icon-phone.PNG')}}" alt=""> --}}
                                 </span>
-                                <a href="#">Tivi</a>,
-                                <a href="#">Loa</a>
+                                @foreach ($item[1] as $value)
+                                    <a href="#">{{$value->group_name}}</a><span class="comma">,</span>
+                                @endforeach
                             </div>
-                            <div id="submenu-1" class="submenu">
+
+                            <div class="submenu">
+                                @foreach ($item[2] as $value)
                                 <aside>
                                     <p class="menuitem__title">
-                                        Tivi
+                                        {{$value[1]}}
                                         <a href="#">Xem tất cả</a>
                                     </p>
-                                    <a href="#">item 1</a>
-                                    <a href="#">item 2</a>
-                                    <a href="#">item 3</a>
-                                    <a href="#">item 4</a>
+                                    @foreach ($value[2] as $key)
+                                        {{-- @dd($key) --}}
+                                        <a href="#">{{$key->group_sub_name}}</a>
+                                    @endforeach
                                 </aside>
+                                @endforeach
                             </div>
+
                         </li>
-                        <li class="menu-item">
-                            <div class="dropright">
-                                <span class="icon__menuitem">
-                                    <img src="{{asset('assets/clients/images/icon-phone.PNG')}}" alt="">
-                                </span>
-                                <a href="#">Tivi</a>,
-                                <a href="#">Loa</a>
-                            </div>
-                            <div id="submenu-1" class="submenu">
-                                <aside>
-                                    <p class="menuitem__title">
-                                        Tivi
-                                        <a href="#">Xem tất cả</a>
-                                    </p>
-                                    <a href="#">item 1</a>
-                                    <a href="#">item 2</a>
-                                    <a href="#">item 3</a>
-                                    <a href="#">item 4</a>
-                                </aside>
-                            </div>
-                        </li>
-                        <li class="menu-item">
-                            <div class="dropright">
-                                <span class="icon__menuitem">
-                                    <img src="{{asset('assets/clients/images/icon-phone.PNG')}}" alt="">
-                                </span>
-                                <a href="#">Tivi</a>,
-                                <a href="#">Loa</a>
-                            </div>
-                            <div id="submenu-1" class="submenu">
-                                <aside>
-                                    <p class="menuitem__title">
-                                        Tivi
-                                        <a href="#">Xem tất cả</a>
-                                    </p>
-                                    <a href="#">item 1</a>
-                                    <a href="#">item 2</a>
-                                    <a href="#">item 3</a>
-                                    <a href="#">item 4</a>
-                                </aside>
-                            </div>
-                        </li>
-                        <li class="menu-item">
-                            <div class="dropright">
-                                <span class="icon__menuitem">
-                                    <img src="{{asset('assets/clients/images/icon-phone.PNG')}}" alt="">
-                                </span>
-                                <a href="#">Tivi</a>,
-                                <a href="#">Loa</a>
-                            </div>
-                            <div id="submenu-1" class="submenu">
-                                <aside>
-                                    <p class="menuitem__title">
-                                        Tivi
-                                        <a href="#">Xem tất cả</a>
-                                    </p>
-                                    <a href="#">item 1</a>
-                                    <a href="#">item 2</a>
-                                    <a href="#">item 3</a>
-                                    <a href="#">item 4</a>
-                                </aside>
-                            </div>
-                        </li>
-                        <li class="menu-item">
-                            <div class="dropright">
-                                <span class="icon__menuitem">
-                                    <img src="{{asset('assets/clients/images/icon-phone.PNG')}}" alt="">
-                                </span>
-                                <a href="#">Tivi</a>,
-                                <a href="#">Loa</a>
-                            </div>
-                            <div id="submenu-1" class="submenu">
-                                <aside>
-                                    <p class="menuitem__title">
-                                        Tivi
-                                        <a href="#">Xem tất cả</a>
-                                    </p>
-                                    <a href="#">item 1</a>
-                                    <a href="#">item 2</a>
-                                    <a href="#">item 3</a>
-                                    <a href="#">item 4</a>
-                                </aside>
-                            </div>
-                        </li>
-                        <li class="menu-item">
-                            <div class="dropright">
-                                <span class="icon__menuitem">
-                                    <img src="{{asset('assets/clients/images/icon-phone.PNG')}}" alt="">
-                                </span>
-                                <a href="#">Tivi</a>,
-                                <a href="#">Loa</a>
-                            </div>
-                            <div id="submenu-1" class="submenu">
-                                <aside>
-                                    <p class="menuitem__title">
-                                        Tivi
-                                        <a href="#">Xem tất cả</a>
-                                    </p>
-                                    <a href="#">item 1</a>
-                                    <a href="#">item 2</a>
-                                    <a href="#">item 3</a>
-                                    <a href="#">item 4</a>
-                                </aside>
-                            </div>
-                        </li>
-                        <li class="menu-item">
-                            <div class="dropright">
-                                <span class="icon__menuitem">
-                                    <img src="{{asset('assets/clients/images/icon-phone.PNG')}}" alt="">
-                                </span>
-                                <a href="#">Tivi</a>,
-                                <a href="#">Loa</a>
-                            </div>
-                            <div id="submenu-1" class="submenu">
-                                <aside>
-                                    <p class="menuitem__title">
-                                        Tivi
-                                        <a href="#">Xem tất cả</a>
-                                    </p>
-                                    <a href="#">item 1</a>
-                                    <a href="#">item 2</a>
-                                    <a href="#">item 3</a>
-                                    <a href="#">item 4</a>
-                                </aside>
-                            </div>
-                        </li>
-                        <li class="menu-item">
-                            <div class="dropright">
-                                <span class="icon__menuitem">
-                                    <img src="{{asset('assets/clients/images/icon-phone.PNG')}}" alt="">
-                                </span>
-                                <a href="#">Tivi</a>,
-                                <a href="#">Loa</a>
-                            </div>
-                            <div id="submenu-1" class="submenu">
-                                <aside>
-                                    <p class="menuitem__title">
-                                        Tivi
-                                        <a href="#">Xem tất cả</a>
-                                    </p>
-                                    <a href="#">item 1</a>
-                                    <a href="#">item 2</a>
-                                    <a href="#">item 3</a>
-                                    <a href="#">item 4</a>
-                                </aside>
-                            </div>
-                        </li>
-                        <li class="menu-item">
-                            <div class="dropright">
-                                <span class="icon__menuitem">
-                                    <img src="{{asset('assets/clients/images/icon-phone.PNG')}}" alt="">
-                                </span>
-                                <a href="#">Tivi</a>,
-                                <a href="#">Loa</a>
-                            </div>
-                            <div id="submenu-1" class="submenu">
-                                <aside>
-                                    <p class="menuitem__title">
-                                        Tivi
-                                        <a href="#">Xem tất cả</a>
-                                    </p>
-                                    <a href="#">item 1</a>
-                                    <a href="#">item 2</a>
-                                    <a href="#">item 3</a>
-                                    <a href="#">item 4</a>
-                                </aside>
-                            </div>
-                        </li>
-                        <li class="menu-item">
-                            <div class="dropright">
-                                <span class="icon__menuitem">
-                                    <img src="{{asset('assets/clients/images/icon-phone.PNG')}}" alt="">
-                                </span>
-                                <a href="#">Tivi</a>,
-                                <a href="#">Loa</a>
-                            </div>
-                            <div id="submenu-1" class="submenu">
-                                <aside>
-                                    <p class="menuitem__title">
-                                        Tivi
-                                        <a href="#">Xem tất cả</a>
-                                    </p>
-                                    <a href="#">item 1</a>
-                                    <a href="#">item 2</a>
-                                    <a href="#">item 3</a>
-                                    <a href="#">item 4</a>
-                                </aside>
-                            </div>
-                        </li>
+                        @endforeach
                     </ul>
                 </div>
             </div>

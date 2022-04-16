@@ -34,7 +34,6 @@
         overflow: hidden;
         display: block;
         margin: auto;
-        background: red;
     }
     .table td .img-prd>img {
         height: 50px;

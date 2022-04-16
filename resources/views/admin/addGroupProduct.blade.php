@@ -74,7 +74,7 @@
                                 </div>
                                 <div class="col-2">
                                     <div class="form-group">
-                                        <input type="text" id="inputName" class="form-control" name="group_product_code" value="{{old('group_product_code')}}" placeholder="Nhóm sản phẩm">
+                                        <input type="text" id="inputName" class="form-control" name="group_product_code" value="{{old('group_product_code')}}" placeholder="Mã sản phẩm">
                                         @error('group_product_code')
                                             <span class="text-danger">{{$message}}</span>
                                         @enderror

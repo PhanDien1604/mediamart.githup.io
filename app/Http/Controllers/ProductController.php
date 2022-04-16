@@ -29,16 +29,27 @@ class ProductController extends Controller
         return view('admin.addProduct',compact('promoList'));
     }
     public function postAdd(ProductRequest $request) {
-        $dataImages = [];
-        if($request->hasfile('images')) {
-            foreach ($request->file('images') as $key => $file) {
+        $dataImgMain = [];
+        if($request->hasfile('img_prd_main')) {
+            $file = $request->file('img_prd_main');
+            $image_name = time().rand(1,1000);
+            $ext = strtolower($file->getClientOriginalExtension());
+            $image_fullname = $image_name.".".$ext;
+            $path = 'images/products/';
+            $image_url = $path.$image_fullname;
+            $file->move($path,$image_fullname);
+            $dataImgMain[] = $image_url;
+        }
+        $dataImgSub = [];
+        if($request->hasfile('img_prd_sub')) {
+            foreach ($request->file('img_prd_sub') as $file) {
                 $image_name = time().rand(1,1000);
                 $ext = strtolower($file->getClientOriginalExtension());
                 $image_fullname = $image_name.".".$ext;
-                $path = 'images/products';
+                $path = 'images/products/';
                 $image_url = $path.$image_fullname;
                 $file->move($path,$image_fullname);
-                $dataImages[] = $image_url;
+                $dataImgSub[] = $image_url;
             }
         }
 
@@ -56,14 +67,14 @@ class ProductController extends Controller
         ];
 
         $product_id = $this->products->addProduct($dataInsert);
-        $this->fileImage->addImage($dataImages, $product_id);
+        $this->fileImage->addImage('img_prd_main',$dataImgMain, $product_id);
+        $this->fileImage->addImage('img_prd_sub',$dataImgSub, $product_id);
         // dd($product_id);
         return redirect()->route('admin.product.show')->with('msg','Thêm dữ liệu thành công')->with('bg-msg','success');
     }
     public function edit(Request $request, $id) {
         if(!empty($id)) {
             $productDetail = $this->products->getDetail($id);
-            // dd($productDetail);
             if(!empty($productDetail[0])) {
                 $request->session()->put('id',$id);
                 $productDetail = $productDetail[0];
@@ -73,23 +84,36 @@ class ProductController extends Controller
         }else {
             return redirect()->route('admin.home');
         }
-        $images = $this->fileImage->getEditImages($id);
-        // dd($images);
+        $imgPrdMain = $this->fileImage->getEditImages($id,'img_prd_main');
+
+        $imgPrdSub = $this->fileImage->getEditImages($id,'img_prd_sub');
+        // dd($imgPrdSub);
         $promoList = $this->promotions->getPromoSub('Sản phẩm');
 
-        return view("admin.editProduct", compact('productDetail', 'images','promoList'));
+        return view("admin.editProduct", compact('productDetail', 'imgPrdMain','imgPrdSub','promoList'));
     }
     public function postEdit(Request $request) {
-        $dataImages = [];
-        if($request->hasfile('images')) {
-            foreach ($request->file('images') as $key => $file) {
+        $dataImgMain = [];
+        if($request->hasfile('img_prd_main')) {
+            $file = $request->file('img_prd_main');
+            $image_name = time().rand(1,1000);
+            $ext = strtolower($file->getClientOriginalExtension());
+            $image_fullname = $image_name.".".$ext;
+            $path = 'images/products/';
+            $image_url = $path.$image_fullname;
+            $file->move($path,$image_fullname);
+            $dataImgMain[] = $image_url;
+        }
+        $dataImgSub = [];
+        if($request->hasfile('img_prd_sub')) {
+            foreach ($request->file('img_prd_sub') as $file) {
                 $image_name = time().rand(1,1000);
                 $ext = strtolower($file->getClientOriginalExtension());
                 $image_fullname = $image_name.".".$ext;
-                $path = 'images/products';
+                $path = 'images/products/';
                 $image_url = $path.$image_fullname;
                 $file->move($path,$image_fullname);
-                $dataImages[] = $image_url;
+                $dataImgSub[] = $image_url;
             }
         }
         $id = session('id');
@@ -128,7 +152,8 @@ class ProductController extends Controller
             $request->product_status
         ];
         $this->products->updateProduct($dataUpdate, $id);
-        $this->fileImage->addImage($dataImages, $id);
+        $this->fileImage->addImage('img_prd_main',$dataImgMain, $id);
+        $this->fileImage->addImage('img_prd_sub',$dataImgSub, $id);
         return redirect()->route('admin.product.edit',['id'=>$id])->with('msg','Cập nhật dữ liệu thành công');
     }
     public function delete($id) {

@@ -20,10 +20,12 @@ class WebsiteController extends Controller
     public function index() {
         $groupProducts = $this->groupProduct->getAllGroupProduct();
         $promos = $this->promotion->getAllPromo();
-        $category = $this->website->getAllCategory();
+        $categorySub = $this->website->getAllCategory('category-sub');
+        $categoryMain = $this->website->getAllCategory('category-main');
         $categoryPromo = $this->website->getAllCategoryPromo();
-
-        return view('admin.website',compact('groupProducts','promos','category','categoryPromo'));
+        $logoCategory = $this->website->getLogoCategory('logo-category');
+        // dd($logoCategory);
+        return view('admin.website',compact('groupProducts','promos','categorySub','categoryMain','logoCategory','categoryPromo'));
     }
 
     public function imageWeb() {
@@ -37,6 +39,58 @@ class WebsiteController extends Controller
     }
 
     public function postAddCategory(Request $request) {
+
+        // dd('postAddCategory');
+        $rules = [
+            'category' => 'required|not_in:0'
+        ];
+        $messages = [
+            'not_in' => 'Mời bạn chọn :attribute'
+        ];
+        $attributes = [
+            'category' => 'danh mục'
+        ];
+
+        $request->validate($rules,$messages,$attributes);
+
+        $dataInsert = [
+            $request->row_category_main,
+            $request->category
+        ];
+        $this->website->addCategory("category-main",$dataInsert);
+        return back()->with('msg','Thêm dữ liệu thành công');
+    }
+
+    public function postAddLogoCategory(Request $request) {
+        $rules = [
+            'row_logo' => 'required|unique:logo_category_web,row'
+        ];
+        $messages = [
+            'unique' => ':attribute đã tồn tại'
+        ];
+        $attributes = [
+            'row_logo' => 'Số hàng'
+        ];
+        $request->validate($rules,$messages,$attributes);
+        $dataImg = "";
+        if($request->hasfile('logo_category')) {
+            $file = $request->file('logo_category');
+            $image_name = "logo-".$request->row_logo;
+            $ext = strtolower($file->getClientOriginalExtension());
+            $image_fullname = $image_name.".".$ext;
+            $path = 'images/website/logo-category/';
+            $image_url = $path.$image_fullname;
+            $file->move($path,$image_fullname);
+            $dataImg = $image_url;
+        } else {
+            return back();
+        }
+        // dd($dataImg);
+        $this->website->addLogoCategory($request->row_logo, $dataImg);
+        return  back()->with('msg','Thêm dữ liệu thành công');
+    }
+
+    public function postAddCategorySub(Request $request) {
         $rules = [
             'category_main' => 'required|not_in:0'
         ];
@@ -54,7 +108,7 @@ class WebsiteController extends Controller
             $request->category_main,
             $request->category_sub
         ];
-        $this->website->addCategory($dataInsert);
+        $this->website->addCategorySub('category-sub',$dataInsert);
         return back()->with('msg','Thêm dữ liệu thành công');
     }
 
@@ -63,6 +117,19 @@ class WebsiteController extends Controller
             $categoryDetail = $this->website->getDetailCategory($id);
             if(!empty($categoryDetail[0])) {
                 $this->website->deleteCategory($id);
+            }else {
+                return back();
+            }
+        }else {
+            return back();
+        }
+        return back()->with('msg','Xóa dữ liệu thành công');
+    }
+    public function deleteLogoCategory($id) {
+        if(!empty($id)) {
+            $categoryDetail = $this->website->getDetailLogoCategory($id);
+            if(!empty($categoryDetail[0])) {
+                $this->website->deleteLogoCategory($id);
             }else {
                 return back();
             }

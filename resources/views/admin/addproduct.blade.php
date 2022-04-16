@@ -139,18 +139,15 @@
                         </div>
                         <div class="card-body">
                             <div class="img-main-prd">
-                                <input type="file" name="images[]" id="file-input-main" onchange="previewImgMain(this)" accept=".jpg,.jpeg,.png,.gif">
+                                <input type="file" name="img_prd_main" id="file-input-main" onchange="previewImgMain(this)" accept=".jpg,.jpeg,.png,.gif">
                                 <label for="file-input-main" class="title-file-input">
                                     <img src="{{asset('assets/clients/images/image-icon.jpg')}}" alt="" style="width: 100%">
                                 </label>
                                 <div class="close-img-main" onclick="DelImgMain(this)"><i class="fas fa-times"></i></div>
                             </div>
                             <div class="py-3 row">
-                                <div class="col-6">
-                                    <span class="insert-img btn-add-img btn btn-success btn-block"><i class="fas fa-plus mr-2"></i>Thêm hình ảnh</span>
-                                </div>
-                                <div class="col-6">
-                                    <button class="btn btn-primary btn-block"><i class="fas fa-upload mr-2"></i>Tải lên</button>
+                                <div class="col-12">
+                                    <span class="insert-img btn-add-img btn btn-primary btn-block"><i class="fas fa-plus mr-2"></i>Thêm hình ảnh</span>
                                 </div>
                             </div>
                             <div class="img-sub-prd">
@@ -330,7 +327,7 @@
             _html += '<div class="img-wrap-box"></div>';
             _html += '</div>';
             _html += '<div class="'+ _time +'">';
-            _html += '<input type="file" class="hidden" name="images[]" onchange="uploadImg(this)" id="file_'+_time+'">';
+            _html += '<input type="file" class="hidden" name="img_prd_sub[]" onchange="uploadImg(this)" id="file_'+_time+'">';
             _html +='</div>';
             _html += '</li>';
 

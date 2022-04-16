@@ -35,91 +35,39 @@
     .select2-container--bootstrap4.select2-container--focus .select2-selection {
         box-shadow: none;
     }
-    .img-main-prd {
-        margin: auto;
-        width: 90%;
+    .list-img {
+        display: flex;
+        flex-wrap: nowrap;
+        padding: 0.2rem;
+    }
+    .list-img .img-item{
+        width: 22px;
+        height: 26px;
+        margin: 0.2rem 0.2rem;
+        background-color: white;
         position: relative;
+        cursor: pointer;
     }
-    .img-main-prd:hover .close-img-main {
-        opacity: 1;
-    }
-    .close-img-main {
+    .delete-logo {
         position: absolute;
-        top: -0.6rem;
-        right: -0.6rem;
-        padding: 0px 0.5rem;
+        top: -4px;
+        right: -4px;
+        background-color: black;
+        color: white;
+        width: 10px;
+        height: 10px;
+        font-size: 10px;
+        text-align: center;
+        line-height: 12px;
+        border-radius: 50%;
         cursor: pointer;
         display: none;
-        opacity: 0;
-        transition: 0.2s;
-        font-size: 20px;
-        color: white;
-        background: black;
-        border-radius: 50%;
-    }.close-img-main:hover {
+    }
+    .delete-logo:hover {
         color: white
     }
-    input[type="file"] {
-        display: none;
-    }
-    .box-img-main {
-        cursor: pointer;
-        width: 100%;
-    }
-    /*  */
-    .img-sub-prd {
-        background-color: #f2f2f2;
-        min-height: 80px;
-    }
-    .li_file_hide {
-        opacity: 0;
-        visibility: visible;
-        width: 0 !important;
-        height: 0 !important;
-        overflow: hidden;
-        margin: 0rem -0.2rem;
-    }
-    .box-view-img {
-        display: flex;
-        flex-wrap: wrap;
-        padding: 0.5rem;
-        justify-content: center;
-    }
-    .box-view-img .img-wrap-box {
-        overflow: hidden;
-        height: 80px;
-        width: 80px;
-        background-position: 50% 50%;
-        background-size: cover;
-    }
-    .box-view-img .img-wrap-box img {
-        height: 80px;
-    }
-    .box-view-img>li {
-        list-style: none;
-        padding: 0.2rem 0.2rem;
-    }
-    .img-wrap {
-        position: relative;
-    }
-    .img-wrap .close-img-sub {
-        position: absolute;
-        top: -5px;
-        right: -5px;
-        width: 20px;
-        height: 20px;
-        cursor: pointer;
+    .img-item:hover .delete-logo{
         display: block;
-        text-align: center;
-        line-height: 20px;
-        opacity: 0;
-        font-size: 14px;
-        color: white;
-        background: black;
-        border-radius: 50%;
-    }
-    .img-wrap:hover .close-img-sub {
-        opacity: 1;
     }
 </style>
 @endsection
@@ -153,7 +101,7 @@
 
             <div class="card">
                 <div class="card-header">
-                    <a href="{{route('admin.website.imageWeb')}}" class="btn btn-warning float-right">Hình ảnh</a>
+                    <a href="{{route('admin.website.imageWeb')}}" class="btn btn-info float-right">Hình ảnh</a>
                 </div>
                 <div class="card-body row">
                     <div class="col-md-7">
@@ -207,7 +155,40 @@
                             </div>
                         </div>
                         </form>
+                        <hr class="my-4">
                         <table id="example1" class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Hàng</th>
+                                    <th>Nhóm</th>
+                                    <th>Chức năng</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (!empty($categoryMain[0]))
+                                    @foreach ($categoryMain as $item)
+                                    <tr>
+                                        <td></td>
+                                        <td>{{$item->row}}</td>
+                                        <td>{{($item->group_name)}}</td>
+                                        <td>
+                                            <div class="btn-box">
+                                                <a href="{{route('admin.website.deleteCategory', ['id'=>$item->id])}}" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                @else
+                                    <tr>
+                                        <td colspan="5">Không có danh mục nào</td>
+                                    </tr>
+                                @endif
+
+                            </tbody>
+                        </table>
+                        <hr class="my-4">
+                        <table id="example2" class="table table-bordered table-hover">
                             <thead>
                                 <tr>
                                     <th>STT</th>
@@ -218,8 +199,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if (!empty($category[0]))
-                                    @foreach ($category as $item)
+                                @if (!empty($categorySub[0]))
+                                    @foreach ($categorySub as $item)
                                     <tr>
                                         <td></td>
                                         <td>{{$item->row}}</td>
@@ -242,61 +223,178 @@
                         </table>
                     </div>
                     <div class="col-md-5">
-                        <form action="{{route('admin.website.postAddCategory')}}" method="POST">
-                        @csrf
-                        <div class="card card-success">
-                            <div class="card-header">
-                                <h3 class="card-title">Danh mục</h3>
+                        <div class="row">
+                            {{-- Logo-category --}}
+                            <div class="col-12">
+                                <form action="{{route('admin.website.postAddLogoCategory')}}" method="post" enctype="multipart/form-data">
+                                @csrf
+                                <div class="card card-warning">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Logo</h3>
 
-                                <div class="card-tools">
-                                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                        <i class="fas fa-minus"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-2">
-                                        <div class="form-group">
-                                            <label>Hàng</label>
-                                            <select class="custom-select" name="row_category" style="width: 100%;">
-                                                @for ($key = 1; $key <= 7; $key++)
-                                                    <option value="{{$key}}">{{$key}}</option>
-                                                @endfor
-                                            </select>
+                                        <div class="card-tools">
+                                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                                <i class="fas fa-minus"></i>
+                                            </button>
                                         </div>
                                     </div>
-                                    <div class="col-10">
-                                        <div class="form-group">
-                                            <label>Nhóm chính</label>
-                                            <select class="form-control select2bs4" name="category_main" style="width: 100%;">
-                                                <option value="0">--Nhóm chính--</option>
-                                                @if (!empty($groupProducts))
-                                                    @foreach ($groupProducts as $groupProduct)
-                                                        <option value="{{$groupProduct->id}}">{{$groupProduct->name}}</option>
+                                    <div class="card-body">
+                                        @error('row_logo')
+                                            <div class="alert alert-danger text-center">{{$message}}</div>
+                                        @enderror
+                                        <div class="row">
+                                            <div class="col-2">
+                                                <div class="form-group">
+                                                    <label>Hàng</label>
+                                                    <select class="custom-select" name="row_logo" style="width: 100%;">
+                                                        @for ($key = 1; $key <= 10; $key++)
+                                                            <option value="{{$key}}">{{$key}}</option>
+                                                        @endfor
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-10">
+                                                <div class="form-group">
+                                                    <label for="exampleInputFile">File input</label>
+                                                    <div class="input-group">
+                                                        <div class="custom-file">
+                                                            <input type="file" class="custom-file-input" name="logo_category" id="exampleInputFile" accept=".jpg, .png, .jpge, .gif">
+                                                            <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="box-img bg-light">
+                                            <div class="list-img">
+                                                @if (!empty($logoCategory[0]))
+                                                    @foreach ($logoCategory as $item)
+                                                    <div class="img-item">
+                                                        @php
+                                                            $img = "<img src=".asset($item->path)." style='width: 100%'>";
+                                                        @endphp
+                                                        {!!$img!!}
+                                                        <a href="{{route('admin.website.deleteLogoCategory',['id'=>$item->id])}}" class="delete-logo"><i class="fas fa-times"></i></a>
+                                                    </div>
                                                     @endforeach
                                                 @endif
-                                            </select>
-                                            @error('category_main')
-                                                <span class="text-danger">{{$message}}</span>
-                                            @enderror
+
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-warning float-right mt-3">Xác nhận</button>
+                                    </div>
+                                </div>
+                                </form>
+                            </div>
+                            {{-- categoty-main --}}
+                            <div class="col-12">
+                                <form action="{{route('admin.website.postAddCategory')}}" method="post">
+                                @csrf
+                                <div class="card card-primary">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Danh mục chính</h3>
+
+                                        <div class="card-tools">
+                                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                                <i class="fas fa-minus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-2">
+                                                <div class="form-group">
+                                                    <label>Hàng</label>
+                                                    <select class="custom-select" name="row_category_main" style="width: 100%;">
+                                                        @for ($key = 1; $key <= 10; $key++)
+                                                            <option value="{{$key}}">{{$key}}</option>
+                                                        @endfor
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-10">
+                                                <div class="form-group">
+                                                    <label>Nhóm</label>
+                                                    <select class="form-control select2bs4" name="category" style="width: 100%;">
+                                                        <option value="0">--Nhóm--</option>
+                                                        @if (!empty($groupProducts))
+                                                            @foreach ($groupProducts as $groupProduct)
+                                                                <option value="{{$groupProduct->id}}">{{$groupProduct->name}}</option>
+                                                            @endforeach
+                                                        @endif
+                                                    </select>
+                                                    @error('category')
+                                                        <span class="text-danger">{{$message}}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <input type="submit" value="Xác nhận" class="btn btn-primary float-right">
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label><div class="btn-add-categorySub btn btn-primary"><i class="fas fa-plus mr-1"></i>Thêm</div></label>
-                                    <div class="category-sub">
-                                        {{-- CategorySub --}}
+                                </form>
+                            </div>
+                            {{-- category-sub --}}
+                            <div class="col-12">
+                                <form action="{{route('admin.website.postAddCategorySub')}}" method="POST">
+                                @csrf
+                                <div class="card card-success">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Danh mục phụ</h3>
 
-                                        {{-- EndCategorySub --}}
+                                        <div class="card-tools">
+                                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                                <i class="fas fa-minus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-2">
+                                                <div class="form-group">
+                                                    <label>Hàng</label>
+                                                    <select class="custom-select" name="row_category" style="width: 100%;">
+                                                        @for ($key = 1; $key <= 10; $key++)
+                                                            <option value="{{$key}}">{{$key}}</option>
+                                                        @endfor
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-10">
+                                                <div class="form-group">
+                                                    <label>Nhóm chính</label>
+                                                    <select class="form-control select2bs4" name="category_main" style="width: 100%;">
+                                                        <option value="0">--Nhóm chính--</option>
+                                                        @if (!empty($groupProducts))
+                                                            @foreach ($groupProducts as $groupProduct)
+                                                                <option value="{{$groupProduct->id}}">{{$groupProduct->name}}</option>
+                                                            @endforeach
+                                                        @endif
+                                                    </select>
+                                                    @error('category_main')
+                                                        <span class="text-danger">{{$message}}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label><div class="btn-add-categorySub btn btn-success"><i class="fas fa-plus mr-1"></i>Thêm</div></label>
+                                            <div class="category-sub">
+                                                {{-- CategorySub --}}
+
+                                                {{-- EndCategorySub --}}
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <input type="submit" value="Xác nhận" class="btn btn-success float-right">
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-12">
-                                    <input type="submit" value="Xác nhận" class="btn btn-success float-right">
-                                </div>
+                                </form>
                             </div>
                         </div>
-                        </form>
                     </div>
                 </div>
             </div>
@@ -322,17 +420,26 @@
         $('.select2bs4').select2({
             theme: 'bootstrap4'
         })
-        // Summernote
-        $('#summernote').summernote({
-            height: 100
-        })
-        // Date
-        $('#reservationdate').datetimepicker({
-            format: 'L'
-        });
     })
     $(function () {
-      $("#example1").DataTable({
+    $("#example1").DataTable({
+        // "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
+        "paging": true,
+        "lengthChange": true,
+        "searching": true,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "responsive": true,
+        "order":[[1,'asc']],
+        "columnDefs": [
+            {"targets": [0,2,3], "orderable": false},
+            { "visible": true, "targets": 0 }
+        ],
+      }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    });
+    $(function () {
+    $("#example2").DataTable({
         // "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
         "paging": true,
         "lengthChange": true,
@@ -348,91 +455,12 @@
         ],
       }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
     });
+
     $("input[data-bootstrap-switch]").each(function() {
         $(this).bootstrapSwitch('state', $(this).prop('checked'));
     })
     // FileInput
     bsCustomFileInput.init();
-    // ImageMain
-    function previewImgMain(e) {
-        var fileInputMain = document.getElementById("file-input-main").files
-            if(fileInputMain.length > 0) {
-            var file_data = $(e).prop('files')[0]
-            var type = file_data.type
-            var fileToLoad = file_data
-
-            var fileReade = new FileReader();
-            fileReade.onload = function(fileLoadedEvent) {
-                var srcData = fileLoadedEvent.target.result;
-                $(".img-main-prd img").attr('src',srcData);
-                $(".close-img-main").css('display',"block");
-            }
-            fileReade.readAsDataURL(fileToLoad);
-        }
-    }
-    $('.close-img-main').click(function(){
-        $(".close-img-main").css('display',"none");
-        $(".img-main-prd img").attr('src',"{{asset('assets/clients/images/image-icon.jpg')}}");
-    })
-    // ListImage
-    $('.insert-img').click(function() {
-        if($('.img-sub-prd').hasClass('show-btn')===false) {
-            $('.img-sub-prd').addClass('show-btn')
-        }
-        var _lastimg = $('.box-view-img li').last().find('input[type="file"]').val();
-
-        console.log(_lastimg)
-        if(_lastimg != '') {
-            var d = new Date();
-            var _time = d.getTime();
-            var _html = '<li id="li_files_'+ _time +'" class="li_file_hide">';
-            _html += '<div class="img-wrap">';
-            _html += '<span class="close-img-sub" onclick="DelImg(this)"><i class="fas fa-times"></i></span>';
-            _html += '<div class="img-wrap-box"></div>';
-            _html += '</div>';
-            _html += '<div class="'+ _time +'">';
-            _html += '<input type="file" class="hidden" name="images[]" onchange="uploadImg(this)" id="file_'+_time+'">';
-            _html +='</div>';
-            _html += '</li>';
-
-            $('.box-view-img').append(_html);
-            $('.box-view-img li').last().find('input[type="file"]').click();
-
-        }else {
-            if(_lastimg == '') {
-                $('.box-view-img li').last().find('input[type="file"]').click();
-            } else {
-                if($('.img-sub-prd').hasClass('show-btn')===true) {
-                    $('.img-sub-prd').removeClass('show-btn')
-                }
-            }
-        }
-    })
-
-    function uploadImg(e) {
-        var file_data = $(e).prop('files')[0]
-        var type = file_data.type
-        var fileToLoad = file_data
-
-        var fileReade = new FileReader();
-
-        fileReade.onload = function(fileLoadedEvent) {
-            var srcData = fileLoadedEvent.target.result;
-
-            var newImgae = document.createElement('img');
-            newImgae.src = srcData;
-            var _li = $(e).closest('li');
-            if(_li.hasClass('li_file_hide')) {
-                _li.removeClass('li_file_hide')
-            }
-            _li.find('.img-wrap-box').append(newImgae.outerHTML);
-        }
-        fileReade.readAsDataURL(fileToLoad);
-    }
-
-    function DelImg(e) {
-        $(e).closest('li').remove();
-    }
     // CategorySub
     var _html ='<div class="row py-2 add-categorySub">'
         _html +='<div class="col-10">'
