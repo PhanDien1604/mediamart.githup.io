@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th4 10, 2022 lúc 10:52 AM
+-- Thời gian đã tạo: Th4 16, 2022 lúc 11:34 AM
 -- Phiên bản máy phục vụ: 10.4.21-MariaDB
 -- Phiên bản PHP: 8.0.10
 
@@ -49,7 +49,11 @@ INSERT INTO `category_promo_web` (`id`, `promo_id`) VALUES
 
 CREATE TABLE `category_web` (
   `id` int(11) NOT NULL,
+  `key` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `row` int(11) DEFAULT NULL,
+  `logo` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `group_id` int(11) DEFAULT NULL,
+  `group_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `group_main_id` int(11) DEFAULT NULL,
   `group_main_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `group_sub_id` int(11) DEFAULT NULL,
@@ -60,13 +64,15 @@ CREATE TABLE `category_web` (
 -- Đang đổ dữ liệu cho bảng `category_web`
 --
 
-INSERT INTO `category_web` (`id`, `row`, `group_main_id`, `group_main_name`, `group_sub_id`, `group_sub_name`) VALUES
-(11, 1, 11, 'Lenovo', 17, 'Thinkpad'),
-(15, 1, 11, 'Lenovo', 12, 'Dell'),
-(16, 1, 11, 'Lenovo', 17, 'Thinkpad'),
-(17, 1, 17, 'Thinkpad', 11, 'Lenovo'),
-(18, 1, 17, 'Thinkpad', 12, 'Dell'),
-(19, 1, 17, 'Thinkpad', 17, 'Thinkpad');
+INSERT INTO `category_web` (`id`, `key`, `row`, `logo`, `group_id`, `group_name`, `group_main_id`, `group_main_name`, `group_sub_id`, `group_sub_name`) VALUES
+(45, 'category-sub', 1, NULL, NULL, NULL, 18, 'Tivi', 21, 'SamSung'),
+(46, 'category-sub', 1, NULL, NULL, NULL, 18, 'Tivi', 26, 'Sony'),
+(47, 'category-sub', 1, NULL, NULL, NULL, 18, 'Tivi', 27, 'LG'),
+(48, 'category-sub', 1, NULL, NULL, NULL, 22, 'Loa, Âm thanh', 23, 'Loa Bluetooth'),
+(49, 'category-sub', 1, NULL, NULL, NULL, 24, 'Phụ kiện Tivi', 25, 'Khung treo Tivi'),
+(53, 'category-main', 1, NULL, 18, 'Tivi', NULL, NULL, NULL, NULL),
+(54, 'category-main', 1, NULL, 19, 'Loa', NULL, NULL, NULL, NULL),
+(55, 'category-main', 1, NULL, 20, 'Dàn Karaoke', NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -114,9 +120,16 @@ CREATE TABLE `group_product` (
 --
 
 INSERT INTO `group_product` (`id`, `code`, `name`) VALUES
-(11, 'NH1234', 'Lenovo'),
-(12, 'NH0001', 'Dell'),
-(17, 'NH0003', 'Thinkpad');
+(18, 'TV', 'Tivi'),
+(19, 'LOA', 'Loa'),
+(20, 'KROK', 'Dàn Karaoke'),
+(21, 'SS', 'SamSung'),
+(22, 'LOAAT', 'Loa, Âm thanh'),
+(23, 'LOA1', 'Loa Bluetooth'),
+(24, 'PKTV', 'Phụ kiện Tivi'),
+(25, 'PKTV1', 'Khung treo Tivi'),
+(26, 'SONY', 'Sony'),
+(27, 'LG', 'LG');
 
 -- --------------------------------------------------------
 
@@ -130,17 +143,6 @@ CREATE TABLE `group_product_rel` (
   `product_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Đang đổ dữ liệu cho bảng `group_product_rel`
---
-
-INSERT INTO `group_product_rel` (`id`, `group_id`, `product_id`) VALUES
-(53, 11, 9),
-(56, 17, 9),
-(63, 12, 9),
-(64, 12, 10),
-(65, 12, 12);
-
 -- --------------------------------------------------------
 
 --
@@ -149,20 +151,22 @@ INSERT INTO `group_product_rel` (`id`, `group_id`, `product_id`) VALUES
 
 CREATE TABLE `images_product` (
   `id` int(11) NOT NULL,
-  `fullname` varchar(1000) COLLATE utf8_unicode_ci DEFAULT NULL
+  `key` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `path` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `images_product`
 --
 
-INSERT INTO `images_product` (`id`, `fullname`) VALUES
-(11, 'images/1648528598436.png'),
-(17, 'images/1648644020634.png'),
-(18, 'images/1648648251921.png'),
-(19, 'images/1648665871393.png'),
-(20, 'images/1648665898734.png'),
-(21, 'images/1648797933396.png');
+INSERT INTO `images_product` (`id`, `key`, `path`) VALUES
+(35, 'img_prd_main', 'images/products/1650038067917.png'),
+(36, 'img_prd_sub', 'images/products/1650038067856.png'),
+(37, 'img_prd_main', 'images/products/1650038224831.png'),
+(38, 'img_prd_sub', 'images/products/1650038224162.png'),
+(40, 'img_prd_sub', 'images/products/165003825020.png'),
+(42, 'img_prd_sub', 'images/products/1650038822825.png'),
+(43, 'img_prd_main', 'images/products/1650038960235.png');
 
 -- --------------------------------------------------------
 
@@ -181,12 +185,41 @@ CREATE TABLE `image_product_rel` (
 --
 
 INSERT INTO `image_product_rel` (`id`, `image_id`, `product_id`) VALUES
-(11, 11, 6),
-(17, 17, 9),
-(18, 18, 10),
-(19, 19, 11),
-(20, 20, 12),
-(21, 21, 13);
+(35, 35, 19),
+(36, 36, 19),
+(37, 37, 21),
+(38, 38, 21),
+(40, 40, 21),
+(42, 42, 9),
+(43, 43, 10);
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `logo_category_web`
+--
+
+CREATE TABLE `logo_category_web` (
+  `id` int(11) NOT NULL,
+  `row` int(11) DEFAULT NULL,
+  `path` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `logo_category_web`
+--
+
+INSERT INTO `logo_category_web` (`id`, `row`, `path`) VALUES
+(4, 1, 'images/website/logo-category/logo-1.png'),
+(5, 2, 'images/website/logo-category/logo-2.png'),
+(6, 3, 'images/website/logo-category/logo-3.png'),
+(7, 4, 'images/website/logo-category/logo-4.png'),
+(8, 5, 'images/website/logo-category/logo-5.png'),
+(9, 6, 'images/website/logo-category/logo-6.png'),
+(10, 7, 'images/website/logo-category/logo-7.png'),
+(11, 8, 'images/website/logo-category/logo-8.png'),
+(12, 9, 'images/website/logo-category/logo-9.png'),
+(13, 10, 'images/website/logo-category/logo-10.png');
 
 -- --------------------------------------------------------
 
@@ -265,12 +298,10 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `code`, `name`, `info`, `group_prd`, `amount`, `price`, `promo_id`, `introduction_article`, `creat_at`, `status`) VALUES
-(6, 'MH3245', 'Lenovo Idipad 5', NULL, NULL, NULL, 15000000, NULL, NULL, '03/29/2022', NULL),
 (9, 'MH0001', 'Dell 7541', NULL, NULL, NULL, 20000000, '0', NULL, '03/30/2022', NULL),
-(10, 'MH0002', 'Aser Nitro 5', NULL, NULL, NULL, 15000000, NULL, NULL, '03/30/2022', 'on'),
-(11, 'MH0004', 'Dell 7541', NULL, NULL, NULL, 15000000, NULL, NULL, '03/31/2022', 'on'),
-(12, 'MH0005', 'Lenovo Idipad 5', NULL, NULL, NULL, 20000000, NULL, NULL, '03/31/2022', 'on'),
-(13, 'MH0009', 'Aser Nitro 5', NULL, NULL, NULL, 15000000, '19', NULL, '04/01/2022', 'on');
+(10, 'MH0002', 'Aser Nitro 5', NULL, NULL, NULL, 15000000, '0', NULL, '03/30/2022', 'on'),
+(19, 'MH723615', 'Lenovo Idipad 5', NULL, NULL, NULL, 20000000, '0', NULL, '04/15/2022', 'on'),
+(21, 'MH723619', 'Lenovo Idipad 5', NULL, NULL, NULL, 20000000, '0', NULL, '04/15/2022', 'on');
 
 -- --------------------------------------------------------
 
@@ -337,9 +368,6 @@ CREATE TABLE `setting` (
 --
 
 INSERT INTO `setting` (`id`, `key`, `path`) VALUES
-(1, 'banner_top', 'images/website/1649263757379.png'),
-(2, 'banner_top', 'images/website/1649263757805.gif'),
-(3, 'banner_top', 'images/website/164926375749.png'),
 (4, 'banner_body', 'images/website/164926375844.png'),
 (5, 'banner_body', 'images/website/1649263758889.png'),
 (7, 'banner_body', 'images/website/1649263758683.png'),
@@ -347,7 +375,10 @@ INSERT INTO `setting` (`id`, `key`, `path`) VALUES
 (10, 'banner_sub', 'images/website/1649263904653.png'),
 (11, 'banner_sub', 'images/website/164926390473.png'),
 (12, 'banner_sub', 'images/website/1649263904771.png'),
-(14, 'banner_body', 'images/website/1649265676591.png');
+(14, 'banner_body', 'images/website/1649265676591.png'),
+(16, 'banner_top', 'images/website/1650096293839.png'),
+(17, 'banner_top', 'images/website/1650096293613.gif'),
+(18, 'banner_top', 'images/website/1650096293887.png');
 
 -- --------------------------------------------------------
 
@@ -469,6 +500,12 @@ ALTER TABLE `image_product_rel`
   ADD KEY `image_product_rel_ibfk_2` (`product_id`);
 
 --
+-- Chỉ mục cho bảng `logo_category_web`
+--
+ALTER TABLE `logo_category_web`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Chỉ mục cho bảng `migrations`
 --
 ALTER TABLE `migrations`
@@ -545,7 +582,7 @@ ALTER TABLE `category_promo_web`
 -- AUTO_INCREMENT cho bảng `category_web`
 --
 ALTER TABLE `category_web`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 
 --
 -- AUTO_INCREMENT cho bảng `demo`
@@ -563,25 +600,31 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT cho bảng `group_product`
 --
 ALTER TABLE `group_product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT cho bảng `group_product_rel`
 --
 ALTER TABLE `group_product_rel`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
 
 --
 -- AUTO_INCREMENT cho bảng `images_product`
 --
 ALTER TABLE `images_product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT cho bảng `image_product_rel`
 --
 ALTER TABLE `image_product_rel`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+
+--
+-- AUTO_INCREMENT cho bảng `logo_category_web`
+--
+ALTER TABLE `logo_category_web`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT cho bảng `migrations`
@@ -599,7 +642,7 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT cho bảng `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT cho bảng `promotion`
@@ -617,7 +660,7 @@ ALTER TABLE `promo_product_rel`
 -- AUTO_INCREMENT cho bảng `setting`
 --
 ALTER TABLE `setting`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT cho bảng `users`
