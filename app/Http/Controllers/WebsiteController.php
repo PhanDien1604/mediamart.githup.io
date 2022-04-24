@@ -22,9 +22,9 @@ class WebsiteController extends Controller
         $promos = $this->promotion->getAllPromo();
         $categorySub = $this->website->getAllCategory('category-sub');
         $categoryMain = $this->website->getAllCategory('category-main');
-        $categoryPromo = $this->website->getAllCategoryPromo();
+        $categoryPromo = $this->website->getAllCategoryPromo('category-promo');
         $logoCategory = $this->website->getLogoCategory('logo-category');
-        // dd($logoCategory);
+        // dd(!empty($categoryPromo[0]));
         return view('admin.website',compact('groupProducts','promos','categorySub','categoryMain','logoCategory','categoryPromo'));
     }
 
@@ -34,7 +34,7 @@ class WebsiteController extends Controller
         $bannerSub = $this->website->getAllImgWeb('banner_sub');
         $bannerPromo = $this->website->getAllImgWeb('banner_promo');
         $backgroudPromo = $this->website->getAllImgWeb('backgroud_promo');
-
+        // dd(!empty($bannerSub));
         return view('admin.imageWebsite',compact('bannerTop','bannerBody','bannerSub','bannerPromo','backgroudPromo'));
     }
 
@@ -140,7 +140,7 @@ class WebsiteController extends Controller
     }
 
     public function postCategoryPromo(Request $request) {
-        $this->website->categoryPromo($request->promo_web);
+        $this->website->categoryPromo("category-promo",$request->promo_web);
         return  back()->with('msg','Cập nhật dữ liệu thành công');
     }
 

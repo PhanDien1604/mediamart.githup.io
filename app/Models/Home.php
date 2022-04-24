@@ -48,4 +48,11 @@ class Home extends Model
         ->get();
         return $item;
     }
+    public function getCategoryPromo() {
+        $item = DB::table('category_web')
+        ->where('key','category-promo')
+        ->where('promo_id','<>',"")
+        ->get();
+        return $item;
+    }
 }

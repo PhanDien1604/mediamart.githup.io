@@ -172,7 +172,7 @@
                             </div>
                             <div class="img-banner-top">
                                 <ul class="box-view-img">
-                                    @if (!empty($bannerTop))
+                                    @if (!empty($bannerTop[0]))
                                         @foreach ($bannerTop as $image)
                                         <li>
                                             <div class="img-wrap">
@@ -196,7 +196,7 @@
                             </div>
                             <div class="img-banner-body">
                                 <ul class="box-view-img">
-                                    @if (!empty($bannerBody))
+                                    @if (!empty($bannerBody[0]))
                                         @foreach ($bannerBody as $image)
                                         <li>
                                             <div class="img-wrap">
@@ -293,7 +293,7 @@
                             <div class="border border-secondary text-center py-1 rounded mb-2">Banner Promotion</div>
                             <div class="img-banner-promo">
                                 <input type="file" name="banner_promo[]" id="banner_promo" class="" onchange="prevImg('#banner_promo')" accept=".jpg,.jpeg,.png,.gif">
-                                @if (!empty($bannerPromo))
+                                @if (!empty($bannerPromo[0]))
                                     @php
                                         $img = "<img src=".asset($bannerPromo[0]->path)." style='width: 100%'>";
                                     @endphp

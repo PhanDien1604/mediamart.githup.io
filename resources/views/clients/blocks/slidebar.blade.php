@@ -5,14 +5,18 @@
         <div class="homebanner-container">
             <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-indicators">
+                    @if (!empty($bannerBody[0]))
                     @foreach ($bannerBody as $key => $item)
                         <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{$key}}" class="active" aria-current="true" aria-label="Slide 1"></button>
                     @endforeach
+                    @endif
+
                   {{-- <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{}}" class="active" aria-current="true" aria-label="Slide 1"></button>
                   <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
                   <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button> --}}
                 </div>
                 <div class="carousel-inner">
+                    @if (!empty($bannerBody[0]))
                     @foreach ($bannerBody as $item)
                         <div class="carousel-item">
                             @php
@@ -22,6 +26,8 @@
                         {{-- <img src="{{asset('assets/clients/images/banner/banner-header-1.png')}}" class="d-block w-100" alt="..."> --}}
                         </div>
                     @endforeach
+                    @endif
+
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
                   <span class="carousel-control-prev-icon" aria-hidden="true"></span>

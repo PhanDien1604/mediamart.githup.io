@@ -61,12 +61,13 @@ class ProductController extends Controller
             $request->product_info,
             $request->product_price,
             $request->introduction_article,
-            $request->product_promo,
             $request->creat_at,
             $request->product_status
         ];
 
         $product_id = $this->products->addProduct($dataInsert);
+        $promo_id = $request->product_promo;
+        $this->promotions->addPromoProduct($product_id, $promo_id);
         $this->fileImage->addImage('img_prd_main',$dataImgMain, $product_id);
         $this->fileImage->addImage('img_prd_sub',$dataImgSub, $product_id);
         // dd($product_id);
@@ -89,8 +90,8 @@ class ProductController extends Controller
         $imgPrdSub = $this->fileImage->getEditImages($id,'img_prd_sub');
         // dd($imgPrdSub);
         $promoList = $this->promotions->getPromoSub('Sản phẩm');
-
-        return view("admin.editProduct", compact('productDetail', 'imgPrdMain','imgPrdSub','promoList'));
+        $promoId = $this->promotions->indexPromoProduct($id);
+        return view("admin.editProduct", compact('productDetail', 'imgPrdMain','imgPrdSub','promoList','promoId'));
     }
     public function postEdit(Request $request) {
         $dataImgMain = [];
@@ -147,10 +148,11 @@ class ProductController extends Controller
             $request->product_info,
             $request->product_price,
             $request->introduction_article,
-            $request->product_promo,
             $request->creat_at,
             $request->product_status
         ];
+        $promo_id = $request->product_promo;
+        $this->promotions->updatePromoProduct($id, $promo_id);
         $this->products->updateProduct($dataUpdate, $id);
         $this->fileImage->addImage('img_prd_main',$dataImgMain, $id);
         $this->fileImage->addImage('img_prd_sub',$dataImgSub, $id);
@@ -161,7 +163,7 @@ class ProductController extends Controller
             $productDetail = $this->products->getDetail($id);
             $listImageDetail = $this->fileImage->getListDetail($id);
             if(!empty($productDetail[0])) {
-                $this->fileImage->deleteImageBelongProduct($id, $listImageDetail);
+                // $this->fileImage->deleteImageBelongProduct($id, $listImageDetail);
                 $this->products->deleteProduct($id);
             }else {
                 return redirect()->route('admin.product.show');

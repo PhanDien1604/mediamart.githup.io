@@ -113,7 +113,7 @@
                                             </td>
                                             <td>{{$item->code}}</td>
                                             <td>{{$item->name}}</td>
-                                            <td>{{$item->amount}}</td>
+                                            <td>amount</td>
                                             <td>{{$item->price}}</td>
                                             <td>
                                                 <input type="checkbox" {{!empty($item->status) ? "checked": ""}} disabled>

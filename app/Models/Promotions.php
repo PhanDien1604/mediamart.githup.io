@@ -51,5 +51,22 @@ class Promotions extends Model
     public function deletePromo($id) {
         DB::table('promotion')->where('id',$id)->delete();
     }
+
+    public function indexPromoProduct($product_id) {
+        return DB::table('promo_product_rel')->select("promo_id")->where('product_id',$product_id)->get();
+    }
+    public function addPromoProduct($product_id, $promo_id) {
+        DB::table('promo_product_rel')->insert([
+            "product_id" => $product_id,
+            "promo_id" => $promo_id
+        ]);
+    }
+    public function updatePromoProduct($product_id, $promo_id) {
+        DB::table('promo_product_rel')
+        ->where("product_id",$product_id)
+        ->update([
+            "promo_id" => $promo_id
+        ]);
+    }
 }
 

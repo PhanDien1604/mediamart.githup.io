@@ -2,6 +2,7 @@
     <div class="banner-top-header">
         <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
             <div class="carousel-inner">
+                @if (!empty($bannerTop[0]))
                 @foreach ($bannerTop as $item)
                 <div class="carousel-item">
                     @php
@@ -10,6 +11,9 @@
                     {!!$img!!}
                 </div>
                 @endforeach
+                @endif
+
+
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
               <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -65,6 +69,7 @@
                 </p>
                 <div class="category-list">
                     <ul class="main-menu">
+                        @if (!empty($category[0]))
                         @foreach ($category as $item)
                         <li class="menu-item">
                             <div class="dropright">
@@ -76,7 +81,7 @@
                                     {{-- <img src="{{asset('assets/clients/images/icon-phone.PNG')}}" alt=""> --}}
                                 </span>
                                 @foreach ($item[1] as $value)
-                                    <a href="#">{{$value->group_name}}</a><span class="comma">,</span>
+                                    <a href="{{route('home.groupProduct', ['groupProductId'=>$value->group_id])}}">{{$value->group_name}}</a><span class="comma">,</span>
                                 @endforeach
                             </div>
 
@@ -85,11 +90,11 @@
                                 <aside>
                                     <p class="menuitem__title">
                                         {{$value[1]}}
-                                        <a href="#">Xem tất cả</a>
+                                        <a href="{{route('home.groupProduct', ['groupProductId'=>$value[0]])}}">Xem tất cả</a>
                                     </p>
                                     @foreach ($value[2] as $key)
                                         {{-- @dd($key) --}}
-                                        <a href="#">{{$key->group_sub_name}}</a>
+                                        <a href="{{route('home.groupProduct', ['groupProductId'=>$key->group_sub_id])}}">{{$key->group_sub_name}}</a>
                                     @endforeach
                                 </aside>
                                 @endforeach
@@ -97,11 +102,20 @@
 
                         </li>
                         @endforeach
+                        @endif
+
                     </ul>
                 </div>
             </div>
             <ul class="txt-list">
-                <li><a href="#">Sản phầm giảm giá 50%</a></li>
+
+                @if(!empty($categoryPromo[0]))
+                @foreach ($categoryPromo as $item)
+                <li>
+                    <a href="{{route('home.groupProduct', ['groupProductId'=>$item->promo_id])}}">{{$item->promo_name}}</a>
+                </li>
+                @endforeach
+                @endif
             </ul>
         </section>
     </div>

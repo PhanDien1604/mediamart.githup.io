@@ -58,15 +58,5 @@ class FileImages extends Model
     public function getListDetail($id) {
         return DB::select('SELECT * FROM image_product_rel WHERE product_id = ?', [$id]);
     }
-
-    public function deleteImageBelongProduct($id, $listImageDetail) {
-        foreach ($listImageDetail as $value) {
-            // echo $value->image_id;
-            // // dd();
-            DB::delete('DELETE FROM images_product WHERE  id = ?', [$value->image_id]);
-        }
-        // dd();
-        DB::delete('DELETE FROM image_product_rel WHERE product_id = ?', [$id]);
-    }
 }
 

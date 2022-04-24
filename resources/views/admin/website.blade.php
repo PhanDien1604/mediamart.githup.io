@@ -120,7 +120,7 @@
                                 <div class="row">
                                     <div class="col-4">
                                         <select class="form-control select2bs4" name="promo_web[]" style="width: 100%;">
-                                            <option value="0">--Khuyến mại--</option>
+                                            <option value="">--Khuyến mại--</option>
                                                 @if (!empty($promos))
                                                     @foreach ($promos as $promo)
                                                         <option {{$categoryPromo[0]->promo_id != 0 && $promo->id == $categoryPromo[0]->promo_id ? "selected" : ""}} value="{{$promo->id}}">{{$promo->code}}</option>
@@ -130,7 +130,7 @@
                                     </div>
                                     <div class="col-4">
                                         <select class="form-control select2bs4" name="promo_web[]" style="width: 100%;">
-                                            <option value="0">--Khuyến mại--</option>
+                                            <option value="">--Khuyến mại--</option>
                                                 @if (!empty($promos))
                                                     @foreach ($promos as $promo)
                                                         <option {{$categoryPromo[1]->promo_id != 0 && $promo->id == $categoryPromo[1]->promo_id ? "selected" : ""}} value="{{$promo->id}}">{{$promo->code}}</option>
@@ -140,7 +140,7 @@
                                     </div>
                                     <div class="col-4">
                                         <select class="form-control select2bs4" name="promo_web[]" style="width: 100%;">
-                                            <option value="0">--Khuyến mại--</option>
+                                            <option value="">--Khuyến mại--</option>
                                                 @if (!empty($promos))
                                                     @foreach ($promos as $promo)
                                                         <option {{$categoryPromo[2]->promo_id != 0 && $promo->id == $categoryPromo[2]->promo_id ? "selected" : ""}} value="{{$promo->id}}">{{$promo->code}}</option>
@@ -369,7 +369,7 @@
                                                         <option value="0">--Nhóm chính--</option>
                                                         @if (!empty($groupProducts))
                                                             @foreach ($groupProducts as $groupProduct)
-                                                                <option value="{{$groupProduct->id}}">{{$groupProduct->name}}</option>
+                                                                <option value="{{$groupProduct->id}}">{{$groupProduct->code}} -- {{$groupProduct->name}}</option>
                                                             @endforeach
                                                         @endif
                                                     </select>
@@ -467,9 +467,9 @@
         _html +='<select class="form-control select2bs4" name="category_sub[]" style="width: 100%;">'
         _html +='<option value="0">--Nhóm phụ--</option>'
         _html +='@if (!empty($groupProducts))'
-        _html +=    '@foreach ($groupProducts as $groupProduct)'
-        _html +='       <option value="{{$groupProduct->id}}">{{$groupProduct->name}}</option>'
-        _html +='      @endforeach'
+        _html +='   @foreach ($groupProducts as $groupProduct)'
+        _html +='       <option value="{{$groupProduct->id}}">{{$groupProduct->code}} -- {{$groupProduct->name}}</option>'
+        _html +='   @endforeach'
         _html +='@endif'
         _html +='</select>'
         _html +='</div>'

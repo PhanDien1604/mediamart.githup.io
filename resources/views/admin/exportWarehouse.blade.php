@@ -47,55 +47,43 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                   <div class="col-sm-6">
-                    <h1>Kho</h1>
+                    <h1>Nhập kho</h1>
                   </div>
                 </div>
               </div><!-- /.container-fluid -->
         </section>
         <section class="content">
             <div class="container-fluid">
+                <form action="" method="POST">
+                @csrf
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <form action="" method="POST">
-                                    @csrf
-                                    @if (session('msg'))
-                                        <div class="title-msg d-none">{{session('msg')}}</div>
-                                        <div class="icon-msg d-none">success</div>
-                                    @endif
-                                    @if ($errors->any())
-                                        <div class="title-msg d-none">Vui lòng kiểm tra lại giữ liệu</div>
-                                        <div class="icon-msg d-none">error</div>
-                                    @endif
-                                    <div class="row">
-                                        <div class="form-group">
-                                            <button type="submit" class="btn btn-primary mb-2">Cập nhật</button>
-                                        </div>
-                                        <div class="col-2">
-                                            <div class="form-group">
-                                                <input type="text" id="inputName" class="form-control" name="warehouse_name" value="{{old('warehouse_name') ?? $warehouseDetail->name}}" placeholder="Tên kho">
-                                                @error('warehouse_name')
-                                                    <span class="text-danger">{{$message}}</span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        <div class="col-4">
-                                            <input type="text" id="inputName" class="form-control" name="warehouse_address" value="{{old('warehouse_address') ?? $warehouseDetail->address}}" placeholder="Địa chỉ">
-                                            @error('warehouse_name')
-                                                <span class="text-danger">{{$message}}</span>
-                                            @enderror
-                                        </div>
-                                        <div class="col">
-                                            <div class="d-flex justify-content-end">
-                                                <a href="{{route("admin.warehouse.importWarehouse",['id'=>$warehouseDetail->id])}}" class="btn btn-success">Nhập kho</a>
-                                                <a href="{{route("admin.warehouse.exportWarehouse",['id'=>$warehouseDetail->id])}}" class="btn btn-warning ml-2">Xuất kho</a>
+                                @if (session('msg'))
+                                    <div class="title-msg d-none">{{session('msg')}}</div>
+                                    <div class="icon-msg d-none">success</div>
+                                @endif
+                                @if ($errors->any())
+                                    <div class="title-msg d-none">Vui lòng kiểm tra lại giữ liệu</div>
+                                    <div class="icon-msg d-none">error</div>
+                                @endif
+                                <div class="row">
+                                    <div class="col">
+                                        <a href="{{route("admin.warehouse.exportProductWarehouse")}}" class="btn btn-primary">Chọn sản phẩm</a>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-group float-right">
+                                            <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                                                <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate" name="creat_at" value="{{old('creat_at')}}"/>
+                                                <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </form>
+                                </div>
                             </div>
-                        <!-- /.card-header -->
                             <div class="card-body">
                                 <table id="example1" class="table table-bordered table-hover">
                                     <thead>
@@ -103,22 +91,29 @@
                                             <th>STT</th>
                                             <th>Tên sản phẩm</th>
                                             <th>Mã sản phẩm</th>
-                                            {{-- <th>Giá(VNĐ)</th>
-                                            <th>Số lượng</th> --}}
+                                            <th>Giá(VNĐ)</th>
+                                            <th>Số lượng</th>
                                             <th>Chức năng</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @if (!empty($products[0]))
+                                        {{-- @if (!empty($products[0]))
                                             @foreach ($products as $product)
                                                 <tr>
                                                     <td></td>
                                                     <td>{{$product->code}}</td>
                                                     <td>{{$product->name}}</td>
-                                                    {{-- <td>{{$product->price}}</td>
-                                                    <td>{{$product->amount}}</td> --}}
+                                                    <td>{{$product->price}}</td>
+                                                    <td>{{$product->product_amount}}</td>
                                                     <td>
                                                         <div class="btn-box">
+                                                            <div class="info-product d-none">
+                                                                <span class="prd-code">{{$product->code}}</span>
+                                                                <span class="prd-name">{{$product->name}}</span>
+                                                                <span class="prd-price">{{$product->price}}</span>
+                                                            </div>
+                                                            <a href="{{route('admin.warehouse.addAmountProductWarehouse', ['id' => $warehouseDetail->id, 'product_id'=>$product->id])}}" onclick="confirmProduct(this)"
+                                                                class="add_amount_new btn btn-info"><i class="fas fa-pencil-alt"></i></a>
                                                             <a href="{{route('admin.warehouse.deleteProductBelongWarehouse',['id'=>$warehouseDetail->id, 'product_id'=>$product->id])}}"
                                                             onclick="return confirm('Bạn có chắc muốn xóa không')" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
                                                         </div>
@@ -129,13 +124,19 @@
                                             <tr>
                                                 <td colspan="6">Không có sản phẩm nào</td>
                                             </tr>
-                                        @endif
+                                        @endif --}}
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
+
+                    <div class="col-12">
+                        <a href="#" class="btn btn-secondary">Quay lại</a>
+                        <button class="btn btn-success float-right"><i class="fas fa-file-export mr-2"></i>Xuất</button>
+                    </div>
                 </div>
+                </form>
             </div>
         </section>
     </div>
@@ -172,5 +173,55 @@
         ],
       }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
     });
+    // date
+    $('#reservationdate').datetimepicker({
+        format: 'L'
+    });
+    // SweetAlert
+    function confirmProduct(e) {
+        var evt = window.event
+        evt.preventDefault();
+        let infoPrd = $(e).parent().find('.info-product')
+        var code = infoPrd.find('.prd-code').text()
+        var name = infoPrd.find('.prd-name').text()
+        var price = infoPrd.find('.prd-price').text()
+
+        var _href = $(e).parent().find('.add_amount_new').attr('href')
+
+        Swal.fire({
+            title: 'Thông tin sản phẩm',
+            html:
+            '<form action="'+_href+'" method="POST" id="form-add-amount">'+
+            '@csrf'+
+            '<div class="my-2">'+code+'</div>'+
+            '<div class="my-2">'+name+'</div>'+
+            '<div class="my-2">'+price+'</div>'+
+            '<div class="font-weight-bold mt-4 mb-2">Số lượng</div>'+
+            '<input class="product_amount form-control w-50 m-auto" name="product_amount" placeholder="Số lượng">'+
+            '</form>',
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                var value = $('.product_amount').val()
+                var regex = /^\d*[1-9]\d*$/;
+                if(value && value.match(regex)) {
+                    return
+                }
+                else if(!value){
+                        Swal.showValidationMessage(
+                            'Vui lòng nhập số lượng'
+                        )
+                    } else {
+                        Swal.showValidationMessage(
+                            'Số lượng phải là số nguyên dương'
+                        )
+                    }
+            },
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $('#form-add-amount').submit()
+            }
+        })
+
+    }
   </script>
 @endsection

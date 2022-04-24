@@ -222,7 +222,7 @@
                             <div class="form-group">
                                 <label>Thông tin khuyến mại</label>
                                 <select class="form-control select2bs4" name="product_promo" style="width: 100%;">
-                                    <option value="0">--Thông tin khuyến mại--</option>
+                                    <option value="">--Thông tin khuyến mại--</option>
                                     @if(!empty($promoList))
                                         @foreach ($promoList as $promo)
                                             <option {{old('product_promo') == $promo->id ? "selected": ""}} value="{{$promo->id}}">{{$promo->info}}</option>

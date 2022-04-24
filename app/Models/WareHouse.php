@@ -22,7 +22,7 @@ class WareHouse extends Model
     public function getDetailWareHouse($id) {
         return DB::table('warehouse')->where('id',$id)->get();
     }
-    public function updateGroupWarehouse($data, $id) {
+    public function updateWarehouse($data, $id) {
         DB::table('warehouse')->where('id',$id)->update([
             'name'=>$data[0],
             'address' => $data[1]
@@ -32,7 +32,36 @@ class WareHouse extends Model
         DB::table('warehouse')->where('id',$id)->delete();
     }
 
-    public function updateProductBelongWarehouse($product_id, $warehouse_id, $product_amount) {
+    public function getAllProductWarehouse($warehouse_id) {
+        return DB::table('warehouse_product')->where('warehouse_id',$warehouse_id)->get();
+    }
+    public function getAllProductWarehouseDate($warehouse_id, $creat_at) {
+        $data = DB::table('import_warehouse')
+        ->select('import_warehouse.*','warehouse_product.code','warehouse_product.name')
+        ->where('creat_at',$creat_at)
+        ->where('import_warehouse.warehouse_id',$warehouse_id)
+        ->leftjoin('warehouse_product','import_warehouse.warehouse_product_id','=','warehouse_product.id')
+        ->get();
+
+        return $data;
+    }
+    public function addProductWarehouse($data) {
+        // dd($data);
+        $warehouseProductId = DB::table('warehouse_product')->insertGetId([
+            'code' => $data[0],
+            'name' => $data[1],
+            'warehouse_id' => $data[5]
+        ]);
+
+        DB::table('import_warehouse')->insert([
+            'price' => $data[2],
+            'amount' => $data[3],
+            'creat_at' => $data[4],
+            'warehouse_id' => $data[5],
+            'warehouse_product_id' => $warehouseProductId
+        ]);
+    }
+    public function updateProductWarehouse($product_id, $warehouse_id, $product_amount) {
         DB::table('warehouse_product_rel')->insert([
             'warehouse_id' => $warehouse_id,
             'product_id' => $product_id,

@@ -69,13 +69,24 @@ class Website extends Model
         DB::table('logo_category_web')->where('id',$id)->delete();
     }
 
-    public function getAllCategoryPromo() {
-        return DB::table('category_promo_web')->get();
+    public function getAllCategoryPromo($key) {
+        return DB::table('category_web')
+        ->where('key',$key)
+        ->get();
     }
-    public function categoryPromo($data) {
-        foreach($data as $key => $item) {
-            DB::table('category_promo_web')->where('id',$key+1)->update([
-                'promo_id' => $item
+    public function categoryPromo($key, $data) {
+        $dataOld = DB::table('category_web')
+        ->select('id')
+        ->where("key",$key)
+        ->get();
+        // dd($dataOld);
+        foreach($dataOld as $i => $item) {
+            // dd($data[$i]);
+            // dd((DB::table('promotion')->where('id',$data[$i])->get())[0]);
+            DB::table('category_web')->where('id',$item->id)->update([
+                'promo_id' => $data[$i],
+                'promo_name' => $data[$i] != "" ?
+                    (DB::table('promotion')->select('info')->where('id',$data[$i])->get())[0]->info : ""
             ]);
         }
     }

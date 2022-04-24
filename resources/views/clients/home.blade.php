@@ -12,7 +12,7 @@
     <div class="content">
         <section>
             <a href="#" class="subbanner">
-                @if(!empty($bannerPromo))
+                @if(!empty($bannerPromo[0]))
                     @php
                         $img = '<img src="'.asset($bannerPromo[0]->path).'" class="d-block w-100">';
                     @endphp
@@ -32,7 +32,7 @@
                                     <span class="prd__price-new">10.000.000&#x20ab;</span>
                                     <span class="prd__price-old">10.000.000&#x20ab;</span>
                                 </div>
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                <p class="card-text"></p>
                             </div>
                         </div>
                     </a>

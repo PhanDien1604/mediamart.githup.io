@@ -106,10 +106,10 @@
                     <h1>Cập nhật sản phẩm</h1>
                 </div>
                 <div class="col-sm-6">
-                  <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active">Product Add</li>
-                  </ol>
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Product Add</li>
+                    </ol>
                 </div>
               </div>
             </div><!-- /.container-fluid -->
@@ -251,7 +251,7 @@
                                     <option value="0">--Thông tin khuyến mại--</option>
                                     @if(!empty($promoList))
                                         @foreach ($promoList as $promo)
-                                            <option {{$promo->id == $productDetail->promo_id ? "selected" : ""}} value="{{$promo->id}}">{{$promo->info}}</option>
+                                            <option {{$promo->id == $promoId[0]->promo_id ? "selected" : ""}} value="{{$promo->id}}">{{$promo->info}}</option>
                                         @endforeach
                                     @endif
                                 </select>
