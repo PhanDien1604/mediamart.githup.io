@@ -224,7 +224,7 @@
                                 </div>
                                 <!-- /.card-body -->
                                 <div class="card-footer text-center">
-                                  <a href="{{route('admin.product.show')}}" class="uppercase">Xem tất cả sản phẩm</a>
+                                  <a href="{{route('admin.warehouse.showProductWarehouse')}}" class="uppercase">Xem tất cả sản phẩm</a>
                                 </div>
                                 <!-- /.card-footer -->
                               </div>

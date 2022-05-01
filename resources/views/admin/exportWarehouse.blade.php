@@ -70,13 +70,14 @@
                                 @endif
                                 <div class="row">
                                     <div class="col">
-                                        <a href="{{route("admin.warehouse.exportProductWarehouse")}}" class="btn btn-primary">Chọn sản phẩm</a>
+                                        <a href="{{route("admin.warehouse.exportProductWarehouse",['id'=>$warehouseDetail->id])}}"
+                                            class="btn btn-primary"><i class="fas fa-file-export mr-2"></i>Xuất</a>
                                     </div>
                                     <div class="col">
                                         <div class="form-group float-right">
-                                            <div class="input-group date" id="reservationdate" data-target-input="nearest">
-                                                <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate" name="creat_at" value="{{old('creat_at')}}"/>
-                                                <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                                            <div class="input-group">
+                                                <input disabled type="text" class="form-control" value="{{date("d/m/Y")}}"/>
+                                                <div class="input-group-append">
                                                     <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                                 </div>
                                             </div>
@@ -97,14 +98,14 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {{-- @if (!empty($products[0]))
+                                        @if (!empty($products[0]))
                                             @foreach ($products as $product)
                                                 <tr>
                                                     <td></td>
                                                     <td>{{$product->code}}</td>
                                                     <td>{{$product->name}}</td>
                                                     <td>{{$product->price}}</td>
-                                                    <td>{{$product->product_amount}}</td>
+                                                    <td>{{$product->amount}}</td>
                                                     <td>
                                                         <div class="btn-box">
                                                             <div class="info-product d-none">
@@ -112,9 +113,7 @@
                                                                 <span class="prd-name">{{$product->name}}</span>
                                                                 <span class="prd-price">{{$product->price}}</span>
                                                             </div>
-                                                            <a href="{{route('admin.warehouse.addAmountProductWarehouse', ['id' => $warehouseDetail->id, 'product_id'=>$product->id])}}" onclick="confirmProduct(this)"
-                                                                class="add_amount_new btn btn-info"><i class="fas fa-pencil-alt"></i></a>
-                                                            <a href="{{route('admin.warehouse.deleteProductBelongWarehouse',['id'=>$warehouseDetail->id, 'product_id'=>$product->id])}}"
+                                                            <a href="{{route('admin.warehouse.deleteExportWarehouse',['id'=>$product->id])}}"
                                                             onclick="return confirm('Bạn có chắc muốn xóa không')" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
                                                         </div>
                                                     </td>
@@ -124,7 +123,7 @@
                                             <tr>
                                                 <td colspan="6">Không có sản phẩm nào</td>
                                             </tr>
-                                        @endif --}}
+                                        @endif
                                     </tbody>
                                 </table>
                             </div>
@@ -132,8 +131,7 @@
                     </div>
 
                     <div class="col-12">
-                        <a href="#" class="btn btn-secondary">Quay lại</a>
-                        <button class="btn btn-success float-right"><i class="fas fa-file-export mr-2"></i>Xuất</button>
+                        <a href="{{route('admin.warehouse.editWareHouse',['id'=>$warehouseDetail->id])}}" class="btn btn-secondary">Quay lại</a>
                     </div>
                 </div>
                 </form>

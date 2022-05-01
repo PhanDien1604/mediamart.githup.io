@@ -85,6 +85,7 @@
                                                 <th>STT</th>
                                                 <th>Mã sản phẩm</th>
                                                 <th>Tên sản phẩm</th>
+                                                <th>Giá(VNĐ)</th>
                                                 <th>Chức năng</th>
                                             </tr>
                                         </thead>
@@ -95,23 +96,25 @@
                                                         <td></td>
                                                         <td>{{$item->code}}</td>
                                                         <td>{{$item->name}}</td>
+                                                        <td>{{$item->price}}</td>
                                                         <td>
                                                             <div class="btn-box">
                                                                 <div class="info-product d-none">
                                                                     <span class="prd-code">{{$item->code}}</span>
                                                                     <span class="prd-name">{{$item->name}}</span>
+                                                                    <span class="prd-price">{{$item->price}}</span>
                                                                 </div>
                                                                 <button class="btn btn-info" onclick='confirmProduct(this)'><i class="fas fa-angle-double-right"></i></button>
-                                                                <a href="{{route('admin.warehouse.postImportProductOldWarehouse', ['id' => $warehouseDetail->id, 'product_id'=>$item->id])}}"
+                                                                <a href="{{route('admin.warehouse.postImportProductOldWarehouse', ['id'=>$warehouseDetail->id,'warehouse_product_id'=>$item->id])}}"
                                                                     class="abc btn btn-info d-none"><i class="fas fa-angle-double-right"></i></a>
                                                             </div>
                                                         </td>
                                                     </tr>
                                                 @endforeach
                                             @else
-                                            <tr>
-                                                <td colspan="4">Không có sản phẩm nào</td>
-                                            </tr>
+                                                <tr>
+                                                    <td colspan="4">Không có sản phẩm nào</td>
+                                                </tr>
                                             @endif
                                         </tbody>
                                     </table>
@@ -174,7 +177,6 @@
                                         </div>
                                     </form>
                                 </div>
-
                             </div>
                             <!-- /.card-body -->
                         </div>
@@ -240,8 +242,7 @@
             '@csrf'+
             '<div class="my-2">'+code+'</div>'+
             '<div class="my-2">'+name+'</div>'+
-            '<div class="font-weight-bold mt-4 mb-2">Giá</div>'+
-            '<input class="product_amount form-control w-50 m-auto" name="product_price" placeholder="VNĐ">'+
+            '<div class="my-2">'+price+'</div>'+
             '<div class="font-weight-bold mt-4 mb-2">Số lượng</div>'+
             '<input class="product_amount form-control w-50 m-auto" name="product_amount" placeholder="Số lượng">'+
             '</form>',
@@ -260,17 +261,6 @@
                     } else {
                         Swal.showValidationMessage(
                             'Số lượng phải là số nguyên dương'
-                        )
-                    }
-                if(price && price.match(regex)) {
-                    return
-                }else if(!price){
-                        Swal.showValidationMessage(
-                            'Vui lòng nhập giá'
-                        )
-                    } else {
-                        Swal.showValidationMessage(
-                            'Giá phải là số nguyên dương'
                         )
                     }
             },

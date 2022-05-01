@@ -135,31 +135,47 @@ Route::prefix('/admin')->name('admin.')->group(function(){
 
         Route::get('/delete/{id}',[WareHouseController::class,'deleteWareHouse'])->name('deleteWareHouse');
 
+        // import
+
         Route::get('edit/{id}/import',[WareHouseController::class,'importWarehouse'])->name('importWarehouse');
 
         Route::post('edit/{id}/import',[WareHouseController::class,'postImportWarehouse'])->name('postImportWarehouse');
+
+        Route::get('/edit/{id}/import/product',[WareHouseController::class,'importProductWarehouse'])->name('importProductWarehouse');
+
+        Route::post('/edit/{id}/import/product-new',[WareHouseController::class,'postImportProductNewWarehouse'])->name('postImportProductNewWarehouse');
+
+        Route::post('/edit/{id}/import/product-old/{warehouse_product_id}',[WareHouseController::class,'postImportProductOldWarehouse'])->name('postImportProductOldWarehouse');
+
+        Route::post('/updateAmountImporttWarehouse/{id}',[WareHouseController::class,'updateAmountImporttWarehouse'])->name('updateAmountImporttWarehouse');
+
+        Route::get('/deleteImportWarehouse/{id}',[WareHouseController::class,'deleteImportWarehouse'])->name('deleteImportWarehouse');
+
+        Route::get('/deleteProductWarehouse/{id}',[WareHouseController::class,'deleteProductWarehouse'])->name('deleteProductWarehouse');
+
+        // export
 
         Route::get('/edit/{id}/export',[WareHouseController::class,'exportWarehouse'])->name('exportWarehouse');
 
         Route::post('edit/{id}/export',[WareHouseController::class,'postExportWarehouse'])->name('postExportWarehouse');
 
-        Route::get('/edit/{id}/import/product',[WareHouseController::class,'importProductWarehouse'])->name('importProductWarehouse');
+        Route::get('/edit/{id}/export/product',[WareHouseController::class,'exportProductWarehouse'])->name('exportProductWarehouse');
 
-        Route::get('/edit/{id}/export/{date?}/product',[WareHouseController::class,'exportProductWarehouse'])->name('exportProductWarehouse');
+        Route::post('/edit/{id}/export/product/{warehouse_product_id}',[WareHouseController::class,'postExportProductWarehouse'])->name('postExportProductWarehouse');
 
-        Route::post('/edit/{id}/import/product-new',[WareHouseController::class,'postImportProductNewWarehouse'])->name('postImportProductNewWarehouse');
+        Route::post('/updateAmountExporttWarehouse/{id}',[WareHouseController::class,'updateAmountExporttWarehouse'])->name('updateAmountExporttWarehouse');
 
-        Route::post('/edit/{id}/import/product-old',[WareHouseController::class,'postImportProductOldWarehouse'])->name('postImportProductOldWarehouse');
+        Route::get('/deleteExportWarehouse/{id}',[WareHouseController::class,'deleteExportWarehouse'])->name('deleteExportWarehouse');
 
-        Route::post('/edit/{id}/export/product',[WareHouseController::class,'postExportProductWarehouse'])->name('postExportProductWarehouse');
+        Route::get('/edit/{id}/statistical-import/{date}',[WareHouseController::class,'statisticalImportWarehouse'])->name('statisticalImportWarehouse');
 
-        Route::get('/addProductBelongWarehouse/{id}',[WareHouseController::class,'productNoBelongWarehouse'])->name('productNoBelongWarehouse');
+        Route::post('/edit/{id}/statistical-import/{date}',[WareHouseController::class,'postStatisticalImportWarehouse'])->name('postStatisticalImportWarehouse');
 
-        Route::post('/addProductBelongWarehouse/{id}/{product_id}',[WareHouseController::class,'addProductBelongWarehouse'])->name('addProductBelongWarehouse');
+        Route::get('/edit/{id}/statistical-export/{date}',[WareHouseController::class,'statisticalExportWarehouse'])->name('statisticalExportWarehouse');
 
-        Route::post('/addAmountProductWarehouse/{id}/{product_id}',[WareHouseController::class,'postAddAmountProductWarehouse'])->name('addAmountProductWarehouse');
+        Route::post('/edit/{id}/statistical-export/{date}',[WareHouseController::class,'postStatisticalExportWarehouse'])->name('postStatisticalExportWarehouse');
 
-        Route::get('/deleteProductBelongWarehouse/{id}/{product_id}',[WareHouseController::class,'deleteProductBelongWarehouse'])->name('deleteProductBelongWarehouse');
+        Route::get('/all',[WareHouseController::class,'showProductWarehouse'])->name('showProductWarehouse');
 
     });
 });

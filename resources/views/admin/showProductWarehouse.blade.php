@@ -47,61 +47,29 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                   <div class="col-sm-6">
-                    <h1>Kho</h1>
+                    <h1>Thống kê nhập kho</h1>
                   </div>
                 </div>
               </div><!-- /.container-fluid -->
         </section>
         <section class="content">
             <div class="container-fluid">
+                <form action="" method="POST">
+                @csrf
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <form action="" method="POST">
-                                    @csrf
-                                    @if (session('msg'))
-                                        <div class="title-msg d-none">{{session('msg')}}</div>
-                                        <div class="icon-msg d-none">success</div>
-                                    @endif
-                                    @if ($errors->any())
-                                        <div class="title-msg d-none">Vui lòng kiểm tra lại giữ liệu</div>
-                                        <div class="icon-msg d-none">error</div>
-                                    @endif
-                                    <div class="row">
-                                        <div class="form-group">
-                                            <button type="submit" class="btn btn-primary mb-2">Cập nhật</button>
-                                        </div>
-                                        <div class="col-2">
-                                            <div class="form-group">
-                                                <input type="text" id="inputName" class="form-control" name="warehouse_name" value="{{old('warehouse_name') ?? $warehouseDetail->name}}" placeholder="Tên kho">
-                                                @error('warehouse_name')
-                                                    <span class="text-danger">{{$message}}</span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        <div class="col-4">
-                                            <input type="text" id="inputName" class="form-control" name="warehouse_address" value="{{old('warehouse_address') ?? $warehouseDetail->address}}" placeholder="Địa chỉ">
-                                            @error('warehouse_name')
-                                                <span class="text-danger">{{$message}}</span>
-                                            @enderror
-                                        </div>
-                                        <div class="col">
-                                            <div class="d-flex justify-content-end">
-                                                <a href="{{route("admin.warehouse.importWarehouse",['id'=>$warehouseDetail->id])}}" class="btn btn-outline-success">Nhập kho</a>
-                                                <a href="{{route("admin.warehouse.exportWarehouse",['id'=>$warehouseDetail->id])}}" class="btn btn-outline-danger ml-1">Xuất kho</a>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="d-flex justify-content-end">
-                                                <a href="{{route("admin.warehouse.statisticalImportWarehouse",['id'=>$warehouseDetail->id, 'date'=>date('d-m-Y')])}}" class="btn btn-outline-primary">Thống kế nhập kho</a>
-                                                <a href="{{route("admin.warehouse.statisticalExportWarehouse",['id'=>$warehouseDetail->id, 'date'=>date('d-m-Y')])}}" class="btn btn-outline-warning ml-1">Thống kê xuất kho</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
+                                @if (session('msg'))
+                                    <div class="title-msg d-none">{{session('msg')}}</div>
+                                    <div class="icon-msg d-none">success</div>
+                                @endif
+                                @if ($errors->any())
+                                    <div class="title-msg d-none">Vui lòng kiểm tra lại giữ liệu</div>
+                                    <div class="icon-msg d-none">error</div>
+                                @endif
+                                <a href="{{route('admin.warehouse.index')}}" class="btn btn-secondary">Quay lại</a>
                             </div>
-                        <!-- /.card-header -->
                             <div class="card-body">
                                 <table id="example1" class="table table-bordered table-hover">
                                     <thead>
@@ -111,7 +79,6 @@
                                             <th>Mã sản phẩm</th>
                                             <th>Giá(VNĐ)</th>
                                             <th>Số lượng</th>
-                                            <th>Chức năng</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -123,18 +90,9 @@
                                                     <td>{{$product->name}}</td>
                                                     <td>{{$product->price}}</td>
                                                     <td>{{$product->amount}}</td>
-                                                    <td>
-                                                        <div class="btn-box">
-                                                            <a href="{{route('admin.warehouse.deleteProductWarehouse',['id'=>$product->id])}}"
-                                                            onclick="return confirm('Bạn có chắc muốn xóa không')" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
-                                                        </div>
                                                     </td>
                                                 </tr>
                                             @endforeach
-                                        @else
-                                            <tr>
-                                                <td colspan="6">Không có sản phẩm nào</td>
-                                            </tr>
                                         @endif
                                     </tbody>
                                 </table>
@@ -142,6 +100,7 @@
                         </div>
                     </div>
                 </div>
+                </form>
             </div>
         </section>
     </div>
@@ -163,7 +122,7 @@
 <script>
     $(function () {
       $("#example1").DataTable({
-        // "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
+        "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
         "paging": true,
         "lengthChange": true,
         "searching": true,
@@ -173,10 +132,11 @@
         "responsive": true,
         "order":[[1,'asc']],
         "columnDefs": [
-            {"targets": [0,5], "orderable": false},
+            {"targets": [0,4], "orderable": false},
             { "visible": true, "targets": 0 }
         ],
       }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
     });
+    // SweetAlert
   </script>
 @endsection

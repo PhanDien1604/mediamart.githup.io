@@ -113,19 +113,16 @@
                                                                 <span class="prd-name">{{$product->name}}</span>
                                                                 <span class="prd-price">{{$product->price}}</span>
                                                             </div>
-                                                            <a href="{{route('admin.warehouse.addAmountProductWarehouse', ['id' => $warehouseDetail->id, 'product_id'=>$product->id])}}" onclick="confirmProduct(this)"
+                                                            <a href="{{route('admin.warehouse.updateAmountImporttWarehouse', ['id'=>$product->id])}}" onclick="confirmProduct(this)"
                                                                 class="add_amount_new btn btn-info"><i class="fas fa-pencil-alt"></i></a>
-                                                            <a href="{{route('admin.warehouse.deleteProductBelongWarehouse',['id'=>$warehouseDetail->id, 'product_id'=>$product->id])}}"
+                                                            <a href="{{route('admin.warehouse.deleteImportWarehouse',['id'=>$product->id])}}"
                                                             onclick="return confirm('Bạn có chắc muốn xóa không')" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
                                                         </div>
                                                     </td>
                                                 </tr>
                                             @endforeach
-                                        @else
-                                            <tr>
-                                                <td colspan="6">Không có sản phẩm nào</td>
-                                            </tr>
                                         @endif
+
                                     </tbody>
                                 </table>
                             </div>

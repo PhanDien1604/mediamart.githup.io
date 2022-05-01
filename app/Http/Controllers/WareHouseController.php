@@ -16,6 +16,7 @@ class WareHouseController extends Controller
         $this->products = new Products();
         $this->fileImage = new FileImages();
         $this->warehouse = new WareHouse();
+
     }
     public function index() {
         $warehouseList = $this->warehouse->getAllWareHouse();
@@ -124,69 +125,14 @@ class WareHouseController extends Controller
             return back();
         }
         $creat_at = date("Y/m/d");
-        $products = $this->warehouse->getAllProductWarehouseDate($id, $creat_at);
+        $products = $this->warehouse->getAllProductImportWarehouse($id, $creat_at);
         // dd($products);
         return view("admin.importWarehouse",compact('warehouseDetail','products'));
     }
     public function postImportWarehouse(Request $request, $id) {
-        $request->validate(
-            ['creat_at'=>'required'],
-            ['required'=>':attribute bắt buộc phải nhập'],
-            ['creat_at'=>'Thời gian'],
-        );
         $date = date_format(date_create($request->creat_at),"d-m-Y");
         return redirect()->route("admin.warehouse.importWarehouse",['id'=>$id, 'date'=>$date]);
     }
-    public function exportWarehouse(Request $request, $id) {
-        if(!empty($id)) {
-            $warehouseDetail = $this->warehouse->getDetailWareHouse($id);
-            if(!empty($warehouseDetail[0])) {
-                $request->session()->put('id',$id);
-                $warehouseDetail = $warehouseDetail[0];
-            }else {
-                return back();
-            }
-        }else {
-            return back();
-        }
-        $products = $this->products->getProductBelongtWarehouse($id);
-        return view("admin.exportWarehouse",compact('warehouseDetail'));
-    }
-    public function importProductWarehouse(Request $request, $id) {
-        if(!empty($id)) {
-            $warehouseDetail = $this->warehouse->getDetailWareHouse($id);
-            if(!empty($warehouseDetail[0])) {
-                $request->session()->put('id',$id);
-                $warehouseDetail = $warehouseDetail[0];
-            }else {
-                return back();
-            }
-        }else {
-            return back();
-        }
-        $products = $this->warehouse->getAllProductWarehouse($id);
-        return view("admin.importProductWarehouse",compact('warehouseDetail','products'));
-    }
-
-    public function exportProductWarehouse(Request $request, $id) {
-        if(!empty($id)) {
-            $warehouseDetail = $this->warehouse->getDetailWareHouse($id);
-            if(!empty($warehouseDetail[0])) {
-                $request->session()->put('id',$id);
-                $warehouseDetail = $warehouseDetail[0];
-            }else {
-                return back();
-            }
-        }else {
-            return back();
-        }
-        return view("admin.exportProductWarehouse",compact('warehouseDetail'));
-    }
-    public function postInfoProductWarehouse(Request $request, $id, $product_id) {
-
-    }
-
-
     public function postImportProductNewWarehouse(Request $request, $id) {
         $rules = [
             "product_code" => "required|max:10|unique:warehouse_product,code",
@@ -219,10 +165,204 @@ class WareHouseController extends Controller
             $id
         ];
         // dd($dataInsert);
-        $this->warehouse->addProductWarehouse($dataInsert);
+        $this->warehouse->addProductNewWarehouse($dataInsert);
         return back()->with('msg','Nhập sản phẩm vào kho thành công');
     }
-    public function postExportProductWarehouse() {
+    public function postImportProductOldWarehouse(Request $request, $id, $productWarehouseId) {
+        // dd("postImportProductOldWarehouse");
+        $rules = [
+            "product_amount" => "required|integer",
+        ];
 
+        $messages = [
+            "required" => ":attribute bắt buộc phải nhập",
+            "integer" => ":attribute phải là số",
+        ];
+
+        $attributes = [
+            "product_amount" => "Số lượng",
+        ];
+        $request->validate($rules,$messages,$attributes);
+        $creat_at = date("Y/m/d");
+        $dataInsert = [
+            $request->product_amount,
+            $creat_at,
+            $id,
+            $productWarehouseId
+        ];
+        // dd($dataInsert);
+        $this->warehouse->addProductOldWarehouse($dataInsert);
+        return back()->with('msg','Nhập sản phẩm vào kho thành công');
+    }
+    public function importProductWarehouse(Request $request, $id) {
+        if(!empty($id)) {
+            $warehouseDetail = $this->warehouse->getDetailWareHouse($id);
+            if(!empty($warehouseDetail[0])) {
+                $request->session()->put('id',$id);
+                $warehouseDetail = $warehouseDetail[0];
+            }else {
+                return back();
+            }
+        }else {
+            return back();
+        }
+        $products = $this->warehouse->getAllProductAllWarehouse();
+        return view("admin.importProductWarehouse",compact('warehouseDetail','products'));
+    }
+    public function updateAmountImporttWarehouse(Request $request, $id) {
+        $dataUpdate = [
+            $request->product_amount
+        ];
+        $this->warehouse->updateAmountImporttWarehouse($id,$dataUpdate);
+        return back()->with('msg','Cập nhật giữ liệu thành công');
+    }
+    public function deleteProductWarehouse($id) {
+        if(!empty($id)) {
+            $getDetailProductWareHouse = $this->warehouse->getDetailProductWareHouse($id);
+            if(!empty($getDetailProductWareHouse[0])) {
+                $this->warehouse->deleteProductWarehouse($id);
+            }else {
+                return back();
+            }
+        }else {
+            return back();
+        }
+
+        return back()->with('msg','Xóa dữ liệu thành công');
+    }
+    public function deleteImportWarehouse($id) {
+        if(!empty($id)) {
+            $getDetailImportWarehouse = $this->warehouse->getDetailImportWarehouse($id);
+            if(!empty($getDetailImportWarehouse[0])) {
+                $this->warehouse->deleteImportWarehouse($id);
+            }else {
+                return back();
+            }
+        }else {
+            return back();
+        }
+
+        return back()->with('msg','Xóa dữ liệu thành công');
+    }
+
+
+    public function exportWarehouse(Request $request, $id) {
+        if(!empty($id)) {
+            $warehouseDetail = $this->warehouse->getDetailWareHouse($id);
+            if(!empty($warehouseDetail[0])) {
+                $request->session()->put('id',$id);
+                $warehouseDetail = $warehouseDetail[0];
+            }else {
+                return back();
+            }
+        }else {
+            return back();
+        }
+        $creat_at = date("Y/m/d");
+        $products = $this->warehouse->getAllProductExportWarehouse($id, $creat_at);
+        return view("admin.exportWarehouse",compact('warehouseDetail','products'));
+    }
+    public function exportProductWarehouse(Request $request, $id) {
+        if(!empty($id)) {
+            $warehouseDetail = $this->warehouse->getDetailWareHouse($id);
+            if(!empty($warehouseDetail[0])) {
+                $request->session()->put('id',$id);
+                $warehouseDetail = $warehouseDetail[0];
+            }else {
+                return back();
+            }
+        }else {
+            return back();
+        }
+        $products = $this->warehouse->getAllProductWarehouse($id);
+        // dd($products);
+        return view("admin.exportProductWarehouse",compact('warehouseDetail','products'));
+    }
+    public function postExportProductWarehouse(Request $request, $id, $productWarehouseId) {
+        $rules = [
+            "product_amount" => "required|integer",
+        ];
+
+        $messages = [
+            "required" => ":attribute bắt buộc phải nhập",
+            "integer" => ":attribute phải là số",
+        ];
+
+        $attributes = [
+            "product_amount" => "Số lượng",
+        ];
+        $request->validate($rules,$messages,$attributes);
+        $creat_at = date("Y/m/d");
+        $dataUpdate = [
+            $request->product_amount,
+            $creat_at,
+            $id,
+            $productWarehouseId
+        ];
+        $this->warehouse->exportAmountWarehouse($dataUpdate);
+        return back()->with('msg','Xuất sản phẩm thành công');
+    }
+    public function deleteExportWarehouse($id) {
+        if(!empty($id)) {
+            $getDetailExportWarehouse = $this->warehouse->getDetailExportWarehouse($id);
+            if(!empty($getDetailExportWarehouse[0])) {
+                $this->warehouse->deleteExportWarehouse($id);
+            }else {
+                return back();
+            }
+        }else {
+            return back();
+        }
+
+        return back()->with('msg','Xóa dữ liệu thành công');
+    }
+
+    public function statisticalImportWarehouse(Request $request, $id, $date) {
+        if(!empty($id)) {
+            $warehouseDetail = $this->warehouse->getDetailWareHouse($id);
+            if(!empty($warehouseDetail[0])) {
+                $request->session()->put('id',$id);
+                $warehouseDetail = $warehouseDetail[0];
+            }else {
+                return back();
+            }
+        }else {
+            return back();
+        }
+        $date = date_format(date_create($date),'Y/m/d');
+        $sum = $this->warehouse->sumStatisticalImport($id, $date);
+        $products = $this->warehouse->getAllProductImportWarehouse($id, $date);
+        return view('admin.statisticalImportWarehouse', compact('warehouseDetail','products','date','sum'));
+    }
+    public function postStatisticalImportWarehouse(Request $request, $id) {
+        $date = date_format(date_create($request->creat_at),'d-m-Y');
+        return redirect()->route('admin.warehouse.statisticalImportWarehouse',['id'=>$id,'date'=>$date]);
+    }
+    public function statisticalExportWarehouse(Request $request, $id, $date) {
+        if(!empty($id)) {
+            $warehouseDetail = $this->warehouse->getDetailWareHouse($id);
+            if(!empty($warehouseDetail[0])) {
+                $request->session()->put('id',$id);
+                $warehouseDetail = $warehouseDetail[0];
+            }else {
+                return back();
+            }
+        }else {
+            return back();
+        }
+        $date = date_format(date_create($date),'Y/m/d');
+        $sum = $this->warehouse->sumStatisticalExport($id, $date);
+        $products = $this->warehouse->getAllProductExportWarehouse($id, $date);
+        return view('admin.statisticalExportWarehouse', compact('warehouseDetail','products','date','sum'));
+    }
+    public function postStatisticalExportWarehouse(Request $request, $id) {
+        $date = date_format(date_create($request->creat_at),'d-m-Y');
+        return redirect()->route('admin.warehouse.statisticalExportWarehouse',['id'=>$id,'date'=>$date]);
+    }
+
+    // all
+    public function showProductWarehouse() {
+        $products = $this->warehouse->getAllProductAllWarehouse();
+        return view('admin.showProductWarehouse',compact('products'));
     }
 }
