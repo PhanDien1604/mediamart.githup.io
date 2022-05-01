@@ -129,10 +129,6 @@ class WareHouseController extends Controller
         // dd($products);
         return view("admin.importWarehouse",compact('warehouseDetail','products'));
     }
-    public function postImportWarehouse(Request $request, $id) {
-        $date = date_format(date_create($request->creat_at),"d-m-Y");
-        return redirect()->route("admin.warehouse.importWarehouse",['id'=>$id, 'date'=>$date]);
-    }
     public function postImportProductNewWarehouse(Request $request, $id) {
         $rules = [
             "product_code" => "required|max:10|unique:warehouse_product,code",
