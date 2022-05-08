@@ -27,9 +27,12 @@ Route::get('/',[HomeController::class,'index']);
 // Route::get('/sanpham',[HomeController::class,'product']);
 Route::prefix('/')->name('home.')->group(function(){
 
+    Route::get('/cart',[HomeController::class,'cart'])->name("cart");
+
     Route::get('/{groupProductId}',[HomeController::class,'groupProduct'])->name("groupProduct");
 
     Route::get('/{productId}',[HomeController::class,'product'])->name("product");
+
 });
 Route::prefix('/admin')->name('admin.')->group(function(){
 

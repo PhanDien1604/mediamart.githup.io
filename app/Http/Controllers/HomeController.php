@@ -43,15 +43,16 @@ class HomeController extends Controller
         ];
     }
     public function index(Request $request) {
-        // dd($this->data);
         return view("clients.home",$this->data);
     }
     public function groupProduct() {
-        // dd($this->data);
         return view("clients.productgroup",$this->data);
     }
     public function product() {
         return view("clients.product",$this->data);
     }
 
+    public function cart() {
+        return view("clients.cart",$this->data);
+    }
 }
