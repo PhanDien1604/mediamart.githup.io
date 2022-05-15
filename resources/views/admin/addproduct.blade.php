@@ -245,7 +245,7 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
-                          <textarea id="summernote" name="introduction_article" placeholder="aksjhkjh">
+                          <textarea id="summernote" name="introduction_article" placeholder="">
                               {{old('introduction_article')}}
                           </textarea>
                         </div>

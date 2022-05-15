@@ -1,3 +1,9 @@
+.btn:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+
 /* header */
 
 .category:hover .category-list {
@@ -62,33 +68,39 @@
 
 .container-buy {
     position: fixed;
-    bottom: 0px;
+    bottom: -205px;
     left: 0px;
     width: 100%;
-    background-color: white;
+    transition: .8s;
 }
 
 .box-buy {
+    border-radius: 0.4rem;
     height: 200px;
     display: block;
     max-width: 1200px;
     min-width: 1160px;
     margin: auto;
     background-color: rgb(245, 245, 245);
-    box-shadow: 0.4rem 0rem 10px rgb(129, 129, 129);
+    box-shadow: 0rem -2px 0.5rem rgb(87, 87, 87);
 }
 
 .voucher,
-.total {
+.content-voucher {
     display: flex;
     justify-content: end;
     width: 100%;
-    border-bottom: 1px dashed black;
+    border-bottom: 1px dashed rgb(180, 180, 180);
     padding: 1rem 1rem;
 }
 
-.btn-buy {
-    float: right;
-    width: 200px;
-    margin-top: 20px;
+.btn-select-buy {
+    display: block;
+    margin: auto;
+    width: 120px;
+    height: 35px;
+}
+
+.btn-select-buy>i {
+    color: white;
 }

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-use DB;
+use Illuminate\Support\Facades\DB;
 
 class Products extends Model
 {
@@ -15,7 +15,7 @@ class Products extends Model
 
     public function getAllProducts() {
         $products = DB::select('SELECT * FROM products');
-
+        DB::insert('insert into users (id, name) values (?, ?)', [1, 'Dayle']);
         return $products;
     }
     public function addProduct($data) {
@@ -50,10 +50,24 @@ class Products extends Model
     }
 
     public function getProductBelongtGroup($id) {
+        // return DB::table('products')
+        //     ->select('products.*','group_product_rel.group_id')
+        //     ->join('group_product_rel','products.id','=','group_product_rel.product_id')
+        //     ->where('group_product_rel.group_id',$id)
+        //     ->get();
         return DB::table('products')
-            ->select('products.*','group_product_rel.group_id')
-            ->join('group_product_rel','products.id','=','group_product_rel.product_id')
-            ->where('group_product_rel.group_id',$id)
+            ->select('products.*','image_product_rel.product_id','image_product_rel.image_id','images_product.path as image',
+            'group_product_rel.group_id')
+            ->leftjoin('group_product_rel','products.id','=','group_product_rel.product_id')
+            ->whereIn(
+                'products.id',
+                DB::table('group_product_rel')
+                ->select('group_product_rel.product_id')
+                ->where('group_product_rel.group_id',$id)
+            )
+            ->leftjoin('image_product_rel','products.id','=','image_product_rel.product_id')
+            ->leftjoin('images_product','images_product.id','=','image_product_rel.image_id')
+            ->groupBy('products.id')
             ->get();
     }
 
@@ -71,6 +85,16 @@ class Products extends Model
             ->leftjoin('image_product_rel','products.id','=','image_product_rel.product_id')
             ->leftjoin('images_product','images_product.id','=','image_product_rel.image_id')
             ->groupBy('products.id')
+            ->get();
+    }
+
+    public function getDetailImageBelongProduct($id) {
+        return DB::table('products')
+            ->select('products.*','image_product_rel.product_id','image_product_rel.image_id','images_product.path as image')
+            ->leftjoin('image_product_rel','products.id','=','image_product_rel.product_id')
+            ->leftjoin('images_product','images_product.id','=','image_product_rel.image_id')
+            ->groupBy('products.id')
+            ->having('products.id',$id)
             ->get();
     }
 }

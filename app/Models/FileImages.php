@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-use DB;
+use Illuminate\Support\Facades\DB;
 
 class FileImages extends Model
 {
@@ -54,9 +54,12 @@ class FileImages extends Model
             ->groupBy('products.id')
             ->get();
     }
-
-    public function getListDetail($id) {
-        return DB::select('SELECT * FROM image_product_rel WHERE product_id = ?', [$id]);
+    
+    public function getDetailImageProduct($id) {
+        return DB::select('SELECT * FROM image_product_rel  
+            LEFT JOIN images_product on image_product_rel.image_id = images_product.id 
+            WHERE product_id = ?
+            ', [$id]);
     }
 }
 

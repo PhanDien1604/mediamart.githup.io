@@ -19,120 +19,34 @@
             </div>
             <div class="container-productbox">
                 <div class="list-product ">
-                <aside class="prd-item">
-                    <a href="#">
-                        <div class="card">
-                            <img src="{{asset('assets/clients/images/product/product-1.jpg')}}" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title">Card title</h5>
-                                <div class="prd-price">
-                                    <span class="prd__price-new">10.000.000&#x20ab;</span>
-                                    <span class="prd__price-old">10.000.000&#x20ab;</span>
+                @if (!empty($products[0]))
+                    @foreach ($products as $product)
+                    <aside class="prd-item">
+                        <a href="{{route('home.product',['groupProductId'=>$groupId,'productId'=>$product->id])}}">
+                            <div class="card">
+                                @php
+                                    $img = "<img src=".asset($product->image)." alt='Product Image' class='img-size-50' style='width: 100%'>";
+                                @endphp
+                                {!!$img!!}
+                                <div class="card-body">
+                                    <h5 class="card-title">{{$product->name}}</h5>
+                                    <div class="prd-price">
+                                        <span class="prd__price-new">{{$product->price}}&#x20ab;</span>
+                                        <span class="prd__price-old">10.000.000&#x20ab;</span>
+                                    </div>
+                                    <p class="card-text">{{$product->info}}</p>
                                 </div>
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                             </div>
+                        </a>
+                        <div class="prd__btn-box">
+                            <a href="#" class="btn btn-buy">Mua hàng</a>
+                            <a href="#" class="btn btn-addcart"><i class="fas fa-shopping-cart"></i></a>
                         </div>
-                    </a>
-                    <div class="prd__btn-box">
-                        <a href="#" class="btn btn-buy">Mua hàng</a>
-                        <a href="#" class="btn btn-addcart"><i class="fas fa-shopping-cart"></i></a>
-                    </div>
-                </aside>
-                <aside class="prd-item">
-                    <a href="#">
-                        <div class="card">
-                            <img src="{{asset('assets/clients/images/product/product-2.jpg')}}" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title">Card title Phan Quang Điện B19DCCN181</h5>
-                                <div class="prd-price">
-                                    <span class="prd__price-new">10.000.000&#x20ab;</span>
-                                    <span class="prd__price-old">10.000.000&#x20ab;</span>
-                                </div>
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                        </div>
-                    </a>
-                    <div class="prd__btn-box">
-                        <a href="#" class="btn btn-buy">Mua hàng</a>
-                        <a href="#" class="btn btn-addcart"><i class="fas fa-shopping-cart"></i></a>
-                    </div>
-                </aside>
-                <aside class="prd-item">
-                    <a href="#">
-                        <div class="card">
-                            <img src="{{asset('assets/clients/images/product/product-3.jpg')}}" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title">Card title Phan Quang Điện B19DCCN181</h5>
-                                <div class="prd-price">
-                                    <span class="prd__price-new">10.000.000&#x20ab;</span>
-                                    <span class="prd__price-old">10.000.000&#x20ab;</span>
-                                </div>
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                        </div>
-                    </a>
-                    <div class="prd__btn-box">
-                        <a href="#" class="btn btn-buy">Mua hàng</a>
-                        <a href="#" class="btn btn-addcart"><i class="fas fa-shopping-cart"></i></a>
-                    </div>
-                </aside>
-                <aside class="prd-item">
-                    <a href="#">
-                        <div class="card">
-                            <img src="{{asset('assets/clients/images/product/product-4.jpg')}}" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title">Card title Phan Quang Điện B19DCCN181</h5>
-                                <div class="prd-price">
-                                    <span class="prd__price-new">10.000.000&#x20ab;</span>
-                                    <span class="prd__price-old">10.000.000&#x20ab;</span>
-                                </div>
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                        </div>
-                    </a>
-                    <div class="prd__btn-box">
-                        <a href="#" class="btn btn-buy">Mua hàng</a>
-                        <a href="#" class="btn btn-addcart"><i class="fas fa-shopping-cart"></i></a>
-                    </div>
-                </aside>
-                <aside class="prd-item">
-                    <a href="#">
-                        <div class="card">
-                            <img src="{{asset('assets/clients/images/product/product-5.jpg')}}" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title">Card title Phan Quang Điện B19DCCN181</h5>
-                                <div class="prd-price">
-                                    <span class="prd__price-new">10.000.000&#x20ab;</span>
-                                    <span class="prd__price-old">10.000.000&#x20ab;</span>
-                                </div>
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                        </div>
-                    </a>
-                    <div class="prd__btn-box">
-                        <a href="#" class="btn btn-buy">Mua hàng</a>
-                        <a href="#" class="btn btn-addcart"><i class="fas fa-shopping-cart"></i></a>
-                    </div>
-                </aside>
-                <aside class="prd-item">
-                    <a href="#">
-                        <div class="card">
-                            <img src="{{asset('assets/clients/images/product/product-3.jpg')}}" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title">Card title Phan Quang Điện B19DCCN181</h5>
-                                <div class="prd-price">
-                                    <span class="prd__price-new">10.000.000&#x20ab;</span>
-                                    <span class="prd__price-old">10.000.000&#x20ab;</span>
-                                </div>
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            </div>
-                        </div>
-                    </a>
-                    <div class="prd__btn-box">
-                        <a href="#" class="btn btn-buy">Mua hàng</a>
-                        <a href="#" class="btn btn-addcart"><i class="fas fa-shopping-cart"></i></a>
-                    </div>
-                </aside>
+                    </aside>
+                    @endforeach
+                    @else
+                        
+                    @endif
                 </div>
                 <a href="#" class="btn-prd-promo__see-all">Xem tất cả</a>
             </div>

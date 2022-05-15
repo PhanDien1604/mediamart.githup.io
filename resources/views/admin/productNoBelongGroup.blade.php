@@ -86,7 +86,6 @@
                                 <th>Ảnh</th>
                                 <th>Mã sản phẩm</th>
                                 <th>Tên sản phẩm</th>
-                                <th>Số lượng</th>
                                 <th>Giá(VNĐ)</th>
                                 <th>Chức năng</th>
                             </tr>
@@ -106,7 +105,6 @@
                                             </td>
                                             <td>{{$item->code}}</td>
                                             <td>{{$item->name}}</td>
-                                            <td>{{$item->amount}}</td>
                                             <td>{{$item->price}}</td>
                                             <td>
                                                 <div class="btn-box">

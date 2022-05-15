@@ -42,6 +42,13 @@
     height: 45px;
 }
 
+.prd-item .card-body .card-title {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
 .prd-price {
     margin-top: 15px;
     display: flex;

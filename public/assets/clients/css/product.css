@@ -97,29 +97,6 @@
     width: 100%;
 }
 
-.specifications-prd {
-    background-color: #f2f2f2;
-    margin-top: 20px;
-    padding: 15px 20px;
-    line-height: 30px;
-    font-size: 18px;
-    font-weight: 500;
-    border: 1px solid #d9d9d9;
-    border-radius: 5px;
-}
-
-.specifications-prd>span {
-    color: #666666;
-}
-
-.specifications-prd>button {
-    color: blue;
-    border: none;
-    font-size: 16px;
-    display: block;
-    padding: 0px;
-}
-
 .prd__price-new {
     color: var(--background-main-color);
     font-size: 32px;

@@ -38,7 +38,12 @@
     .table td .img-prd>img {
         width: 30px;
     }
-
+    .product-description {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
 </style>
 @endsection
 @section('content')
@@ -161,7 +166,7 @@
                                                     <span class="badge badge-warning float-right">{{$productNotGroup[0]->price}}đ</span>
                                                 </a>
                                                 <span class="product-description">
-                                                    {{$productNotGroup[0]->introduction_article}}
+                                                    {!!$productNotGroup[0]->info!!}
                                                 </span>
                                             </div>
                                         </li>
@@ -182,7 +187,7 @@
                                                     <span class="badge badge-info float-right">{{$productNotGroup[1]->price}}đ</span>
                                                 </a>
                                                 <span class="product-description">
-                                                    {{$productNotGroup[1]->introduction_article}}
+                                                    {!!$productNotGroup[1]->info!!}
                                                 </span>
                                             </div>
                                         </li>
@@ -203,7 +208,7 @@
                                                     <span class="badge badge-danger float-right">{{$productNotGroup[2]->price}}đ</span>
                                                 </a>
                                                 <span class="product-description">
-                                                    {{$productNotGroup[2]->introduction_article}}
+                                                    {!!$productNotGroup[2]->info!!}
                                                 </span>
                                             </div>
                                         </li>
@@ -224,7 +229,7 @@
                                                     <span class="badge badge-success float-right">{{$productNotGroup[3]->price}}đ</span>
                                                 </a>
                                                 <span class="product-description">
-                                                    {{$productNotGroup[3]->introduction_article}}
+                                                    {!!$productNotGroup[3]->info!!}
                                                 </span>
                                             </div>
                                         </li>

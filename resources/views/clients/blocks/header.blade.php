@@ -27,7 +27,7 @@
     </div>
     <div class="header__top">
         <section class="d-flex align-items-center justify-content-between">
-            <a href="#" class="header__logo">
+            <a href="{{route('home')}}" class="header__logo">
                 <img src="{{asset('assets/clients/images/logo-web.png')}}" alt="">
             </a>
             <div class="bordercol"></div>
@@ -37,7 +37,7 @@
                     <i class="fas fa-search"></i>
                 </button>
             </form>
-            <a href="#" class="header__cart">
+            <a href="{{route('home.cart')}}" class="header__cart">
                 <i class="fas fa-shopping-cart"></i>
                 <span>Giỏ hàng</span>
             </a>

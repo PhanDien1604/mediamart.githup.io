@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-use DB;
+use Illuminate\Support\Facades\DB;
 
 class Promotions extends Model
 {
@@ -67,6 +67,13 @@ class Promotions extends Model
         ->update([
             "promo_id" => $promo_id
         ]);
+    }
+
+    public function getPromoProduct($product_id) {
+        return DB::select('SELECT info FROM promo_product_rel  
+            LEFT JOIN promotion on promo_product_rel.promo_id = promotion.id 
+            WHERE product_id = ?
+            ', [$product_id]);
     }
 }
 

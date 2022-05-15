@@ -221,7 +221,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="">Tóm tắt sản phẩm</label>
-                                <textarea id="" class="form-control" rows="4" name="product_info" placeholder="Nội dung tóm tắt">{{old('product_info' ?? $productDetail->info)}}</textarea>
+                                <textarea id="" class="form-control" rows="4" name="product_info" placeholder="Nội dung tóm tắt">{{old('product_info') ?? $productDetail->info}}</textarea>
                             </div>
                             <div class="row">
                                 <div class="col-6">
@@ -271,8 +271,8 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
-                          <textarea id="summernote" name="introduction_article" placeholder="aksjhkjh">
-                              {{old('introduction_article')}}
+                          <textarea id="summernote" name="introduction_article" placeholder="">
+                              {{old('introduction_article') ?? $productDetail->introduction_article}}
                           </textarea>
                         </div>
                       </div>

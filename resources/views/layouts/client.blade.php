@@ -34,5 +34,6 @@
         $('.carousel-indicators button:first-child').addClass('active')
         $('.carousel-indicators button:first-child').attr('aria-current','true')
     </script>
+    @yield('js')
 </body>
 </html>

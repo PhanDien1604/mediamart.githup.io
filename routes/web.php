@@ -22,18 +22,7 @@ use App\Http\Controllers\WareHouseController;
 |
 */
 
-Route::get('/',[HomeController::class,'index']);
-// Route::get('/nhomsanpham',[HomeController::class,'productgroup']);
-// Route::get('/sanpham',[HomeController::class,'product']);
-Route::prefix('/')->name('home.')->group(function(){
 
-    Route::get('/cart',[HomeController::class,'cart'])->name("cart");
-
-    Route::get('/{groupProductId}',[HomeController::class,'groupProduct'])->name("groupProduct");
-
-    Route::get('/{productId}',[HomeController::class,'product'])->name("product");
-
-});
 Route::prefix('/admin')->name('admin.')->group(function(){
 
     Route::get('/user',[AdminController::class,'index'])->name('home');
@@ -181,4 +170,16 @@ Route::prefix('/admin')->name('admin.')->group(function(){
         Route::get('/all',[WareHouseController::class,'showProductWarehouse'])->name('showProductWarehouse');
 
     });
+});
+
+Route::get('/',[HomeController::class,'index'])->name('home');
+
+Route::prefix('/')->name('home.')->group(function(){
+
+    Route::get('/cart',[HomeController::class,'cart'])->name("cart");
+
+    Route::get('/{groupProductId}',[HomeController::class,'groupProduct'])->name("groupProduct");
+
+    Route::get('/{groupProductId}/{productId}',[HomeController::class,'product'])->name("product");
+
 });
