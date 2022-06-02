@@ -50,11 +50,6 @@ class Products extends Model
     }
 
     public function getProductBelongtGroup($id) {
-        // return DB::table('products')
-        //     ->select('products.*','group_product_rel.group_id')
-        //     ->join('group_product_rel','products.id','=','group_product_rel.product_id')
-        //     ->where('group_product_rel.group_id',$id)
-        //     ->get();
         return DB::table('products')
             ->select('products.*','image_product_rel.product_id','image_product_rel.image_id','images_product.path as image',
             'group_product_rel.group_id')

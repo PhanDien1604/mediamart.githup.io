@@ -82,7 +82,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="{{route('admin.client')}}" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
                             <p>Danh sách Khách hàng</p>
                         </a>
@@ -109,9 +109,27 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="{{route('admin.order.orderWaitConfirm')}}" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
-                            <p>Danh sách đơn hàng<span class="badge badge-info right">6</span></p>
+                            <p>Chờ xác nhận<span class="badge badge-info right">6</span></p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{route('admin.order.orderWaitForTheGood')}}" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Chờ lấy hàng<span class="badge badge-info right">6</span></p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{route('admin.order.orderDelivering')}}" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Đang giao hàng<span class="badge badge-info right">6</span></p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{route('admin.order.orderDeliveySuccess')}}" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Giao hàng thành công<span class="badge badge-info right">6</span></p>
                         </a>
                     </li>
                 </ul>

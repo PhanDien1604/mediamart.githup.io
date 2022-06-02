@@ -1,5 +1,6 @@
 @extends('layouts.client')
 @section('css')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{asset('assets/clients/css/card-product.css')}}">
     <link rel="stylesheet" href="{{asset('assets/clients/css/productgroup.css')}}">
 @endsection
@@ -22,6 +23,7 @@
                 @if (!empty($products[0]))
                     @foreach ($products as $product)
                     <aside class="prd-item">
+                        <input type="hidden" value="{{$product->id}}" class="prd-id">
                         <a href="{{route('home.product',['groupProductId'=>$groupId,'productId'=>$product->id])}}">
                             <div class="card">
                                 @php
@@ -40,7 +42,7 @@
                         </a>
                         <div class="prd__btn-box">
                             <a href="#" class="btn btn-buy">Mua hàng</a>
-                            <a href="#" class="btn btn-addcart"><i class="fas fa-shopping-cart"></i></a>
+                            <div class="btn btn-addcart"><i class="fas fa-shopping-cart"></i></div>
                         </div>
                     </aside>
                     @endforeach
@@ -52,4 +54,29 @@
             </div>
         </section>
     </div>
+@endsection
+@section('js')
+    <script>
+        // addCart()
+        // console.log($('.prd-item>a').attr('href'))
+        $('.btn-addcart').click(function() {
+            var product_id = $(this).closest('.prd-item').find('.prd-id').val();
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                type: "post",
+                url: {{$groupId}}+'/add-cart',
+                data: {
+                    'product_id': product_id
+                },
+                dataType: "json",
+                success: function (response) {
+                    alert(response.status)
+                }
+            });
+        })
+    </script>
 @endsection

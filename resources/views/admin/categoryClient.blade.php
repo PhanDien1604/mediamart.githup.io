@@ -34,6 +34,7 @@
         overflow: hidden;
         display: block;
         margin: auto;
+        border-radius: 50%; 
     }
     .table td .img-prd>img {
         /* height: 50px; */
@@ -49,6 +50,7 @@
     table tr td:first-child::before {
         content: counter(rowNumber);
     }
+}
 </style>
 @endsection
 @section('content')
@@ -57,13 +59,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                   <div class="col-sm-6">
-                    <h1>Quản lý sản phẩm</h1>
-                  </div>
-                  <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                      <li class="breadcrumb-item"><a href="#">Home</a></li>
-                      <li class="breadcrumb-item active">DataTables</li>
-                    </ol>
+                    <h1>Quản lý khách hàng</h1>
                   </div>
                 </div>
               </div><!-- /.container-fluid -->
@@ -89,47 +85,34 @@
                             <tr>
                                 <th>STT</th>
                                 <th>Ảnh</th>
-                                <th>Mã sản phẩm</th>
-                                <th>Tên sản phẩm</th>
-                                <th>Số lượng</th>
-                                <th>Giá(VNĐ)</th>
-                                <th>Trạng thái</th>
-                                <th>Chức năng</th>
+                                <th>Họ và tên</th>
+                                <th>Tên tài khoản</th>
+                                <th>Số điện thoại</th>
+                                <th>Tổng tiền</th>
                             </tr>
                             </thead>
                             <tbody>
-                                @if (!empty($productsList))
-                                    @foreach ($productsList as $item)
+                                @if (!empty($clients))
+                                    @foreach ($clients as $item)
                                         <tr>
                                             <td></td>
                                             <td>
                                                 <div class="img-prd">
                                                     @php
-                                                        $img = "<img src=".asset($item->image)." style='width: 100%'>";
+                                                        $img = "<img src=".asset($item->path)." style='width: 100%'>";
                                                     @endphp
                                                     {!!$img!!}
                                                 </div>
                                             </td>
-                                            <td>{{$item->code}}</td>
-                                            <td>{{$item->name}}</td>
-                                            <td>amount</td>
-                                            <td>{{$item->price}}</td>
-                                            <td>
-                                                <input type="checkbox" {{!empty($item->status) ? "checked": ""}} disabled>
-                                            </td>
-
-                                            <td>
-                                                <div class="btn-box">
-                                                    <a href="#" class="btn btn-light"><i class="fas fa-eye"></i></a>
-                                                    <a href="{{route('admin.product.edit', ['id' => $item->id])}}" class="btn btn-warning"><i class="fas fa-pencil-alt"></i></a>
-                                                    <a href="{{route('admin.product.delete', ['id' => $item->id])}}" onclick="return confirm('Bạn có chắc muốn xóa không')" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
-                                                </div>
-                                            </td>
+                                            <td>{{$item->username}}</td>
+                                            <td>{{$item->account}}</td>
+                                            <td>{{$item->tel}}</td>
+                                            <td>{{$item->total_price}}</td>
                                         </tr>
                                     @endforeach
                                 @else
                                 <tr>
-                                    <td colspan="8">Không có sản phẩm nào</td>
+                                    <td colspan="8">Không có khách hàng nào</td>
                                 </tr>
                                 @endif
                             </tbody>
@@ -174,7 +157,7 @@
         "responsive": true,
         "order":[[2,'asc']],
         "columnDefs": [
-            {"targets": [0,1,6,7], "orderable": false},
+            {"targets": [0,1], "orderable": false},
         ],
       }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
     });

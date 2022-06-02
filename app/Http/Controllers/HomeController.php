@@ -8,6 +8,9 @@ use App\Models\Website;
 use App\Models\Products;
 use App\Models\FileImages;
 use App\Models\Promotions;
+use App\Models\Client;
+use App\Models\Cart;
+use App\Models\Order;
 
 class HomeController extends Controller
 {
@@ -20,6 +23,9 @@ class HomeController extends Controller
         $this->product = new Products;
         $this->image = new FileImages;
         $this->promo = new Promotions;
+        $this->client = new Client;
+        $this->cart = new Cart;
+        $this->order = new Order;
 
         $category = [];
         for($i = 1; $i<=10; $i++) {
@@ -50,6 +56,8 @@ class HomeController extends Controller
         ];
     }
     public function index(Request $request) {
+        
+        // dd($request->session()->all());
         return view("clients.home",$this->data);
     }
     public function groupProduct($id) {
@@ -68,6 +76,217 @@ class HomeController extends Controller
     }
 
     public function cart() {
-        return view("clients.cart",$this->data);
+        if(session('user')) {
+            $prdInCart = $this->cart->getPrdInCart(session('user')->id);
+            // dd($prdInCart);
+            return view("clients.cart",$this->data, compact('prdInCart'));
+        }
+        return view("clients.login");
+    }
+    public function updateCart(Request $request) {
+        $amount = $request->input('amount');
+        $product_id = $request->input('product_id');
+        $dataUpdate = [
+            $amount,
+            $product_id,
+            session('user')->id
+        ];
+        $this->cart->updateCart($dataUpdate);
+        return response()->json([
+        ]);
+    }
+    public function addCart(Request $request) {
+        $product_id = $request->input('product_id');
+        if(session('user')) {
+            $checkPrdToCart = $this->cart->checkPrdToCart($product_id, session('user')->id);
+            if(!empty($checkPrdToCart[0])) {
+                $amount = $checkPrdToCart[0]->amount;
+                $amount++;
+                $dataUpdate = [
+                    $amount,
+                    $product_id,
+                    session('user')->id
+                ];
+                $this->cart->updateCart($dataUpdate);
+            } else {
+                $dataInsert = [
+                    '1',
+                    $product_id,
+                    session('user')->id
+                ];
+                $this->cart->addCart($dataInsert);
+            }
+            return response()->json([
+                'status' => "Thêm vào giỏ hàng thành công"
+            ]);
+        }
+    }
+
+    public function deleteCart(Request $request) {
+        $cart_id = $request->input('cart_id');
+        $this->cart->deleteCart($cart_id);
+        return response()->json();
+    }
+    public function order() {
+        if(session('user')) {
+            $id = session('user')->id;
+        }
+        $orders = $this->order->getById($id);
+        // dd($orders);
+        return view('clients.order', $this->data, compact('orders'));
+    }
+    public function postOrder(Request $request) {
+        $products_order = $request->products_order;
+        $amount = $request->amounts;
+        if($products_order) {
+            $code_order = time().rand(1,1000);
+            for ($i=0; $i < count($products_order); $i++) { 
+                $data = [
+                    $amount[$i],
+                    $products_order[$i],
+                    session('user')->id,
+                    $code_order
+                ];
+                $this->order->addOrder($data);
+            }
+        }
+        return back();
+    }
+    public function deleteOrder() {
+        if(session('user')) {
+            $id = session('user')->id;
+        }
+        $this->order->deleteOrder($id);
+        return back();
+    }
+    public function login() {
+        return view('clients.login');
+    }
+
+    public function postLogin(Request $request) {
+        $rules = [
+            "account" => "required",
+            "password" => "required",
+        ];
+
+        $messages = [
+            "required" => ":attribute bắt buộc phải nhập",
+            "unique" => ":attribute đã tồn tại",
+            "in" => ":attribute không đúng",
+            "in_array" => ":attribute không tồn tại"
+        ];
+
+        $attributes = [
+            "account" => "Tài khoản",
+            "password" => "Mật khẩu",
+        ];
+        $request->validate($rules,$messages,$attributes);
+        $data = [
+            $request->account,
+            $request->password
+        ];
+        $login = $this->client->checkLogin($data);
+        if(!empty($login[0])) {
+            $request->session()->put('user',$login[0]);
+            return view('clients.home',$this->data);
+        }
+        return back()->with('fail','Tài khoản hoặc mật khẩu không chính xác');
+    }
+    public function register() {
+        return view('clients.register');
+    }
+    public function postRegister(Request $request) {
+        $rules = [
+            "username" => "required",
+            "account" => "required|unique:client,account",
+            "password" => "required",
+            "password_confirmation" => "required|same:password"
+        ];
+
+        $messages = [
+            "required" => ":attribute bắt buộc phải nhập",
+            "unique" => ":attribute đã tồn tại",
+            "same" => ":attribute không đúng"
+        ];
+
+        $attributes = [
+            "username" => "Tên người dùng",
+            "account" => "Tài khoản",
+            "password" => "Mật khẩu",
+            "password_confirmation" => "Xác nhận mật khẩu"
+        ];
+        $request->validate($rules,$messages,$attributes);
+        $data = [
+            $request->username,
+            $request->account,
+            $request->password,
+        ];
+        
+        $this->client->add($data);
+        return view('clients.login');
+    }
+
+    public function profile() {
+        if(session('user')) {
+            $id = session('user')->id;
+        }
+        $user = $this->client->getById($id)[0];
+        return view('clients.profileUser', $this->data, compact('user'));
+    }
+    public function editProfile(Request $request) {
+        if(session('user')) {
+            $id = session('user')->id;
+        }
+        $dataImg ="";
+        if($request->hasfile('img_user')) {
+            $file = $request->file('img_user');
+            $image_name = time().rand(1,1000);
+            $ext = strtolower($file->getClientOriginalExtension());
+            $image_fullname = $image_name.".".$ext;
+            $path = 'images/users/';
+            $image_url = $path.$image_fullname;
+            $file->move($path,$image_fullname);
+            $dataImg = $image_url;
+        }
+        $data = [
+            $request->address ? $request->address : "",
+            $request->tel ? $request->tel : "",
+            $request->email ? $request->email : "",
+            $dataImg
+        ];
+        $this->client->updateProfile($id, $data);
+        return back();
+    }
+    public function changePassword() {
+        return view('clients.changePassword',$this->data);
+    }
+    public function postChangePassword(Request $request) {
+        if(session('user')) {
+            $id = session('user')->id;
+            $password = session('user')->password;
+        }
+        $rules = [
+            "password_old" => "required|in:$password",
+            "password_new" => "required",
+            "password_confirmation" => "required|same:password_new"
+        ];
+
+        $messages = [
+            "required" => ":attribute bắt buộc phải nhập",
+            "same" => ":attribute không đúng",
+            "in" => ":attribute không đúng"
+        ];
+
+        $attributes = [
+            "password_new" => "Mật khẩu mới",
+            "password_old" => "Mật khẩu cũ",
+            "password_confirmation" => "Nhập lại mật khẩu"
+        ];
+        $request->validate($rules,$messages,$attributes);
+        
+        $password_new = $request->password_new;
+        
+        $this->client->editPassword($id, $password_new);
+        return redirect()->route('home.profile');
     }
 }

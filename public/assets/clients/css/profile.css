@@ -1,0 +1,49 @@
+/* header */
+
+.category:hover .category-list {
+    display: block;
+}
+
+.category-list {
+    display: none;
+    margin-top: 3px;
+}
+
+
+/* endheader */
+
+input[type="file"] {
+    display: none;
+}
+
+.profile-image {
+    display: block;
+    text-align: center;
+    width: 120px;
+    height: 120px;
+    overflow: hidden;
+    border-radius: 50%;
+    margin: 40px auto;
+    border: 3px solid #cc0000;
+    box-shadow: 0.2rem 0.2rem 5px rgb(75, 75, 75);
+}
+
+.profile-image>img {
+    width: 100%;
+}
+
+.img-user {
+    display: block;
+}
+
+.btn-img-user {
+    display: block;
+    margin: 0 auto;
+    background-color: #cc0000;
+    color: white;
+    width: 200px;
+}
+
+.btn-img-user:hover {
+    color: white;
+}

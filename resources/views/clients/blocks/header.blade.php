@@ -55,7 +55,23 @@
                 </div>
                 <div class="bordercol"></div>
                 <div class="divitem">
-                    <a href="#">Acount</a>
+                    @if (session('user'))
+                        <div class="box-user dropdown">
+                            <div class="box-img_user" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="{{asset('assets/clients/images/user.png')}}" alt="">
+                            </div>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <div class="dropdown-item disabled">{{session('user')->username}}</div>
+                                <a href="{{route('home.profile')}}" class="dropdown-item">Hồ sơ cá nhân</a>
+                                <a href="{{route('home.order')}}" class="dropdown-item">Đơn mua hàng</a>
+                                <a href="{{route('home.login')}}" class="dropdown-item">Đăng xuất</a>
+                            </div>
+                        </div>
+                    @else
+                    <a href="{{route('home.login')}}">
+                        Acount
+                    </a>
+                    @endif
                 </div>
             </div>
         </section>

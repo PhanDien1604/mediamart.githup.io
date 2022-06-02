@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProductController;
@@ -9,7 +8,8 @@ use App\Http\Controllers\GroupProductController;
 use App\Http\Controllers\PromoController;
 use App\Http\Controllers\WebsiteController;
 use App\Http\Controllers\WareHouseController;
-
+use App\Http\Controllers\ClientController;
+use App\Http\Controllers\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,7 +29,6 @@ Route::prefix('/admin')->name('admin.')->group(function(){
 
     Route::get('/login',[AdminController::class,'login']);
 
-    // Route::get('/customer',[AdminController::class,'customer_manager'])->name('customer_manager');
 
     Route::prefix('product')->name('product.')->group(function(){
 
@@ -68,6 +67,7 @@ Route::prefix('/admin')->name('admin.')->group(function(){
         });
 
     });
+
     Route::prefix('promo')->name('promo.')->group(function(){
 
         Route::get('/',[PromoController::class,'index'])->name('show');
@@ -170,13 +170,62 @@ Route::prefix('/admin')->name('admin.')->group(function(){
         Route::get('/all',[WareHouseController::class,'showProductWarehouse'])->name('showProductWarehouse');
 
     });
+
+    Route::get('/client',[ClientController::class,'client'])->name('client');
+    
+    Route::prefix('/order')->name('order.')->group(function(){
+
+        Route::get('/wait-confirm',[OrderController::class,'orderWaitConfirm'])->name('orderWaitConfirm');
+
+        Route::get('/wait-for-the-good',[OrderController::class,'orderWaitForTheGood'])->name('orderWaitForTheGood');
+
+        Route::get('/delivering',[OrderController::class,'orderDelivering'])->name('orderDelivering');
+
+        Route::get('/delivey-success',[OrderController::class,'orderDeliveySuccess'])->name('orderDeliveySuccess');
+
+        Route::get('/edit{orderCode}/{status}',[OrderController::class,'editStatusOrder'])->name('editStatusOrder');
+
+    });
+
 });
 
 Route::get('/',[HomeController::class,'index'])->name('home');
 
 Route::prefix('/')->name('home.')->group(function(){
 
+    Route::get('/login',[HomeController::class,'login'])->name("login");
+
+    Route::post('/',[HomeController::class,'postLogin'])->name("postLogin");
+
+    Route::get('/register',[HomeController::class,'register'])->name("register");
+
+    Route::post('/login',[HomeController::class,'postRegister'])->name("postRegister");
+
+    Route::get('/profile',[HomeController::class,'profile'])->name("profile");
+
+    Route::post('/profile',[HomeController::class,'editProfile'])->name("editProfile");
+
+    Route::get('/profile/change-password',[HomeController::class,'changePassword'])->name("changePassword");
+
+    Route::post('/profile/change-password',[HomeController::class,'postChangePassword'])->name("postChangePassword");
+
     Route::get('/cart',[HomeController::class,'cart'])->name("cart");
+
+    Route::post('/cart/update',[HomeController::class,'updateCart'])->name("updateCart");
+
+    Route::post('/cart/delete',[HomeController::class,'deleteCart'])->name("deleteCart");
+
+    Route::get('/add-cart',[HomeController::class,'addCart'])->name("addCart");
+
+    Route::get('/order',[HomeController::class,'order'])->name("order");
+
+    Route::post('/order',[HomeController::class,'postOrder'])->name("postOrder");
+
+    Route::post('/order/delete',[HomeController::class,'deleteOrder'])->name("deleteOrder");
+
+    Route::post('/{groupProductId}/add-cart',[HomeController::class,'addCart'])->name("addCartGroupProduct");
+
+    Route::get('/{groupProductId}/{productId}/add-cart',[HomeController::class,'addCart'])->name("addCartProduct");
 
     Route::get('/{groupProductId}',[HomeController::class,'groupProduct'])->name("groupProduct");
 

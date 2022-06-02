@@ -1,5 +1,7 @@
 @extends('layouts.client')
 @section('css')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <link rel="stylesheet" href="{{asset('assets/clients/css/cart.css')}}">
 @endsection
 @section('slidebar')
@@ -17,64 +19,50 @@
                 <div class="col-2 text-center">Số tiền</div>
                 <div class="col-1 text-center">Thao tác</div>
             </div>
-            <div class="cart-item row align-items-center">
-                <div class="col-5">
-                    <div class="row align-items-center">
-                        <div class="col-1">
-                            <input type="checkbox" class="check-item">
-                        </div>
-                        <div class="col-3">
-                            <div class="box-img">
-                                <img src="{{asset('assets/clients/images/banner/banner-1 - Copy.png')}}" alt="">
+            @if (!empty($prdInCart[0]))
+            <form action="{{route('home.postOrder')}}" method="post">
+                @csrf
+                @foreach ($prdInCart as $item)
+                <div class="cart-item row align-items-center">
+                    <input type="hidden" value="{{$item->product_id}}" class="product-id">
+                    <input type="hidden" value="{{$item->id}}" class="cart-id">
+
+                    <div class="col-5">
+                        <div class="row align-items-center">
+                            <div class="col-1">
+                                <input type="checkbox" class="check-item" value="{{$item->product_id}}" name="products_order[]">
                             </div>
-                        </div>
-                        <div class="col-5">
-                            Tên sản phẩm
-                        </div>
-                    </div>
-                </div>
-                <div class="col-2 text-center price">20000000</div>
-                <div class="col-2 text-center">
-                    <div class="box-amount">
-                        <div class="btn-minus"><i class="fas fa-minus"></i></div>
-                        <div class="amount">1</div>
-                        <div class="btn-add"><i class="fas fa-plus"></i></div>
-                    </div>
-                </div>
-                <div class="col-2 text-center total_price-sub">20000000</div>
-                <div class="col-1 text-center">
-                    <div class="btn btn-dlt">Xóa</div>
-                </div>
-            </div>
-            <div class="cart-item row align-items-center">
-                <div class="col-5">
-                    <div class="row align-items-center">
-                        <div class="col-1">
-                            <input type="checkbox" class="check-item">
-                        </div>
-                        <div class="col-3">
-                            <div class="box-img">
-                                <img src="{{asset('assets/clients/images/banner/banner-1 - Copy.png')}}" alt="">
+                            <div class="col-3">
+                                <div class="box-img">
+                                    @php
+                                        $img = "<img src=".asset($item->image)." alt='Product Image'>";
+                                    @endphp
+                                    {!!$img!!}
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-5">
-                            Tên sản phẩm
+                            <div class="col-8">{{$item->name}} {{$item->code}}</div>
                         </div>
                     </div>
-                </div>
-                <div class="col-2 text-center price">20000000</div>
-                <div class="col-2 text-center">
-                    <div class="box-amount">
-                        <div class="btn-minus"><i class="fas fa-minus"></i></div>
-                        <div class="amount">1</div>
-                        <div class="btn-add"><i class="fas fa-plus"></i></div>
+                    <div class="col-2 text-center price">{{$item->price}}</div>
+                    <div class="col-2 text-center">
+                        <div class="box-amount">
+                            <div class="btn-minus"><i class="fas fa-minus"></i></div>
+                            <div class="amount">{{$item->amount}}</div>
+                            <input type="text" class="d-none" name="amounts[]" value="{{$item->amount}}">
+                            <div class="btn-add"><i class="fas fa-plus"></i></div>
+                        </div>
+                    </div>
+                    <div class="col-2 text-center total_price-sub">{{$item->price * $item->amount}}</div>
+                    <div class="col-1 text-center">
+                        <div class="btn btn-dlt">Xóa</div>
                     </div>
                 </div>
-                <div class="col-2 text-center total_price-sub">20000000</div>
-                <div class="col-1 text-center">
-                    <div class="btn btn-dlt">Xóa</div>
-                </div>
-            </div>
+                @endforeach
+            <button class="btn-form-order d-none">Submit</button>
+            </form>
+            @else
+                
+            @endif
         </section>
     <div class="container-buy">
         <div class="btn btn-select-buy btn-danger"><i class="fas fa-angle-double-up"></i></div>    
@@ -93,8 +81,8 @@
                 </div>
                 <div class="d-flex mt-2">
                     <span style="font-size: 20px; font-weight: 600; margin-right: 20px">Tổng tiền:</span>
-                    <span class="total_price" style="font-size: 20px; margin-right: 20px">0đ</span>
-                    <button class="btn-buy btn mx-3" style="width: 200px; background: var(--background-main-color); color: white">Mua</button>
+                    <span class="total_price" style="font-size: 20px;">0</span><span style="margin-right: 20px;">đ</span>
+                    <button class="btn-buy btn mx-3" form="#form-order" style="width: 200px; background: var(--background-main-color); color: white">Mua</button>
                 </div>
             </div>
         </div>
@@ -102,6 +90,11 @@
 @endsection
 @section('js')
     <script>
+        $('.btn-buy').click(function() {
+            if($('.btn-form-order').has()) {
+                $('.btn-form-order').click()
+            }
+        })
         $('.btn-select-buy').click(function() {
             var btn_select_by = $('.btn-select-buy').html()
             if(btn_select_by == '<i class="fas fa-angle-double-up"></i>') {
@@ -127,75 +120,140 @@
                     var val = Number($(this).find('.total_price-sub').text())
                     sum+=val
                 })
-                $('.total_price').text(sum+'đ')
+                $('.total_price').text(sum)
             }
             else {
                 $('.check-all').prop('checked',false)
                 $('.check-item').prop('checked',false)
-                $('.total_price').text(0+'đ')
+                $('.total_price').text(0)
             }
 
         })
         $('.check-item').click(function() {
-            var sum = 0
+            var cart_item = $(this).closest('.cart-item')
+            var total_price_sub = cart_item.find('.total_price-sub').text()
+            var sum = Number($('.total_price').text())
+            if(cart_item.find('.check-item').is(":checked")) {
+                sum+=Number(total_price_sub)
+            } else {
+                sum-=Number(total_price_sub)
+            }
+            $('.total_price').text(sum)
+
             var count = 0
-            var cart_item = $('.cart-item')
-            cart_item.each(function() {
+            $('.cart-item').each(function() {
                 if($(this).find('.check-item').is(":checked")) {
-                    var val = Number($(this).find('.total_price-sub').text())
-                    sum+=val
                     count++
                 }
             })
-            $('.total_price').text(sum+'đ')
-            if(count==cart_item.length)
+            if(count==$('.cart-item').length)
                 $('.check-all').prop('checked',true)
             else
                 $('.check-all').prop('checked',false)
         })
 
-
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
         $('.btn-minus').click(function () {
             var cart_item = $(this).closest('.cart-item')
 
             var amount = cart_item.find('.amount').text();
-            if(amount>1)
-                amount--
-            cart_item.find('.amount').text(amount)  
-
+            var product_id = cart_item.find('.product-id').val();
             var price = cart_item.find('.price').text()
-            cart_item.find('.total_price-sub').text(amount*price)
 
-            var sum = 0
-            var cart_item = $('.cart-item')
-            cart_item.each(function() {
-                if($(this).find('.check-item').is(":checked")) {
-                    var val = Number($(this).find('.total_price-sub').text())
-                    sum+=val
+            if(amount>1) {
+                amount--
+                $.ajax({
+                    type: "post",
+                    url: "/cart/update",
+                    data: {
+                        'amount': amount,
+                        'product_id': product_id
+                    },
+                    dataType: "json",
+                    success: function (response) {
+                        
+                    }
+                });
+                cart_item.find('.amount').text(amount)
+                cart_item.find('.total_price-sub').text(amount*price)
+                if(cart_item.find('.check-item').is(":checked")) {
+                    var sum = Number($('.total_price').text())
+                    sum-=Number(price)
+                    $('.total_price').text(sum)
                 }
-            })
-            $('.total_price').text(sum+'đ')
+            }
+            
         })
         $('.btn-add').click(function () {
             var cart_item = $(this).closest('.cart-item')
 
             var amount = cart_item.find('.amount').text();
-            amount++
-            cart_item.find('.amount').text(amount)   
-            
+            var product_id = cart_item.find('.product-id').val();
             var price = cart_item.find('.price').text()
-            cart_item.find('.total_price-sub').text(amount*price)
 
-            var sum = 0
-            var cart_item = $('.cart-item')
-            cart_item.each(function() {
+            if(amount) {
+                amount++
+                $.ajax({
+                    type: "post",
+                    url: "/cart/update",
+                    data: {
+                        'amount': amount,
+                        'product_id': product_id
+                    },
+                    dataType: "json",
+                    success: function (response) {
+                        
+                    }
+                });
+                
+                cart_item.find('.amount').text(amount)
+                cart_item.find('.total_price-sub').text(amount*price)
+                if(cart_item.find('.check-item').is(":checked")) {
+                    var sum = Number($('.total_price').text())
+                    sum+=Number(price)
+                    $('.total_price').text(sum)
+                } 
+            }
+                  
+        })
+
+        $('.btn-dlt').click(function(){
+            var cart_item = $(this).closest('.cart-item')
+            var cart_id = cart_item.find('.cart-id').val();
+            $.ajax({
+                type: "post",
+                url: "/cart/delete",
+                data: {
+                    'cart_id':cart_id
+                },
+                dataType: "json",
+                success: function (response) {
+                }
+            });
+            cart_item.remove()
+        })
+        $('.btn-delete_all').click(function(){
+            $('.cart-item').each(function() {
                 if($(this).find('.check-item').is(":checked")) {
-                    var val = Number($(this).find('.total_price-sub').text())
-                    sum+=val
-                    console.log(val)
+                    var cart_id = $(this).find('.cart-id').val();
+                    $.ajax({
+                        type: "post",
+                        url: "/cart/delete",
+                        data: {
+                            'cart_id':cart_id
+                        },
+                        dataType: "json",
+                        success: function (response) {
+                        }
+                    });
+                    $(this).remove()
                 }
             })
-            $('.total_price').text(sum+'đ')
+            
         })
     </script>
 @endsection

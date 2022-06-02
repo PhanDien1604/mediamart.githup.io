@@ -152,7 +152,9 @@ class ProductController extends Controller
             $request->product_status
         ];
         $promo_id = $request->product_promo;
-        $this->promotions->updatePromoProduct($id, $promo_id);
+        if($promo_id != 0) {
+            $this->promotions->updatePromoProduct($id, $promo_id);
+        }
         $this->products->updateProduct($dataUpdate, $id);
         $this->fileImage->addImage('img_prd_main',$dataImgMain, $id);
         $this->fileImage->addImage('img_prd_sub',$dataImgSub, $id);

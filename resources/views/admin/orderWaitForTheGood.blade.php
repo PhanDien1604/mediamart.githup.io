@@ -34,6 +34,7 @@
         overflow: hidden;
         display: block;
         margin: auto;
+        border-radius: 50%; 
     }
     .table td .img-prd>img {
         /* height: 50px; */
@@ -49,6 +50,7 @@
     table tr td:first-child::before {
         content: counter(rowNumber);
     }
+}
 </style>
 @endsection
 @section('content')
@@ -57,13 +59,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                   <div class="col-sm-6">
-                    <h1>Quản lý sản phẩm</h1>
-                  </div>
-                  <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                      <li class="breadcrumb-item"><a href="#">Home</a></li>
-                      <li class="breadcrumb-item active">DataTables</li>
-                    </ol>
+                    <h1>Đơn hàng chờ xác nhận</h1>
                   </div>
                 </div>
               </div><!-- /.container-fluid -->
@@ -75,7 +71,6 @@
                     <div class="card">
                       <div class="card-header">
                         {{-- <h3 class="card-title">DataTable with default features</h3> --}}
-                        <a href="{{route('admin.product.add')}}" class="btn btn-primary mb-2"><i class="fas fa-plus mr-1"></i>Thêm mới</a>
                         @if (session('msg'))
                             <div class="title-msg d-none">{{session('msg')}}</div>
                             <div class="icon-msg d-none">success</div>
@@ -88,48 +83,41 @@
                             <thead>
                             <tr>
                                 <th>STT</th>
-                                <th>Ảnh</th>
-                                <th>Mã sản phẩm</th>
-                                <th>Tên sản phẩm</th>
-                                <th>Số lượng</th>
-                                <th>Giá(VNĐ)</th>
-                                <th>Trạng thái</th>
+                                <th>Mã đơn hàng</th>
+                                <th>Thông tin đơn hàng</th>
+                                <th>Tổng tiền</th>
+                                <th>Thông tin khách hàng</th>
                                 <th>Chức năng</th>
                             </tr>
                             </thead>
                             <tbody>
-                                @if (!empty($productsList))
-                                    @foreach ($productsList as $item)
+                                @if (!empty($orders))
+                                    @foreach ($orders as $order)
                                         <tr>
                                             <td></td>
+                                            <td>{{$order[0]}}</td>
                                             <td>
-                                                <div class="img-prd">
-                                                    @php
-                                                        $img = "<img src=".asset($item->image)." style='width: 100%'>";
-                                                    @endphp
-                                                    {!!$img!!}
-                                                </div>
+                                                @if (!empty($order[1][0]))
+                                                    @foreach ($order[1] as $product)
+                                                        {{$product->product_code}} - {{$product->name}} - {{$product->price}} - {{$product->amount}}
+                                                    @endforeach
+                                                @else
+                                                    Không có sản phẩm
+                                                @endif
                                             </td>
-                                            <td>{{$item->code}}</td>
-                                            <td>{{$item->name}}</td>
-                                            <td>amount</td>
-                                            <td>{{$item->price}}</td>
-                                            <td>
-                                                <input type="checkbox" {{!empty($item->status) ? "checked": ""}} disabled>
-                                            </td>
-
+                                            <td>{{$order[2]}}</td>
+                                            <td>{{$order[3]}} - {{$order[4]}} - {{$order[5]}}</td>
                                             <td>
                                                 <div class="btn-box">
-                                                    <a href="#" class="btn btn-light"><i class="fas fa-eye"></i></a>
-                                                    <a href="{{route('admin.product.edit', ['id' => $item->id])}}" class="btn btn-warning"><i class="fas fa-pencil-alt"></i></a>
-                                                    <a href="{{route('admin.product.delete', ['id' => $item->id])}}" onclick="return confirm('Bạn có chắc muốn xóa không')" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
+                                                    <a href="{{route('admin.order.editStatusOrder', ['orderCode' => $order[0],'status'=>$order[6]])}}" 
+                                                        class="btn btn-info"><i class="fas fa-angle-double-right"></i></a>
                                                 </div>
                                             </td>
                                         </tr>
                                     @endforeach
                                 @else
                                 <tr>
-                                    <td colspan="8">Không có sản phẩm nào</td>
+                                    <td colspan="8">Không có đơn hàng nào</td>
                                 </tr>
                                 @endif
                             </tbody>
@@ -172,9 +160,9 @@
         "info": true,
         "autoWidth": false,
         "responsive": true,
-        "order":[[2,'asc']],
+        "order":[[1,'asc']],
         "columnDefs": [
-            {"targets": [0,1,6,7], "orderable": false},
+            {"targets": [0,2,4,5], "orderable": false},
         ],
       }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
     });
