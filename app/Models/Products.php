@@ -15,11 +15,9 @@ class Products extends Model
 
     public function getAllProducts() {
         $products = DB::select('SELECT * FROM products');
-        DB::insert('insert into users (id, name) values (?, ?)', [1, 'Dayle']);
         return $products;
     }
     public function addProduct($data) {
-        // dd($data[1]);
         $product_id = DB::table('products')->insertGetId([
             'code' => $data[0],
             'name' => $data[1],
@@ -83,6 +81,17 @@ class Products extends Model
             ->get();
     }
 
+    public function getAllImageBelongProduct() {
+        return DB::table('products')
+            ->select('products.*','image_product_rel.product_id','image_product_rel.image_id','images_product.path as image', 'group_product.id as group_product_id')
+            ->leftjoin('image_product_rel','products.id','=','image_product_rel.product_id')
+            ->leftjoin('images_product','images_product.id','=','image_product_rel.image_id')
+            ->leftjoin('group_product_rel','products.id','=','group_product_rel.product_id')
+            ->leftjoin('group_product','group_product.id','=','group_product_rel.group_id')
+            ->groupBy('products.id')
+            ->having('products.status','on')
+            ->get();
+    }
     public function getDetailImageBelongProduct($id) {
         return DB::table('products')
             ->select('products.*','image_product_rel.product_id','image_product_rel.image_id','images_product.path as image')
@@ -90,6 +99,7 @@ class Products extends Model
             ->leftjoin('images_product','images_product.id','=','image_product_rel.image_id')
             ->groupBy('products.id')
             ->having('products.id',$id)
+            ->having('products.status','on')
             ->get();
     }
 }

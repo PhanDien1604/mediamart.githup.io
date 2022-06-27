@@ -1,5 +1,6 @@
 @extends('layouts.client')
 @section('css')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{asset('assets/clients/css/product.css')}}">
 @endsection
 @section('slidebar')
@@ -38,19 +39,47 @@
                     </div>
                     <div class="prd__btn-box">
                         <a href="#" class="btn-buy">Mua hàng</a>
-                        <a href="#" class="btn-addcart"><i class="fas fa-shopping-cart"></i>Giỏ hàng</a>
+                        <input type="hidden" value="{{$product->id}}" class="prd-id">
+                        <div class="btn btn-addcart"><i class="fas fa-shopping-cart"></i>Giỏ hàng</div>
                     </div>
                 </div>
-                
+
             </div>
             <div class="mt-5">
                 {!!$product->introduction_article!!}
                 <span style=""></span>
             </div>
-            
+
             @endif
-            
+
         </section>
-        
+
     </div>
+@endsection
+
+@section('js')
+    <script>
+        // addCart()
+        // console.log($('.prd-item>a').attr('href'))
+        $('.btn-addcart').click(function() {
+            var product_id = $(this).parent().find('.prd-id').val();
+            console.log(product_id);
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                type: "post",
+                url: '/add-cart',
+                data: {
+                    'product_id': product_id
+                },
+                dataType: "json",
+                success: function (response) {
+                    alert(response.status)
+                }
+            });
+        })
+    </script>
 @endsection

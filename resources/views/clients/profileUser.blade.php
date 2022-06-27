@@ -18,31 +18,31 @@
                         <div class="profile-item mb-3 row">
                             <label for=""  class="col-sm-3 col-form-label">Tên người dùng</label>
                             <div class="col-sm-9">
-                                <input type="text" disabled name="username" class="form-control" id="" value="{{$user->username}}">
+                                <input type="text" disabled name="username" class="form-control" id="" value="{{$client->username}}">
                             </div>
                         </div>
                         <div class="profile-item mb-3 row">
                             <label for=""  class="col-sm-3 col-form-label">Tài khoản</label>
                             <div class="col-sm-9">
-                                <input type="text" name="account" class="form-control-plaintext" id=""value="{{$user->account}}">
+                                <input type="text" name="account" class="form-control-plaintext" id=""value="{{$client->account}}">
                             </div>
                         </div>
                         <div class="profile-item mb-3 row">
                             <label for=""  class="col-sm-3 col-form-label">Số điện thoại</label>
                             <div class="col-sm-9">
-                                <input type="text" name="tel" class="form-control" id="" value="{{$user->tel}}">
+                                <input type="text" name="tel" class="form-control" id="" value="{{$client->tel}}">
                             </div>
                         </div>
                         <div class="profile-item mb-3 row">
                             <label for=""  class="col-sm-3 col-form-label">Email</label>
                             <div class="col-sm-9">
-                                <input type="text" name="email" class="form-control" id="" value="{{$user->email}}">
+                                <input type="text" name="email" class="form-control" id="" value="{{$client->email}}">
                             </div>
                         </div>
                         <div class="profile-item mb-3 row">
                             <label for=""  class="col-sm-3 col-form-label">Địa chỉ</label>
                             <div class="col-sm-9">
-                                <input type="text" name="address" class="form-control" id="" value="{{$user->address}}">
+                                <input type="text" name="address" class="form-control" id="" value="{{$client->address}}">
                             </div>
                         </div>
                         <div class="d-flex justify-content-between py-3">
@@ -52,9 +52,9 @@
                     </div>
                     <div class="profile-right col-5" style="border-left: 1px solid rgb(179, 179, 179)">
                         <div class="profile-image">
-                            @if (!empty($user->path))
+                            @if (!empty($client->path))
                                 @php
-                                    $img = '<img src="'.asset($user->path).'">';
+                                    $img = '<img src="'.asset($client->path).'">';
                                 @endphp
                                 {!!$img!!}
                             @else

@@ -56,9 +56,9 @@ class HomeController extends Controller
         ];
     }
     public function index(Request $request) {
-        
-        // dd($request->session()->all());
-        return view("clients.home",$this->data);
+        $products = $this->product->getAllImageBelongProduct();
+        // dd($products);
+        return view("clients.home",$this->data, compact('products'));
     }
     public function groupProduct($id) {
         $products = $this->product->getProductBelongtGroup($id);
@@ -66,19 +66,16 @@ class HomeController extends Controller
         return view("clients.productgroup",$this->data, compact('products','groupId'));
     }
     public function product($groupId, $id) {
-        // dd($id);
         $product = $this->product->getDetail($id)[0];
         $images = $this->image->getDetailImageProduct($id);
         $promo = $this->promo->getPromoProduct($id)[0];
 
-        // dd($promo);
         return view("clients.product",$this->data, compact('product','images','promo'));
     }
 
     public function cart() {
-        if(session('user')) {
-            $prdInCart = $this->cart->getPrdInCart(session('user')->id);
-            // dd($prdInCart);
+        if(session('client')) {
+            $prdInCart = $this->cart->getPrdInCart(session('client')->id);
             return view("clients.cart",$this->data, compact('prdInCart'));
         }
         return view("clients.login");
@@ -89,7 +86,7 @@ class HomeController extends Controller
         $dataUpdate = [
             $amount,
             $product_id,
-            session('user')->id
+            session('client')->id
         ];
         $this->cart->updateCart($dataUpdate);
         return response()->json([
@@ -97,22 +94,22 @@ class HomeController extends Controller
     }
     public function addCart(Request $request) {
         $product_id = $request->input('product_id');
-        if(session('user')) {
-            $checkPrdToCart = $this->cart->checkPrdToCart($product_id, session('user')->id);
+        if(session('client')) {
+            $checkPrdToCart = $this->cart->checkPrdToCart($product_id, session('client')->id);
             if(!empty($checkPrdToCart[0])) {
                 $amount = $checkPrdToCart[0]->amount;
                 $amount++;
                 $dataUpdate = [
                     $amount,
                     $product_id,
-                    session('user')->id
+                    session('client')->id
                 ];
                 $this->cart->updateCart($dataUpdate);
             } else {
                 $dataInsert = [
                     '1',
                     $product_id,
-                    session('user')->id
+                    session('client')->id
                 ];
                 $this->cart->addCart($dataInsert);
             }
@@ -128,11 +125,10 @@ class HomeController extends Controller
         return response()->json();
     }
     public function order() {
-        if(session('user')) {
-            $id = session('user')->id;
+        if(session('client')) {
+            $id = session('client')->id;
         }
         $orders = $this->order->getById($id);
-        // dd($orders);
         return view('clients.order', $this->data, compact('orders'));
     }
     public function postOrder(Request $request) {
@@ -140,11 +136,11 @@ class HomeController extends Controller
         $amount = $request->amounts;
         if($products_order) {
             $code_order = time().rand(1,1000);
-            for ($i=0; $i < count($products_order); $i++) { 
+            for ($i=0; $i < count($products_order); $i++) {
                 $data = [
                     $amount[$i],
                     $products_order[$i],
-                    session('user')->id,
+                    session('client')->id,
                     $code_order
                 ];
                 $this->order->addOrder($data);
@@ -153,8 +149,8 @@ class HomeController extends Controller
         return back();
     }
     public function deleteOrder() {
-        if(session('user')) {
-            $id = session('user')->id;
+        if(session('client')) {
+            $id = session('client')->id;
         }
         $this->order->deleteOrder($id);
         return back();
@@ -185,9 +181,9 @@ class HomeController extends Controller
             $request->account,
             $request->password
         ];
-        $login = $this->client->checkLogin($data);
-        if(!empty($login[0])) {
-            $request->session()->put('user',$login[0]);
+        $client = $this->client->checkLogin($data);
+        if(!empty($client[0])) {
+            $request->session()->put('client',$client[0]);
             return view('clients.home',$this->data);
         }
         return back()->with('fail','Tài khoản hoặc mật khẩu không chính xác');
@@ -221,21 +217,21 @@ class HomeController extends Controller
             $request->account,
             $request->password,
         ];
-        
+
         $this->client->add($data);
         return view('clients.login');
     }
 
     public function profile() {
-        if(session('user')) {
-            $id = session('user')->id;
+        if(session('client')) {
+            $id = session('client')->id;
         }
-        $user = $this->client->getById($id)[0];
-        return view('clients.profileUser', $this->data, compact('user'));
+        $client = $this->client->getById($id)[0];
+        return view('clients.profileUser', $this->data, compact('client'));
     }
     public function editProfile(Request $request) {
-        if(session('user')) {
-            $id = session('user')->id;
+        if(session('client')) {
+            $id = session('client')->id;
         }
         $dataImg ="";
         if($request->hasfile('img_user')) {
@@ -261,9 +257,9 @@ class HomeController extends Controller
         return view('clients.changePassword',$this->data);
     }
     public function postChangePassword(Request $request) {
-        if(session('user')) {
-            $id = session('user')->id;
-            $password = session('user')->password;
+        if(session('client')) {
+            $id = session('client')->id;
+            $password = session('client')->password;
         }
         $rules = [
             "password_old" => "required|in:$password",
@@ -283,9 +279,9 @@ class HomeController extends Controller
             "password_confirmation" => "Nhập lại mật khẩu"
         ];
         $request->validate($rules,$messages,$attributes);
-        
+
         $password_new = $request->password_new;
-        
+
         $this->client->editPassword($id, $password_new);
         return redirect()->route('home.profile');
     }

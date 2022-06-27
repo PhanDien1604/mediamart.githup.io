@@ -48,8 +48,8 @@ class Order extends Model
         ->get();
     }
     public function totalPriceOrder($code) {
-        return DB::select('SELECT sum(total) as total_price FROM (SELECT price*amount as total FROM mediamart.order 
-            LEFT JOIN (SELECT products.id, products.price FROM products) as product_rice 
+        return DB::select('SELECT sum(total) as total_price FROM (SELECT price*amount as total FROM mediamart.order
+            LEFT JOIN (SELECT products.id, products.price FROM products) as product_rice
             on product_rice.id = mediamart.order.product_id
             WHERE mediamart.order.code = ?) as tbl_order
             ', [$code]);

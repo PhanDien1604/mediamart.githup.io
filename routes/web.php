@@ -10,6 +10,7 @@ use App\Http\Controllers\WebsiteController;
 use App\Http\Controllers\WareHouseController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,10 +26,11 @@ use App\Http\Controllers\OrderController;
 
 Route::prefix('/admin')->name('admin.')->group(function(){
 
-    Route::get('/user',[AdminController::class,'index'])->name('home');
+    Route::get('/',[AdminController::class,'index'])->name('home');
 
-    Route::get('/login',[AdminController::class,'login']);
+    Route::get('/login',[UserController::class,'login'])->name('login');
 
+    Route::post('/checkLogin',[UserController::class,'checkLogin'])->name('checkLogin');
 
     Route::prefix('product')->name('product.')->group(function(){
 
@@ -172,7 +174,7 @@ Route::prefix('/admin')->name('admin.')->group(function(){
     });
 
     Route::get('/client',[ClientController::class,'client'])->name('client');
-    
+
     Route::prefix('/order')->name('order.')->group(function(){
 
         Route::get('/wait-confirm',[OrderController::class,'orderWaitConfirm'])->name('orderWaitConfirm');
@@ -215,7 +217,7 @@ Route::prefix('/')->name('home.')->group(function(){
 
     Route::post('/cart/delete',[HomeController::class,'deleteCart'])->name("deleteCart");
 
-    Route::get('/add-cart',[HomeController::class,'addCart'])->name("addCart");
+    Route::post('/add-cart',[HomeController::class,'addCart'])->name("addCart");
 
     Route::get('/order',[HomeController::class,'order'])->name("order");
 
@@ -225,7 +227,7 @@ Route::prefix('/')->name('home.')->group(function(){
 
     Route::post('/{groupProductId}/add-cart',[HomeController::class,'addCart'])->name("addCartGroupProduct");
 
-    Route::get('/{groupProductId}/{productId}/add-cart',[HomeController::class,'addCart'])->name("addCartProduct");
+    // Route::get('/{groupProductId}/{productId}/add-cart',[HomeController::class,'addCart'])->name("addCartProduct");
 
     Route::get('/{groupProductId}',[HomeController::class,'groupProduct'])->name("groupProduct");
 

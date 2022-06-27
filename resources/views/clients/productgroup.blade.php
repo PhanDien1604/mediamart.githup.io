@@ -34,7 +34,7 @@
                                     <h5 class="card-title">{{$product->name}}</h5>
                                     <div class="prd-price">
                                         <span class="prd__price-new">{{$product->price}}&#x20ab;</span>
-                                        <span class="prd__price-old">10.000.000&#x20ab;</span>
+                                        {{-- <span class="prd__price-old">10.000.000&#x20ab;</span> --}}
                                     </div>
                                     <p class="card-text">{{$product->info}}</p>
                                 </div>
@@ -47,7 +47,7 @@
                     </aside>
                     @endforeach
                     @else
-                        
+
                     @endif
                 </div>
                 <a href="#" class="btn-prd-promo__see-all">Xem tất cả</a>
@@ -57,8 +57,6 @@
 @endsection
 @section('js')
     <script>
-        // addCart()
-        // console.log($('.prd-item>a').attr('href'))
         $('.btn-addcart').click(function() {
             var product_id = $(this).closest('.prd-item').find('.prd-id').val();
             $.ajaxSetup({

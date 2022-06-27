@@ -55,13 +55,13 @@
                 </div>
                 <div class="bordercol"></div>
                 <div class="divitem">
-                    @if (session('user'))
+                    @if (session('client'))
                         <div class="box-user dropdown">
                             <div class="box-img_user" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                 <img src="{{asset('assets/clients/images/user.png')}}" alt="">
                             </div>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <div class="dropdown-item disabled">{{session('user')->username}}</div>
+                                <div class="dropdown-item disabled">{{session('client')->username}}</div>
                                 <a href="{{route('home.profile')}}" class="dropdown-item">Hồ sơ cá nhân</a>
                                 <a href="{{route('home.order')}}" class="dropdown-item">Đơn mua hàng</a>
                                 <a href="{{route('home.login')}}" class="dropdown-item">Đăng xuất</a>
