@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th5 01, 2022 lúc 09:42 AM
--- Phiên bản máy phục vụ: 10.4.21-MariaDB
--- Phiên bản PHP: 8.0.10
+-- Host: 127.0.0.1
+-- Generation Time: Jun 27, 2022 at 08:08 AM
+-- Server version: 10.4.24-MariaDB
+-- PHP Version: 8.1.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,26 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Cơ sở dữ liệu: `mediamart`
+-- Database: `mediamart`
 --
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `category_web`
+-- Table structure for table `cart`
+--
+
+CREATE TABLE `cart` (
+  `id` int(11) NOT NULL,
+  `amount` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `client_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `category_web`
 --
 
 CREATE TABLE `category_web` (
@@ -43,7 +56,7 @@ CREATE TABLE `category_web` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `category_web`
+-- Dumping data for table `category_web`
 --
 
 INSERT INTO `category_web` (`id`, `key`, `row`, `logo`, `group_id`, `group_name`, `group_main_id`, `group_main_name`, `group_sub_id`, `group_sub_name`, `promo_id`, `promo_name`) VALUES
@@ -57,7 +70,31 @@ INSERT INTO `category_web` (`id`, `key`, `row`, `logo`, `group_id`, `group_name`
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `demo`
+-- Table structure for table `client`
+--
+
+CREATE TABLE `client` (
+  `id` int(11) NOT NULL,
+  `username` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `account` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `address` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `tel` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `email` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `path` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `client`
+--
+
+INSERT INTO `client` (`id`, `username`, `account`, `password`, `address`, `tel`, `email`, `path`) VALUES
+(1, 'Phan Điên', 'dienpq1604@gmail.com', '2', '512 C9 Tô Hiệu Nghĩa Tân Cầu Giấy', '0963865764', 'dienpq1604@gmail.com', 'images/users/1656297315600.jpg');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `demo`
 --
 
 CREATE TABLE `demo` (
@@ -70,7 +107,7 @@ CREATE TABLE `demo` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `export_warehouse`
+-- Table structure for table `export_warehouse`
 --
 
 CREATE TABLE `export_warehouse` (
@@ -82,7 +119,7 @@ CREATE TABLE `export_warehouse` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `export_warehouse`
+-- Dumping data for table `export_warehouse`
 --
 
 INSERT INTO `export_warehouse` (`id`, `amount`, `creat_at`, `warehouse_id`, `warehouse_product_id`) VALUES
@@ -91,7 +128,7 @@ INSERT INTO `export_warehouse` (`id`, `amount`, `creat_at`, `warehouse_id`, `war
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `failed_jobs`
+-- Table structure for table `failed_jobs`
 --
 
 CREATE TABLE `failed_jobs` (
@@ -107,7 +144,7 @@ CREATE TABLE `failed_jobs` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `group_product`
+-- Table structure for table `group_product`
 --
 
 CREATE TABLE `group_product` (
@@ -117,7 +154,7 @@ CREATE TABLE `group_product` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `group_product`
+-- Dumping data for table `group_product`
 --
 
 INSERT INTO `group_product` (`id`, `code`, `name`) VALUES
@@ -159,7 +196,7 @@ INSERT INTO `group_product` (`id`, `code`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `group_product_rel`
+-- Table structure for table `group_product_rel`
 --
 
 CREATE TABLE `group_product_rel` (
@@ -168,10 +205,18 @@ CREATE TABLE `group_product_rel` (
   `product_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Dumping data for table `group_product_rel`
+--
+
+INSERT INTO `group_product_rel` (`id`, `group_id`, `product_id`) VALUES
+(68, 21, 32),
+(69, 54, 32);
+
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `images_product`
+-- Table structure for table `images_product`
 --
 
 CREATE TABLE `images_product` (
@@ -181,7 +226,7 @@ CREATE TABLE `images_product` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `images_product`
+-- Dumping data for table `images_product`
 --
 
 INSERT INTO `images_product` (`id`, `key`, `path`) VALUES
@@ -189,12 +234,17 @@ INSERT INTO `images_product` (`id`, `key`, `path`) VALUES
 (49, 'img_prd_sub', 'images/products/1650640829261.png'),
 (50, 'img_prd_main', 'images/products/1650732879950.jpg'),
 (51, 'img_prd_main', 'images/products/1650732896569.png'),
-(52, 'img_prd_main', 'images/products/1650879424653.jpg');
+(52, 'img_prd_main', 'images/products/1650879424653.jpg'),
+(53, 'img_prd_main', 'images/products/1656297969805.jpg'),
+(54, 'img_prd_sub', 'images/products/1656297969561.png'),
+(55, 'img_prd_sub', 'images/products/165629796951.png'),
+(56, 'img_prd_sub', 'images/products/165629796981.jpg'),
+(57, 'img_prd_sub', 'images/products/1656297969306.jpg');
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `image_product_rel`
+-- Table structure for table `image_product_rel`
 --
 
 CREATE TABLE `image_product_rel` (
@@ -203,10 +253,21 @@ CREATE TABLE `image_product_rel` (
   `product_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Dumping data for table `image_product_rel`
+--
+
+INSERT INTO `image_product_rel` (`id`, `image_id`, `product_id`) VALUES
+(53, 53, 32),
+(54, 54, 32),
+(55, 55, 32),
+(56, 56, 32),
+(57, 57, 32);
+
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `import_warehouse`
+-- Table structure for table `import_warehouse`
 --
 
 CREATE TABLE `import_warehouse` (
@@ -218,7 +279,7 @@ CREATE TABLE `import_warehouse` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `import_warehouse`
+-- Dumping data for table `import_warehouse`
 --
 
 INSERT INTO `import_warehouse` (`id`, `amount`, `creat_at`, `warehouse_id`, `warehouse_product_id`) VALUES
@@ -229,7 +290,7 @@ INSERT INTO `import_warehouse` (`id`, `amount`, `creat_at`, `warehouse_id`, `war
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `logo_category_web`
+-- Table structure for table `logo_category_web`
 --
 
 CREATE TABLE `logo_category_web` (
@@ -239,7 +300,7 @@ CREATE TABLE `logo_category_web` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `logo_category_web`
+-- Dumping data for table `logo_category_web`
 --
 
 INSERT INTO `logo_category_web` (`id`, `row`, `path`) VALUES
@@ -257,7 +318,7 @@ INSERT INTO `logo_category_web` (`id`, `row`, `path`) VALUES
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `migrations`
+-- Table structure for table `migrations`
 --
 
 CREATE TABLE `migrations` (
@@ -267,7 +328,7 @@ CREATE TABLE `migrations` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `migrations`
+-- Dumping data for table `migrations`
 --
 
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
@@ -279,7 +340,30 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `password_resets`
+-- Table structure for table `order`
+--
+
+CREATE TABLE `order` (
+  `id` int(11) NOT NULL,
+  `code` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `amount` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `client_id` int(11) NOT NULL,
+  `status` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `order`
+--
+
+INSERT INTO `order` (`id`, `code`, `amount`, `product_id`, `client_id`, `status`) VALUES
+(1, '1656298806528', 1, 32, 1, 0),
+(2, '1656299993103', 3, 32, 1, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `password_resets`
 --
 
 CREATE TABLE `password_resets` (
@@ -291,7 +375,7 @@ CREATE TABLE `password_resets` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `personal_access_tokens`
+-- Table structure for table `personal_access_tokens`
 --
 
 CREATE TABLE `personal_access_tokens` (
@@ -309,7 +393,7 @@ CREATE TABLE `personal_access_tokens` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `products`
+-- Table structure for table `products`
 --
 
 CREATE TABLE `products` (
@@ -323,10 +407,17 @@ CREATE TABLE `products` (
   `status` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`id`, `code`, `name`, `info`, `price`, `introduction_article`, `creat_at`, `status`) VALUES
+(32, 'TVSS01', 'Smart Tivi Samsung 4K Crystal UHD 55 inch', 'Smart Tivi Samsung 4K 55 inch UA55AU8100 thiết kế theo phong cách AirSlim tối giản với các cạnh viền siêu mỏng tạo cảm giác màn hình không hề bị giới hạn. Tivi có 2 chân đế hình chữ V úp ngược giúp trụ vững trên tất cả mặt phẳng, bạn cũng có thể treo tivi lên tường để tiết kiệm không gian.', 15000000, '<h3 style=\"margin: 20px 0px 15px; padding: 0px; font-variant-numeric: normal; font-variant-east-asian: normal; font-weight: bold; font-stretch: normal; font-size: 20px; line-height: 28px; font-family: Arial, Helvetica, sans-serif; color: rgb(51, 51, 51); outline: none;\">Trải nghiệm xem thêm nhập vai với màn hình 55 inch không viền 3 cạnh</h3><p style=\"margin-right: 0px; margin-bottom: 10px; margin-left: 0px; padding: 0px; margin-block: 0px; text-rendering: geometricprecision; line-height: 1.5; color: rgb(51, 51, 51); font-family: Arial, Helvetica, sans-serif;\"><a href=\"https://www.dienmayxanh.com/tivi/led-4k-samsung-ua55au8100\" target=\"_blank\" title=\"Smart Tivi Samsung 4K 55 inch UA55AU8100 \" style=\"margin: 0px; padding: 0px; transition: all 0.2s ease 0s; color: rgb(47, 128, 237);\">Smart Tivi Samsung 4K 55 inch UA55AU8100&nbsp;</a>thiết kế theo phong cách AirSlim tối giản với các cạnh viền siêu mỏng tạo cảm giác màn hình không hề bị giới hạn. Tivi có 2 chân đế hình chữ V úp ngược giúp', '06/27/2022', 'on');
+
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `promotion`
+-- Table structure for table `promotion`
 --
 
 CREATE TABLE `promotion` (
@@ -342,7 +433,7 @@ CREATE TABLE `promotion` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `promotion`
+-- Dumping data for table `promotion`
 --
 
 INSERT INTO `promotion` (`id`, `code`, `info`, `total_money`, `unit`, `discount`, `subject_apply`, `date_range`, `status`) VALUES
@@ -353,7 +444,7 @@ INSERT INTO `promotion` (`id`, `code`, `info`, `total_money`, `unit`, `discount`
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `promo_product_rel`
+-- Table structure for table `promo_product_rel`
 --
 
 CREATE TABLE `promo_product_rel` (
@@ -362,10 +453,17 @@ CREATE TABLE `promo_product_rel` (
   `promo_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Dumping data for table `promo_product_rel`
+--
+
+INSERT INTO `promo_product_rel` (`id`, `product_id`, `promo_id`) VALUES
+(10, 32, NULL);
+
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `setting`
+-- Table structure for table `setting`
 --
 
 CREATE TABLE `setting` (
@@ -375,7 +473,7 @@ CREATE TABLE `setting` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `setting`
+-- Dumping data for table `setting`
 --
 
 INSERT INTO `setting` (`id`, `key`, `path`) VALUES
@@ -391,7 +489,7 @@ INSERT INTO `setting` (`id`, `key`, `path`) VALUES
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `users`
+-- Table structure for table `users`
 --
 
 CREATE TABLE `users` (
@@ -405,10 +503,17 @@ CREATE TABLE `users` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'Phan Quang Điện', 'dienpq1604@gmail.com', NULL, '1', NULL, NULL, NULL);
+
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `warehouse`
+-- Table structure for table `warehouse`
 --
 
 CREATE TABLE `warehouse` (
@@ -418,7 +523,7 @@ CREATE TABLE `warehouse` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `warehouse`
+-- Dumping data for table `warehouse`
 --
 
 INSERT INTO `warehouse` (`id`, `name`, `address`) VALUES
@@ -429,7 +534,7 @@ INSERT INTO `warehouse` (`id`, `name`, `address`) VALUES
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `warehouse_product`
+-- Table structure for table `warehouse_product`
 --
 
 CREATE TABLE `warehouse_product` (
@@ -440,7 +545,7 @@ CREATE TABLE `warehouse_product` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `warehouse_product`
+-- Dumping data for table `warehouse_product`
 --
 
 INSERT INTO `warehouse_product` (`id`, `code`, `name`, `price`) VALUES
@@ -452,7 +557,7 @@ INSERT INTO `warehouse_product` (`id`, `code`, `name`, `price`) VALUES
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `warehouse_product_rel`
+-- Table structure for table `warehouse_product_rel`
 --
 
 CREATE TABLE `warehouse_product_rel` (
@@ -462,7 +567,7 @@ CREATE TABLE `warehouse_product_rel` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `warehouse_product_rel`
+-- Dumping data for table `warehouse_product_rel`
 --
 
 INSERT INTO `warehouse_product_rel` (`id`, `warehouse_id`, `warehouse_product_id`) VALUES
@@ -471,11 +576,19 @@ INSERT INTO `warehouse_product_rel` (`id`, `warehouse_id`, `warehouse_product_id
 (14, 8, 24);
 
 --
--- Chỉ mục cho các bảng đã đổ
+-- Indexes for dumped tables
 --
 
 --
--- Chỉ mục cho bảng `category_web`
+-- Indexes for table `cart`
+--
+ALTER TABLE `cart`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `client_id` (`client_id`),
+  ADD KEY `cart_ibfk_2` (`product_id`);
+
+--
+-- Indexes for table `category_web`
 --
 ALTER TABLE `category_web`
   ADD PRIMARY KEY (`id`),
@@ -486,13 +599,20 @@ ALTER TABLE `category_web`
   ADD KEY `promo_id` (`promo_id`);
 
 --
--- Chỉ mục cho bảng `demo`
+-- Indexes for table `client`
+--
+ALTER TABLE `client`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id` (`id`);
+
+--
+-- Indexes for table `demo`
 --
 ALTER TABLE `demo`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `export_warehouse`
+-- Indexes for table `export_warehouse`
 --
 ALTER TABLE `export_warehouse`
   ADD PRIMARY KEY (`id`),
@@ -501,21 +621,21 @@ ALTER TABLE `export_warehouse`
   ADD KEY `warehouse_product_id` (`warehouse_product_id`);
 
 --
--- Chỉ mục cho bảng `failed_jobs`
+-- Indexes for table `failed_jobs`
 --
 ALTER TABLE `failed_jobs`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`);
 
 --
--- Chỉ mục cho bảng `group_product`
+-- Indexes for table `group_product`
 --
 ALTER TABLE `group_product`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `id` (`id`);
 
 --
--- Chỉ mục cho bảng `group_product_rel`
+-- Indexes for table `group_product_rel`
 --
 ALTER TABLE `group_product_rel`
   ADD PRIMARY KEY (`id`),
@@ -524,14 +644,14 @@ ALTER TABLE `group_product_rel`
   ADD KEY `group_product_rel_ibfk_2` (`product_id`);
 
 --
--- Chỉ mục cho bảng `images_product`
+-- Indexes for table `images_product`
 --
 ALTER TABLE `images_product`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `id` (`id`);
 
 --
--- Chỉ mục cho bảng `image_product_rel`
+-- Indexes for table `image_product_rel`
 --
 ALTER TABLE `image_product_rel`
   ADD PRIMARY KEY (`id`),
@@ -540,7 +660,7 @@ ALTER TABLE `image_product_rel`
   ADD KEY `image_product_rel_ibfk_2` (`product_id`);
 
 --
--- Chỉ mục cho bảng `import_warehouse`
+-- Indexes for table `import_warehouse`
 --
 ALTER TABLE `import_warehouse`
   ADD PRIMARY KEY (`id`),
@@ -549,26 +669,35 @@ ALTER TABLE `import_warehouse`
   ADD KEY `import_warehouse_ibfk_2` (`warehouse_product_id`);
 
 --
--- Chỉ mục cho bảng `logo_category_web`
+-- Indexes for table `logo_category_web`
 --
 ALTER TABLE `logo_category_web`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `id` (`id`);
 
 --
--- Chỉ mục cho bảng `migrations`
+-- Indexes for table `migrations`
 --
 ALTER TABLE `migrations`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `password_resets`
+-- Indexes for table `order`
+--
+ALTER TABLE `order`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id` (`id`),
+  ADD KEY `client_id` (`client_id`),
+  ADD KEY `product_id` (`product_id`);
+
+--
+-- Indexes for table `password_resets`
 --
 ALTER TABLE `password_resets`
   ADD KEY `password_resets_email_index` (`email`);
 
 --
--- Chỉ mục cho bảng `personal_access_tokens`
+-- Indexes for table `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
   ADD PRIMARY KEY (`id`),
@@ -576,21 +705,21 @@ ALTER TABLE `personal_access_tokens`
   ADD KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`);
 
 --
--- Chỉ mục cho bảng `products`
+-- Indexes for table `products`
 --
 ALTER TABLE `products`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `id` (`id`);
 
 --
--- Chỉ mục cho bảng `promotion`
+-- Indexes for table `promotion`
 --
 ALTER TABLE `promotion`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `id` (`id`);
 
 --
--- Chỉ mục cho bảng `promo_product_rel`
+-- Indexes for table `promo_product_rel`
 --
 ALTER TABLE `promo_product_rel`
   ADD PRIMARY KEY (`id`),
@@ -599,34 +728,34 @@ ALTER TABLE `promo_product_rel`
   ADD KEY `promo_product_rel_ibfk_2` (`promo_id`);
 
 --
--- Chỉ mục cho bảng `setting`
+-- Indexes for table `setting`
 --
 ALTER TABLE `setting`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `users`
+-- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `users_email_unique` (`email`);
 
 --
--- Chỉ mục cho bảng `warehouse`
+-- Indexes for table `warehouse`
 --
 ALTER TABLE `warehouse`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `id` (`id`);
 
 --
--- Chỉ mục cho bảng `warehouse_product`
+-- Indexes for table `warehouse_product`
 --
 ALTER TABLE `warehouse_product`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `id` (`id`);
 
 --
--- Chỉ mục cho bảng `warehouse_product_rel`
+-- Indexes for table `warehouse_product_rel`
 --
 ALTER TABLE `warehouse_product_rel`
   ADD PRIMARY KEY (`id`),
@@ -635,135 +764,160 @@ ALTER TABLE `warehouse_product_rel`
   ADD KEY `warehouse_product_id` (`warehouse_product_id`);
 
 --
--- AUTO_INCREMENT cho các bảng đã đổ
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT cho bảng `category_web`
+-- AUTO_INCREMENT for table `cart`
+--
+ALTER TABLE `cart`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `category_web`
 --
 ALTER TABLE `category_web`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
 
 --
--- AUTO_INCREMENT cho bảng `demo`
+-- AUTO_INCREMENT for table `client`
+--
+ALTER TABLE `client`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `demo`
 --
 ALTER TABLE `demo`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT cho bảng `export_warehouse`
+-- AUTO_INCREMENT for table `export_warehouse`
 --
 ALTER TABLE `export_warehouse`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
--- AUTO_INCREMENT cho bảng `failed_jobs`
+-- AUTO_INCREMENT for table `failed_jobs`
 --
 ALTER TABLE `failed_jobs`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT cho bảng `group_product`
+-- AUTO_INCREMENT for table `group_product`
 --
 ALTER TABLE `group_product`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 
 --
--- AUTO_INCREMENT cho bảng `group_product_rel`
+-- AUTO_INCREMENT for table `group_product_rel`
 --
 ALTER TABLE `group_product_rel`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
 
 --
--- AUTO_INCREMENT cho bảng `images_product`
+-- AUTO_INCREMENT for table `images_product`
 --
 ALTER TABLE `images_product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
--- AUTO_INCREMENT cho bảng `image_product_rel`
+-- AUTO_INCREMENT for table `image_product_rel`
 --
 ALTER TABLE `image_product_rel`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
--- AUTO_INCREMENT cho bảng `import_warehouse`
+-- AUTO_INCREMENT for table `import_warehouse`
 --
 ALTER TABLE `import_warehouse`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
--- AUTO_INCREMENT cho bảng `logo_category_web`
+-- AUTO_INCREMENT for table `logo_category_web`
 --
 ALTER TABLE `logo_category_web`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
--- AUTO_INCREMENT cho bảng `migrations`
+-- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT cho bảng `personal_access_tokens`
+-- AUTO_INCREMENT for table `order`
+--
+ALTER TABLE `order`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT cho bảng `products`
+-- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
--- AUTO_INCREMENT cho bảng `promotion`
+-- AUTO_INCREMENT for table `promotion`
 --
 ALTER TABLE `promotion`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
--- AUTO_INCREMENT cho bảng `promo_product_rel`
+-- AUTO_INCREMENT for table `promo_product_rel`
 --
 ALTER TABLE `promo_product_rel`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
--- AUTO_INCREMENT cho bảng `setting`
+-- AUTO_INCREMENT for table `setting`
 --
 ALTER TABLE `setting`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
--- AUTO_INCREMENT cho bảng `users`
+-- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT cho bảng `warehouse`
+-- AUTO_INCREMENT for table `warehouse`
 --
 ALTER TABLE `warehouse`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- AUTO_INCREMENT cho bảng `warehouse_product`
+-- AUTO_INCREMENT for table `warehouse_product`
 --
 ALTER TABLE `warehouse_product`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
--- AUTO_INCREMENT cho bảng `warehouse_product_rel`
+-- AUTO_INCREMENT for table `warehouse_product_rel`
 --
 ALTER TABLE `warehouse_product_rel`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
--- Các ràng buộc cho các bảng đã đổ
+-- Constraints for dumped tables
 --
 
 --
--- Các ràng buộc cho bảng `category_web`
+-- Constraints for table `cart`
+--
+ALTER TABLE `cart`
+  ADD CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `client` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `cart_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `category_web`
 --
 ALTER TABLE `category_web`
   ADD CONSTRAINT `category_web_ibfk_1` FOREIGN KEY (`group_id`) REFERENCES `group_product` (`id`) ON DELETE CASCADE,
@@ -772,42 +926,49 @@ ALTER TABLE `category_web`
   ADD CONSTRAINT `category_web_ibfk_4` FOREIGN KEY (`promo_id`) REFERENCES `promotion` (`id`) ON DELETE SET NULL;
 
 --
--- Các ràng buộc cho bảng `export_warehouse`
+-- Constraints for table `export_warehouse`
 --
 ALTER TABLE `export_warehouse`
   ADD CONSTRAINT `export_warehouse_ibfk_1` FOREIGN KEY (`warehouse_id`) REFERENCES `warehouse` (`id`) ON DELETE SET NULL,
   ADD CONSTRAINT `export_warehouse_ibfk_2` FOREIGN KEY (`warehouse_product_id`) REFERENCES `warehouse_product` (`id`) ON DELETE SET NULL;
 
 --
--- Các ràng buộc cho bảng `group_product_rel`
+-- Constraints for table `group_product_rel`
 --
 ALTER TABLE `group_product_rel`
   ADD CONSTRAINT `group_product_rel_ibfk_1` FOREIGN KEY (`group_id`) REFERENCES `group_product` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `group_product_rel_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE;
 
 --
--- Các ràng buộc cho bảng `image_product_rel`
+-- Constraints for table `image_product_rel`
 --
 ALTER TABLE `image_product_rel`
   ADD CONSTRAINT `image_product_rel_ibfk_1` FOREIGN KEY (`image_id`) REFERENCES `images_product` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `image_product_rel_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE;
 
 --
--- Các ràng buộc cho bảng `import_warehouse`
+-- Constraints for table `import_warehouse`
 --
 ALTER TABLE `import_warehouse`
   ADD CONSTRAINT `import_warehouse_ibfk_1` FOREIGN KEY (`warehouse_id`) REFERENCES `warehouse` (`id`) ON DELETE SET NULL,
   ADD CONSTRAINT `import_warehouse_ibfk_2` FOREIGN KEY (`warehouse_product_id`) REFERENCES `warehouse_product` (`id`) ON DELETE SET NULL;
 
 --
--- Các ràng buộc cho bảng `promo_product_rel`
+-- Constraints for table `order`
+--
+ALTER TABLE `order`
+  ADD CONSTRAINT `order_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `client` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `order_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
+
+--
+-- Constraints for table `promo_product_rel`
 --
 ALTER TABLE `promo_product_rel`
   ADD CONSTRAINT `promo_product_rel_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `promo_product_rel_ibfk_2` FOREIGN KEY (`promo_id`) REFERENCES `promotion` (`id`) ON DELETE SET NULL;
 
 --
--- Các ràng buộc cho bảng `warehouse_product_rel`
+-- Constraints for table `warehouse_product_rel`
 --
 ALTER TABLE `warehouse_product_rel`
   ADD CONSTRAINT `warehouse_product_rel_ibfk_1` FOREIGN KEY (`warehouse_id`) REFERENCES `warehouse` (`id`) ON DELETE CASCADE,
