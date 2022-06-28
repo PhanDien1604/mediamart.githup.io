@@ -57,7 +57,6 @@ class HomeController extends Controller
     }
     public function index(Request $request) {
         $products = $this->product->getAllImageBelongProduct();
-        // dd($products);
         return view("clients.home",$this->data, compact('products'));
     }
     public function groupProduct($id) {
@@ -184,7 +183,7 @@ class HomeController extends Controller
         $client = $this->client->checkLogin($data);
         if(!empty($client[0])) {
             $request->session()->put('client',$client[0]);
-            return view('clients.home',$this->data);
+            return redirect()->route('home');
         }
         return back()->with('fail','Tài khoản hoặc mật khẩu không chính xác');
     }
