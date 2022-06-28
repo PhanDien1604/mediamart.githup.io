@@ -16,7 +16,6 @@ class WareHouseController extends Controller
         $this->products = new Products();
         $this->fileImage = new FileImages();
         $this->warehouse = new WareHouse();
-
     }
     public function index() {
         $warehouseList = $this->warehouse->getAllWareHouse();
